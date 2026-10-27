@@ -200,12 +200,12 @@ async function nova(opts = {}, esperarLoader = true) {
   await page.waitForTimeout(800);
   const rali = await page.evaluate(async () => {
     const pos = [];
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 40; i++) {
       const m = new DOMMatrix(getComputedStyle(document.querySelector("#equipe .rali-chao")).transform);
       const a = new DOMMatrix(getComputedStyle(document.querySelector("#equipe .rali-altura")).transform);
       const j = new DOMMatrix(getComputedStyle(document.querySelector("#equipe .rali-j1")).transform);
       pos.push({ x: Math.round(m.e), esc: +a.a.toFixed(2), j1: Math.round(j.e) });
-      await new Promise((r) => setTimeout(r, 400));
+      await new Promise((r) => setTimeout(r, 140));
     }
     return pos;
   });
@@ -213,7 +213,7 @@ async function nova(opts = {}, esperarLoader = true) {
   const esc = rali.map((p) => p.esc);
   const j1 = rali.map((p) => p.j1);
   ok("bola da quadra cruza de um lado ao outro (rali)", Math.max(...xs) - Math.min(...xs) > 120, JSON.stringify(xs));
-  // 14 leituras x 400 ms = 5,6 s: cobre o ciclo inteiro de 4,8 s, inclusive os dois toques no chão
+  // 40 leituras x 140 ms = 5,6 s: cobre o ciclo de 4,8 s com passo fino (400 ms caía sempre nas mesmas fases e às vezes pulava o ponto mais baixo)
   ok("bola sobe e desce (altura varia)", Math.max(...esc) > 1.7 && Math.min(...esc) < 1.35, JSON.stringify(esc));
   ok("jogador se desloca junto com a bola", Math.max(...j1) - Math.min(...j1) > 8, JSON.stringify(j1));
 
