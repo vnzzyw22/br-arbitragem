@@ -5,7 +5,7 @@
 | Finalidade | Arquivo | Formato atual |
 |---|---|---|
 | Hero desktop | `public/video/hero/desktop.mp4` + `desktop-poster.webp` | 1920×1080, 7,8 s, sem áudio, 2,3 MB (tríptico) |
-| Hero mobile | `public/video/hero/mobile.mp4` + `mobile-poster.webp` | 720×1280, 7,8 s, sem áudio, 1,5 MB (**tríptico vertical**: árbitro em cima, Copa Gêmeos e arena embaixo) |
+| Hero mobile | `public/video/hero/mobile.mp4` + `mobile-poster.webp` | 720×1280, 10 s, sem áudio, 1 MB (reel do árbitro) |
 | Logo | `src/assets/identidade/logo-br.jpg` | 150×150 (foto de perfil do Instagram) |
 | Quem somos | `src/assets/equipe/time-sandhit.webp`, `arbitro-sorrindo.jpg` | 1080×1080 · 1080×1311 |
 | Compromissos | `src/assets/equipe/arbitro-apito.jpg` | 1080×1350 |
@@ -26,9 +26,11 @@ ffmpeg -ss 2 -i public/video/hero/mobile.mp4 -frames:v 1 -c:v libwebp -quality 8
 
 Se o novo vídeo horizontal não precisar do fade, retirar `fade=...` do filtro.
 
-### Tríptico vertical do mobile (versão atual)
+### Tríptico vertical do mobile — testado e REJEITADO (27/10)
 
-Mesma ideia do desktop, reorganizada para tela em pé, **sem ampliar nada**: o árbitro vem do reel original em resolução nativa (faixa 720×500, cabeça e tronco) e os dois clipes laterais vêm dos painéis do `desktop.mp4`, **reduzidos** (600×1080 → 430×774, recorte de 357 px de largura). Divisórias escuras de 6 px, como no desktop. A divisória horizontal fica a 39% da altura para ficar sempre acima do título (conferido em 360×640, 390×844 e 412×915).
+Publicado e visto no celular pelo Vinicius: "ficou tudo cortado, nem dá pra ver os vídeos". Painéis pequenos demais em tela de celular. Não repetir. Comando guardado só como registro.
+
+Era a mesma ideia do desktop, reorganizada para tela em pé, **sem ampliar nada**: o árbitro vem do reel original em resolução nativa (faixa 720×500, cabeça e tronco) e os dois clipes laterais vêm dos painéis do `desktop.mp4`, **reduzidos** (600×1080 → 430×774, recorte de 357 px de largura). Divisórias escuras de 6 px, como no desktop. A divisória horizontal fica a 39% da altura para ficar sempre acima do título (conferido em 360×640, 390×844 e 412×915).
 
 ```bash
 # reel-arbitro.mp4 = brarbitragem.ftv.mp4 já em 720x1280 (o mobile.mp4 antigo)

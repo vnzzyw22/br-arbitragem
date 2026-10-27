@@ -1,6 +1,6 @@
 // Arquivos da hero. Ao trocar qualquer um deles (mesmo nome, ver MIDIA.md), aumente VERSAO:
 // o endereço muda e celulares/CDN não continuam mostrando a cópia antiga em cache.
-const VERSAO = "2";
+const VERSAO = "3";
 const url = (arquivo: string) => `/video/hero/${arquivo}?v=${VERSAO}`;
 
 export const HERO_MIDIA = {
