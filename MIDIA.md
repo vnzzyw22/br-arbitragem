@@ -5,7 +5,7 @@
 | Finalidade | Arquivo | Formato atual |
 |---|---|---|
 | Hero desktop | `public/video/hero/desktop.mp4` + `desktop-poster.webp` | 1920×1080, 7,8 s, sem áudio, 2,3 MB (tríptico) |
-| Hero mobile | `public/video/hero/mobile.mp4` + `mobile-poster.webp` | 720×1280, 10 s, sem áudio, 1 MB |
+| Hero mobile | `public/video/hero/mobile.mp4` + `mobile-poster.webp` | 720×1280, 7,8 s, sem áudio, 1,5 MB (**tríptico vertical**: árbitro em cima, Copa Gêmeos e arena embaixo) |
 | Logo | `src/assets/identidade/logo-br.jpg` | 150×150 (foto de perfil do Instagram) |
 | Quem somos | `src/assets/equipe/time-sandhit.webp`, `arbitro-sorrindo.jpg` | 1080×1080 · 1080×1311 |
 | Compromissos | `src/assets/equipe/arbitro-apito.jpg` | 1080×1350 |
@@ -23,6 +23,22 @@ ffmpeg -ss 2 -i public/video/hero/mobile.mp4 -frames:v 1 -c:v libwebp -quality 8
 ```
 
 Se o novo vídeo horizontal não precisar do fade, retirar `fade=...` do filtro.
+
+### Tríptico vertical do mobile (versão atual)
+
+Mesma ideia do desktop, reorganizada para tela em pé, **sem ampliar nada**: o árbitro vem do reel original em resolução nativa (faixa 720×500, cabeça e tronco) e os dois clipes laterais vêm dos painéis do `desktop.mp4`, **reduzidos** (600×1080 → 430×774, recorte de 357 px de largura). Divisórias escuras de 6 px, como no desktop. A divisória horizontal fica a 39% da altura para ficar sempre acima do título (conferido em 360×640, 390×844 e 412×915).
+
+```bash
+# reel-arbitro.mp4 = brarbitragem.ftv.mp4 já em 720x1280 (o mobile.mp4 antigo)
+ffmpeg -t 7.8 -i reel-arbitro.mp4 -t 7.8 -i public/video/hero/desktop.mp4 -filter_complex "
+[0:v]trim=0:7.8,setpts=PTS-STARTPTS,crop=720:500:0:230,fps=30,fade=t=in:st=0:d=0.4:color=#0a0a0a,fade=t=out:st=7.35:d=0.45:color=#0a0a0a[top];
+[1:v]split[a][b];
+[a]crop=600:1080:0:0,scale=-2:774:flags=lanczos,crop=357:774,fps=30[bl];
+[b]crop=600:1080:1320:0,scale=-2:774:flags=lanczos,crop=357:774,fps=30[br];
+color=c=0x0a0a0a:s=6x774:r=30:d=7.8[sv];color=c=0x0a0a0a:s=720x6:r=30:d=7.8[sh];
+[bl][sv][br]hstack=3[bot];[top][sh][bot]vstack=3,format=yuv420p[out]" -map "[out]" -an -c:v libx264 -preset slow -crf 28 -maxrate 1400k -bufsize 2800k -movflags +faststart public/video/hero/mobile.mp4
+ffmpeg -ss 2 -i public/video/hero/mobile.mp4 -frames:v 1 -c:v libwebp -quality 82 public/video/hero/mobile-poster.webp
+```
 
 ## Auditoria individual
 

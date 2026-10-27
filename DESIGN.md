@@ -31,7 +31,7 @@ O azul-aço da logo fica só na logo. Amarelo/preto aparecem nas ilustrações (
 
 - Vídeo **em tela cheia** (`100svh`), sem moldura. Os reels do cliente são verticais (720×1280); por isso:
   - **Desktop** (largura > altura): tríptico 1920×1080 montado de 3 recortes verticais lado a lado, **sem ampliar nada**: Copa Gêmeos (ação), **árbitro ao centro (painel 18% mais largo, quase na resolução nativa)** e vista aérea da arena à direita, para onde o árbitro olha. Os três têm **cor casada** (luminância ≈120–131, mesmo tom quente leve, saturação 12–14).
-  - **Mobile/retrato:** o reel vertical do árbitro preenche a tela como veio.
+  - **Mobile/retrato:** tríptico vertical 720×1280 — o árbitro em cima (faixa do reel original, resolução nativa) e, embaixo, a ação da Copa Gêmeos e a vista aérea da arena lado a lado (reduzidas, nunca ampliadas). Divisória horizontal a 39% da altura, sempre acima do título.
 - Escurecimento só no necessário (base, lateral do título e topo do menu). Sem caixas opacas atrás do texto.
 - Botões de **vidro** (`.btn-glass-ouro` e `.btn-glass`): fundo translúcido, `backdrop-filter`, filete claro, brilho que cruza no hover e fallback sólido em `@supports not`. Contraste medido sobre o vídeo: **pior caso 5,65:1** (mínimo 4,5:1). Fora do vídeo (fundos lisos) o botão é **ouro sólido** (`.btn-ouro`), porque vidro sem imagem atrás fica barrento.
 - Ao rolar: o filme se afasta (paralaxe + zoom) e o texto sai antes dele. Botão de pausa (WCAG 2.2.2). Com `prefers-reduced-motion`, só o pôster.
