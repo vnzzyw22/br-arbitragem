@@ -1,5 +1,6 @@
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
+import { EmQuadra } from "@/components/EmQuadra";
 import { Equipe } from "@/components/Equipe";
 import { Qualidade } from "@/components/Qualidade";
 import { Campeonatos } from "@/components/Campeonatos";
@@ -16,6 +17,7 @@ export default function Home() {
       <Nav />
       <main id="conteudo">
         <Hero />
+        <EmQuadra />
         <Equipe />
         <Qualidade />
         <Campeonatos />

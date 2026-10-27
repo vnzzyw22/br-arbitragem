@@ -4,6 +4,9 @@
 /* Celular baixo em pé (ex.: 360×640): a hero compacta para não cobrir o rosto do árbitro. */
 @custom-variant baixo (@media (max-height: 700px) and (max-aspect-ratio: 1/1));
 
+/* Tela deitada (mesma regra que escolhe o tríptico da hero). */
+@custom-variant paisagem (@media (min-aspect-ratio: 1/1));
+
 @theme inline {
   --color-preto: #0a0a0a;
   --color-grafite: #17191c;
@@ -420,4 +423,12 @@ section[id] {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* Trilho de vídeos que rola para o lado sem barra visível (o indicador em linha substitui). */
+.sem-barra {
+  scrollbar-width: none;
+}
+.sem-barra::-webkit-scrollbar {
+  display: none;
 }

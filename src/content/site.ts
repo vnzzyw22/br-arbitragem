@@ -1,3 +1,4 @@
+import { QUADRA_MIDIA } from "@/lib/midia";
 // Substituir fotos: trocar o arquivo na pasta indicada mantendo o nome (ver MIDIA.md).
 import equipeTime from "@/assets/equipe/time-sandhit.webp";
 import arbitroSorrindo from "@/assets/equipe/arbitro-sorrindo.jpg";
@@ -9,6 +10,17 @@ export const INSTAGRAM_HANDLE = "@brarbitragem.ftv";
 export const HERO = {
   titulo: ["A excelência", "da arbitragem", "dentro de", "cada jogo."],
   texto: "Equipe de arbitragem para campeonatos, torneios e circuitos de futevôlei.",
+};
+
+// Só no celular, logo abaixo da hero. Textos descritivos do que aparece nos vídeos:
+// sem nome de evento (procedência não confirmada para exibir) — ver HANDOFF.
+export const EM_QUADRA = {
+  titulo: "Em quadra",
+  texto: "Dia de jogo, visto da areia e do alto.",
+  videos: [
+    { ...QUADRA_MIDIA.jogada, alt: "Jogador de futevôlei em ação na areia" },
+    { ...QUADRA_MIDIA.arena, alt: "Vista aérea de uma arena de futevôlei com jogo em andamento" },
+  ],
 };
 
 export const EQUIPE = {

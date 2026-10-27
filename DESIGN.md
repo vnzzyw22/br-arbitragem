@@ -59,6 +59,7 @@ Tudo respeita `prefers-reduced-motion` (fica parado).
 - Campos: só linha inferior, rótulo sempre visível, erro inline e foco no primeiro inválido.
 - Listas por filetes (Compromissos, Campeonatos, FAQ), sem cards.
 - **Campeonatos = cartaz de escalação só de tipografia**: nomes em corpo grande, escalonados. Sem fotos e sem descrições de procedência. Para incluir um evento, acrescentar uma linha em `src/content/site.ts`.
+- **Em quadra (só celular em pé):** logo abaixo da hero, os dois clipes laterais do tríptico (jogada e vista aérea da arena) **inteiros**, em cards 5:9 que rolam para o lado com encaixe. O segundo aparece pela borda; um indicador em linha de quadra acende em ouro o vídeo da frente. Só o vídeo da frente toca; baixa só ao chegar na tela; botão de pausa; com movimento reduzido ou economia de dados, só pôsteres. No desktop fica oculta (os clipes já estão na hero).
 - CTA persistente no mobile: barra inferior (zona do polegar) que aparece depois da hero e some quando o formulário está na tela.
 
 ## Ilustrações

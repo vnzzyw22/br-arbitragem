@@ -6,6 +6,7 @@
 |---|---|---|
 | Hero desktop | `public/video/hero/desktop.mp4` + `desktop-poster.webp` | 1920×1080, 7,8 s, sem áudio, 2,3 MB (tríptico) |
 | Hero mobile | `public/video/hero/mobile.mp4` + `mobile-poster.webp` | 720×1280, 10 s, sem áudio, 1 MB (reel do árbitro) |
+| Em quadra (celular) | `public/video/quadra/jogada.mp4`, `arena.mp4` + pôsteres `.webp` | 600×1080 cada, 7,8 s, ~950 KB: painéis esquerdo e direito do `desktop.mp4`, sem recorte nem ampliação (`ffmpeg -i desktop.mp4 -vf crop=600:1080:0:0` / `crop=600:1080:1320:0`, crf 28, maxrate 900k). Com os reels originais 720×1280 ficariam um pouco mais nítidos |
 | Logo | `src/assets/identidade/logo-br.jpg` | 150×150 (foto de perfil do Instagram) |
 | Quem somos | `src/assets/equipe/time-sandhit.webp`, `arbitro-sorrindo.jpg` | 1080×1080 · 1080×1311 |
 | Compromissos | `src/assets/equipe/arbitro-apito.jpg` | 1080×1350 |

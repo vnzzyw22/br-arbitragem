@@ -333,6 +333,51 @@ async function nova(opts = {}, esperarLoader = true) {
   await ctx.close();
 }
 
+// ---------- faixa "Em quadra" (só celular) ----------
+{
+  // desktop: seção oculta e nada da pasta quadra é baixado
+  const dctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const dp = await dctx.newPage();
+  const dq = [];
+  dp.on("request", (r) => r.url().includes("/video/quadra/") && dq.push(r.url()));
+  await dp.goto(url, { waitUntil: "networkidle", timeout: 240000 });
+  await dp.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); } });
+  await dp.waitForTimeout(800);
+  const dVis = await dp.evaluate(() => getComputedStyle(document.querySelector("#quadra")).display);
+  ok("Em quadra: oculta no desktop e sem download", dVis === "none" && dq.length === 0, `display=${dVis} req=${dq.length}`);
+  await dctx.close();
+
+  const { ctx, page, erros } = await nova({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const mp4 = [];
+  page.on("request", (r) => r.url().includes("/video/quadra/") && r.url().includes(".mp4") && mp4.push(r.url()));
+  await page.waitForTimeout(500);
+  ok("Em quadra: vídeos não baixam antes de chegar à seção", mp4.length === 0, `req=${mp4.length}`);
+  await page.evaluate(() => document.querySelector("#quadra figure").scrollIntoView({ block: "center" }));
+  await page.waitForTimeout(2500);
+  const m = await page.evaluate(() => {
+    const figs = [...document.querySelectorAll("#quadra figure")];
+    const v = figs.map((f) => f.querySelector("video"));
+    const r = figs[0].getBoundingClientRect();
+    return { n: figs.length, w: Math.round(r.width), h: Math.round(r.height), tocando: v.map((x) => x && !x.paused), largura: v.map((x) => x?.videoWidth), sw: document.documentElement.scrollWidth };
+  });
+  ok("Em quadra: 2 vídeos inteiros (proporção 5:9) no celular", m.n === 2 && Math.abs(m.w / m.h - 5 / 9) < 0.02, JSON.stringify(m));
+  ok("Em quadra: só o vídeo da frente toca", m.tocando[0] === true && m.tocando[1] === false, JSON.stringify(m.tocando));
+  ok("Em quadra: trilho não cria rolagem horizontal na página", m.sw === 390, `sw=${m.sw}`);
+  await page.evaluate(() => { const t = document.querySelector("#quadra .sem-barra"); t.scrollTo({ left: t.scrollWidth, behavior: "instant" }); });
+  await page.waitForTimeout(1500);
+  const m2 = await page.evaluate(() => ({
+    tocando: [...document.querySelectorAll("#quadra video")].map((x) => !x.paused),
+    ativo: [...document.querySelectorAll("#quadra [aria-hidden=true].wrap span")].map((s) => s.className.includes("bg-ouro")),
+  }));
+  ok("Em quadra: ao arrastar, o segundo toca e o indicador acompanha", m2.tocando[0] === false && m2.tocando[1] === true && m2.ativo[1] === true, JSON.stringify(m2));
+  await page.click("#quadra button");
+  await page.waitForTimeout(300);
+  const pausado = await page.evaluate(() => [...document.querySelectorAll("#quadra video")].every((x) => x.paused));
+  ok("Em quadra: botão pausa os vídeos", pausado);
+  ok("Em quadra: sem erros de console", erros.length === 0, erros.slice(0, 2).join(" | "));
+  await ctx.close();
+}
+
 await browser.close();
 const falhas = resultados.filter((r) => !r.ok);
 console.log(`\n${resultados.length - falhas.length}/${resultados.length} verificações passaram`);
