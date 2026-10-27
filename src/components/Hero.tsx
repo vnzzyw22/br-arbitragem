@@ -4,15 +4,13 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { HERO } from "@/content/site";
 import { economiaDeDados } from "@/lib/economia";
+import { HERO_MIDIA } from "@/lib/midia";
 
-// Substituir o filme: trocar os arquivos em public/video/hero (ver MIDIA.md).
+// Substituir o filme: trocar os arquivos em public/video/hero e aumentar VERSAO em src/lib/midia.ts (ver MIDIA.md).
 // Os reels do cliente são verticais: no desktop entra um tríptico 1920×1080 (3 recortes lado
 // a lado, sem ampliar nada); no retrato, o vertical 720×1280 preenche a tela como veio.
 const PAISAGEM = "(min-aspect-ratio: 1/1)";
-const FONTES = {
-  paisagem: { video: "/video/hero/desktop.mp4", poster: "/video/hero/desktop-poster.webp" },
-  retrato: { video: "/video/hero/mobile.mp4", poster: "/video/hero/mobile-poster.webp" },
-};
+const FONTES = HERO_MIDIA;
 
 const atraso = (s: number): CSSProperties => ({ "--d": `${s}s` }) as CSSProperties;
 

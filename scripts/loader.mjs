@@ -4,7 +4,7 @@ const [url = "http://localhost:3000/", saida = ".shots/loader.png", w = "1440", 
 const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: "chrome" });
 const ctx = await b.newContext({ viewport: { width: Number(w), height: Number(h) } });
 const p = await ctx.newPage();
-await p.route("**/*.mp4", async (r) => { await new Promise((res) => setTimeout(res, 2500)); r.continue().catch(() => {}); });
+await p.route("**/*.mp4*", async (r) => { await new Promise((res) => setTimeout(res, 2500)); r.continue().catch(() => {}); });
 await p.goto(url, { waitUntil: "commit" });
 await p.waitForSelector(".loader");
 await p.waitForTimeout(650);

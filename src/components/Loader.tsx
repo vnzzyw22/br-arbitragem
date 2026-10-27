@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { Bola } from "./Ornamentos";
 import { economiaDeDados } from "@/lib/economia";
+import { HERO_MIDIA } from "@/lib/midia";
 
-const POSTERS = { paisagem: "/video/hero/desktop-poster.webp", retrato: "/video/hero/mobile-poster.webp" };
+const POSTERS = { paisagem: HERO_MIDIA.paisagem.poster, retrato: HERO_MIDIA.retrato.poster };
 const TOTAL = 3; // fontes, pôster da hero, primeiro quadro do vídeo
 const MINIMO_MS = 900; // tempo para a marca ser vista, não para segurar o visitante
 const LIMITE_MS = 3500; // se algo não chegar, a página abre mesmo assim

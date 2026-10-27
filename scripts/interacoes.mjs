@@ -28,7 +28,7 @@ async function nova(opts = {}, esperarLoader = true) {
 {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
-  await page.route("**/*.mp4", async (r) => {
+  await page.route("**/*.mp4*", async (r) => {
     await new Promise((res) => setTimeout(res, 1800));
     r.continue().catch(() => {});
   });
@@ -50,7 +50,7 @@ async function nova(opts = {}, esperarLoader = true) {
   // vídeo que falha: a página abre mesmo assim
   const c2 = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const p2 = await c2.newPage();
-  await p2.route("**/*.mp4", (r) => r.abort());
+  await p2.route("**/*.mp4*", (r) => r.abort());
   await p2.goto(url, { waitUntil: "commit" });
   await p2.waitForFunction(() => document.querySelector(".loader")?.getAttribute("data-pronto") === "true", null, { timeout: 8000 }).then(
     () => ok("vídeo bloqueado: o carregamento libera a página", true),
@@ -96,7 +96,7 @@ async function nova(opts = {}, esperarLoader = true) {
       amostras.push(+el.currentTime.toFixed(2));
       await new Promise((r) => setTimeout(r, 350));
     }
-    return { amostras, paused: el.paused, w: el.videoWidth, h: el.videoHeight, src: el.currentSrc.split("/").pop() };
+    return { amostras, paused: el.paused, w: el.videoWidth, h: el.videoHeight, src: el.currentSrc.split("/").pop().split("?")[0] };
   });
   // o vídeo dá a volta (loop de 7,8 s): basta o tempo mudar a cada leitura
   ok("vídeo da hero toca (currentTime muda a cada leitura)", !v.paused && new Set(v.amostras).size === v.amostras.length, JSON.stringify(v));
@@ -244,7 +244,7 @@ async function nova(opts = {}, esperarLoader = true) {
     const v = document.getElementById("hero-video");
     const s = document.querySelector("#topo").getBoundingClientRect();
     const r = v.getBoundingClientRect();
-    return { src: v.currentSrc.split("/").pop(), w: v.videoWidth, h: v.videoHeight, cobre: Math.round(r.width) === innerWidth && r.height >= innerHeight - 1, sh: Math.round(s.height), ih: innerHeight };
+    return { src: v.currentSrc.split("/").pop().split("?")[0], w: v.videoWidth, h: v.videoHeight, cobre: Math.round(r.width) === innerWidth && r.height >= innerHeight - 1, sh: Math.round(s.height), ih: innerHeight };
   });
   ok("mobile usa o vertical 720×1280 em tela cheia", m.src === "mobile.mp4" && m.w === 720 && m.h === 1280 && m.cobre, JSON.stringify(m));
 
@@ -322,7 +322,7 @@ async function nova(opts = {}, esperarLoader = true) {
   await ctx.addInitScript(() => Object.defineProperty(navigator, "connection", { value: { saveData: true, effectiveType: "4g" }, configurable: true }));
   const page = await ctx.newPage();
   const mp4 = [];
-  page.on("request", (r) => r.url().endsWith(".mp4") && mp4.push(r.url()));
+  page.on("request", (r) => r.url().includes(".mp4") && mp4.push(r.url()));
   const t0 = Date.now();
   await page.goto(url, { waitUntil: "networkidle", timeout: 240000 });
   await page.waitForFunction(() => document.querySelector(".loader")?.getAttribute("data-pronto") === "true", null, { timeout: 15000 }).catch(() => {});

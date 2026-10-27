@@ -10,6 +10,8 @@
 | Quem somos | `src/assets/equipe/time-sandhit.webp`, `arbitro-sorrindo.jpg` | 1080×1080 · 1080×1311 |
 | Compromissos | `src/assets/equipe/arbitro-apito.jpg` | 1080×1350 |
 
+**Depois de trocar qualquer arquivo da hero, aumente `VERSAO` em `src/lib/midia.ts`**: o nome continua o mesmo, então sem isso celulares e a CDN podem seguir mostrando a versão antiga.
+
 O código escolhe o vídeo da hero pela orientação da tela (`min-aspect-ratio: 1/1`). **Quando chegar um vídeo horizontal de verdade**, basta gerar os dois arquivos (comandos abaixo); não precisa mexer no código.
 
 ```bash
