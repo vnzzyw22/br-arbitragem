@@ -45,8 +45,8 @@ Seguir [MIDIA.md](MIDIA.md): auditar um a um, recusar o que for ruim, gerar `des
 
 Em ordem de valor:
 1. **Rodar uma crítica de design formal** da versão nova (hero em tríptico, carregamento, movimento, cartaz de campeonatos): skills `impeccable` (critique) e `web-design-guidelines` (auditoria), se disponíveis; senão, revisar manualmente contra o [DESIGN.md](DESIGN.md). A 1ª crítica foi feita sobre a versão anterior.
-2. **Ver no celular de verdade** (ou emulação com toque): barra de CTA inferior, tamanhos de título em 360×640 (o título cobre parte do rosto do árbitro nessa tela), formulário com teclado aberto.
-3. **Medir desempenho real** da URL pública (PageSpeed/Lighthouse): a medição local de LCP variou muito e não é confiável. Se o peso do hero desktop (2,3 MB) incomodar, reduzir a taxa do vídeo ou usar só o pôster em conexão lenta (`navigator.connection.saveData`).
+2. **Ver no celular de verdade** (ou emulação com toque): barra de CTA inferior e formulário com teclado aberto. *(Feito em 27/10: título em 360×640 não cobre mais o rosto — variante `baixo:`.)*
+3. **Medir desempenho real** da URL pública (PageSpeed/Lighthouse): a medição local de LCP variou muito e não é confiável. Se o peso do hero desktop (2,3 MB) incomodar, reduzir a taxa do vídeo. *(Feito em 27/10: em economia de dados/2G só o pôster.)*
 4. **Bola de futevôlei:** o vetor próprio tem imperfeições em tamanho grande; manter pequena. Se o cliente mandar um arquivo vetorial oficial, trocar o miolo em `BolaCorpo` (`src/components/Ornamentos.tsx`).
 5. **Acessibilidade:** testar com leitor de tela e só teclado (o formulário e o FAQ já foram testados por teclado em automação).
 6. **Mais movimento** com função, se o cliente pedir (ele já pediu mais movimento no geral): candidatos — cursor/hover com a bola, transição entre seções, microinterações no formulário. Nunca animar o formulário de modo que esconda campos.

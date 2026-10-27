@@ -6,7 +6,7 @@ const lum = ([r, g, b]) => {
   const f = (v) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
   return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
 };
-const b = await chromium.launch({ channel: "chrome" });
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: "chrome" });
 let pior = 99;
 for (const [nome, vp, mobile] of [["desktop 1440", { width: 1440, height: 900 }, false], ["mobile 390", { width: 390, height: 844 }, true]]) {
   const ctx = await b.newContext({ viewport: vp, isMobile: mobile, hasTouch: mobile });

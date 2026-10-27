@@ -5,7 +5,7 @@ import { chromium } from "playwright-core";
 const [largura = "1440", prefixo = "d", url = "http://localhost:3000/"] = process.argv.slice(2);
 const mobile = Number(largura) < 700;
 const alturaVp = mobile ? 844 : 900;
-const browser = await chromium.launch({ channel: "chrome" });
+const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: "chrome" });
 const ctx = await browser.newContext({
   viewport: { width: Number(largura), height: alturaVp },
   deviceScaleFactor: 1,

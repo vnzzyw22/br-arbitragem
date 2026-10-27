@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 /* Tokens — ver DESIGN.md. Paleta do brief, ouro calibrado no amarelo real do uniforme. */
+/* Celular baixo em pé (ex.: 360×640): a hero compacta para não cobrir o rosto do árbitro. */
+@custom-variant baixo (@media (max-height: 700px) and (max-aspect-ratio: 1/1));
+
 @theme inline {
   --color-preto: #0a0a0a;
   --color-grafite: #17191c;

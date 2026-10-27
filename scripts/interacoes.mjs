@@ -9,7 +9,7 @@ const ok = (nome, cond, extra = "") => {
   console.log(`${cond ? "OK   " : "FALHA"} ${nome} ${extra}`);
 };
 
-const browser = await chromium.launch({ channel: "chrome" });
+const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: "chrome" });
 
 // abre a página e espera o carregamento inicial terminar
 async function nova(opts = {}, esperarLoader = true) {
@@ -298,6 +298,38 @@ async function nova(opts = {}, esperarLoader = true) {
   ok("prefers-reduced-motion: rali parado e sem bola de progresso", rm.anim === "none" && rm.prog === 0, JSON.stringify(rm));
   const transform = await page.evaluate(() => getComputedStyle(document.querySelector("#topo h1 span span")).transform);
   ok("prefers-reduced-motion: título sem deslocamento", transform === "none" || transform === "matrix(1, 0, 0, 1, 0, 0)", transform);
+  await ctx.close();
+}
+
+// ---------- celular baixo (360×640): título não cobre o rosto do árbitro ----------
+{
+  const { ctx, page } = await nova({ viewport: { width: 360, height: 640 }, isMobile: true, hasTouch: true });
+  const m = await page.evaluate(() => {
+    const h = document.querySelector("#topo").getBoundingClientRect().height;
+    const t = document.querySelector("#hero-titulo").getBoundingClientRect().top;
+    const cta = document.querySelector('#topo a[href="#contato"]').getBoundingClientRect();
+    return { h, t: Math.round(t), pct: Math.round((t / h) * 100), ctaBase: Math.round(cta.bottom), ctaAlt: Math.round(cta.height) };
+  });
+  // rosto do árbitro ocupa ~23%–45% da altura do reel vertical
+  ok("360×640: título começa abaixo do rosto do árbitro (≥ 46% da altura)", m.pct >= 46, JSON.stringify(m));
+  ok("360×640: CTA principal inteiro na primeira dobra e ≥ 44px", m.ctaBase <= 640 && m.ctaAlt >= 44, JSON.stringify(m));
+  await ctx.close();
+}
+
+// ---------- economia de dados: hero só com pôster ----------
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  await ctx.addInitScript(() => Object.defineProperty(navigator, "connection", { value: { saveData: true, effectiveType: "4g" }, configurable: true }));
+  const page = await ctx.newPage();
+  const mp4 = [];
+  page.on("request", (r) => r.url().endsWith(".mp4") && mp4.push(r.url()));
+  const t0 = Date.now();
+  await page.goto(url, { waitUntil: "networkidle", timeout: 240000 });
+  await page.waitForFunction(() => document.querySelector(".loader")?.getAttribute("data-pronto") === "true", null, { timeout: 15000 }).catch(() => {});
+  const ms = Date.now() - t0;
+  const v = await page.locator("#topo video").count();
+  ok("economia de dados: nenhum vídeo baixado, pôster no lugar", v === 0 && mp4.length === 0, `video=${v} mp4=${mp4.length}`);
+  ok("economia de dados: carregamento não espera o vídeo (< 3 s)", ms < 3000, `${ms} ms`);
   await ctx.close();
 }
 

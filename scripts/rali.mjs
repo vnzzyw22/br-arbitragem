@@ -1,7 +1,7 @@
 // Congela o rali em instantes do ciclo e fotografa a quadra: node scripts/rali.mjs [url]
 import { chromium } from "playwright-core";
 const url = process.argv[2] ?? "http://localhost:3000/";
-const b = await chromium.launch({ channel: "chrome" });
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: "chrome" });
 const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
 await p.goto(url, { waitUntil: "networkidle" });
 await p.waitForFunction(() => document.querySelector(".loader")?.getAttribute("data-pronto") === "true", null, { timeout: 15000 }).catch(() => {});

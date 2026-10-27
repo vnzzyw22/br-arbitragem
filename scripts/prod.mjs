@@ -1,7 +1,7 @@
 // Verificações em produção: estado sem WhatsApp configurado + peso de carregamento no mobile.
 import { chromium } from "playwright-core";
 const url = process.argv[2] ?? "http://localhost:3201/";
-const b = await chromium.launch({ channel: "chrome" });
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: "chrome" });
 
 const largura = Number(process.argv[3] ?? 390);
 const movel = largura < 700;

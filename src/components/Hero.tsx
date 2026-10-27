@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { HERO } from "@/content/site";
+import { economiaDeDados } from "@/lib/economia";
 
 // Substituir o filme: trocar os arquivos em public/video/hero (ver MIDIA.md).
 // Os reels do cliente são verticais: no desktop entra um tríptico 1920×1080 (3 recortes lado
@@ -19,6 +20,8 @@ function HeroMidia({ pausado, reduzir }: { pausado: boolean; reduzir: boolean })
   const ref = useRef<HTMLVideoElement>(null);
   const [orientacao, setOrientacao] = useState<"paisagem" | "retrato" | null>(null);
   const [tocando, setTocando] = useState(false);
+  // Seguro na hidratação: só afeta o <video>, que não existe antes de `orientacao` ser definida.
+  const [economia] = useState(economiaDeDados);
 
   useEffect(() => {
     const mq = window.matchMedia(PAISAGEM);
@@ -57,7 +60,7 @@ function HeroMidia({ pausado, reduzir }: { pausado: boolean; reduzir: boolean })
         <source media={PAISAGEM} srcSet={FONTES.paisagem.poster} />
         <img src={FONTES.retrato.poster} alt="" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
       </picture>
-      {orientacao && !reduzir && (
+      {orientacao && !reduzir && !economia && (
         <video
           ref={ref}
           id="hero-video"
@@ -126,8 +129,8 @@ export function Hero() {
       )}
 
       <motion.div style={reduzir ? undefined : { y: textoY, opacity: textoOpacidade }}>
-        <div className="wrap pb-10 pt-32 lg:pb-16">
-          <h1 id="hero-titulo" className="display text-[clamp(2.7rem,11.6vw,4.4rem)] md:text-[clamp(3.4rem,6.3vw,6.2rem)]">
+        <div className="wrap pb-10 pt-32 baixo:pb-6 lg:pb-16">
+          <h1 id="hero-titulo" className="display text-[clamp(2.7rem,11.6vw,4.4rem)] baixo:text-[clamp(2rem,9.4vw,2.6rem)] md:text-[clamp(3.4rem,6.3vw,6.2rem)]">
             {HERO.titulo.map((linha, i) => (
               <span key={linha} className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
                 <span className="h-sobe block" style={atraso(0.15 + i * 0.1)}>
@@ -137,15 +140,16 @@ export function Hero() {
             ))}
           </h1>
 
-          <div aria-hidden="true" className="h-estende mt-7 h-[2px] w-20 bg-ouro" style={atraso(0.55)} />
+          <div aria-hidden="true" className="h-estende mt-7 h-[2px] baixo:mt-4 w-20 bg-ouro" style={atraso(0.55)} />
 
-          <div className="h-surge mt-7 flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12" style={atraso(0.8)}>
-            <p className="max-w-[34ch] text-lg leading-snug text-white/90 lg:text-xl">{HERO.texto}</p>
+          <div className="h-surge mt-7 flex flex-col gap-8 baixo:mt-4 baixo:gap-4 lg:flex-row lg:items-center lg:gap-12" style={atraso(0.8)}>
+            <p className="max-w-[34ch] text-lg leading-snug text-white/90 baixo:text-base lg:text-xl">{HERO.texto}</p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <a href="#contato" className="btn btn-glass-ouro">
                 Solicitar orçamento
               </a>
-              <a href="#equipe" className="btn btn-glass">
+              {/* Em tela baixa só fica o CTA principal; a equipe vem logo abaixo, na rolagem. */}
+              <a href="#equipe" className="btn btn-glass baixo:hidden">
                 Conhecer a equipe
               </a>
             </div>

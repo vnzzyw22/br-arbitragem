@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { Bola } from "./Ornamentos";
+import { economiaDeDados } from "@/lib/economia";
 
 const POSTERS = { paisagem: "/video/hero/desktop-poster.webp", retrato: "/video/hero/mobile-poster.webp" };
 const TOTAL = 3; // fontes, pôster da hero, primeiro quadro do vídeo
@@ -70,7 +71,9 @@ export function Loader() {
         v.addEventListener("error", marca, { once: true });
       }
     };
-    aguardarVideo();
+    // Em economia de dados a hero não carrega vídeo: esse degrau conta na hora.
+    if (economiaDeDados()) marca();
+    else aguardarVideo();
 
     timers.push(setTimeout(encerrar, LIMITE_MS));
     return () => timers.forEach(clearTimeout);

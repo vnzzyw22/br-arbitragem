@@ -2,7 +2,7 @@
 import { chromium } from "playwright-core";
 const [w = "1440", h = "900", pre = "r", ys = "0,500,3400"] = process.argv.slice(2);
 const mobile = Number(w) < 700;
-const b = await chromium.launch({ channel: "chrome" });
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: "chrome" });
 const ctx = await b.newContext({ viewport: { width: Number(w), height: Number(h) }, isMobile: mobile, hasTouch: mobile });
 const p = await ctx.newPage();
 await p.goto("http://localhost:3000/", { waitUntil: "networkidle" });

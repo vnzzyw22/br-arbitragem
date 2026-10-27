@@ -18,7 +18,13 @@ Ler primeiro: [README.md](README.md) (como rodar/testar) · [DESIGN.md](DESIGN.m
 
 ## Estado atual
 
-Todas as seções prontas: hero, quem somos, compromissos, campeonatos, FAQ, contato (WhatsApp), rodapé, carregamento com progresso real e barra de CTA mobile. Verificado: 59 checagens automáticas, contraste dos botões de vidro 5,65:1 no pior caso, sem rolagem horizontal de 360 a 1440 px.
+Todas as seções prontas: hero, quem somos, compromissos, campeonatos, FAQ, contato (WhatsApp), rodapé, carregamento com progresso real e barra de CTA mobile. Verificado: 63 checagens automáticas, contraste dos botões de vidro 5,65:1 no pior caso, sem rolagem horizontal de 360 a 1440 px.
+
+**Sessão de 27/10/2026 (pelo celular, ambiente na nuvem):**
+- Hero compacta em celular baixo em pé (variante `baixo:` = altura ≤ 700 px e retrato): título menor, espaçamentos menores e só o CTA principal. Em 360×640 o título agora começa em 51% da altura, abaixo do rosto do árbitro.
+- Economia de dados (`saveData` ou 2G): a hero fica só no pôster e não baixa o vídeo; o carregamento não espera o vídeo (`src/lib/economia.ts`).
+- Scripts de teste aceitam `CHROME_PATH` (Chromium da nuvem) e continuam usando o Chrome do sistema sem ela.
+- Não verificado nesta sessão: a URL pública (bloqueada no ambiente da nuvem) e o PageSpeed real.
 
 ## Pendências
 
@@ -33,4 +39,5 @@ Todas as seções prontas: hero, quem somos, compromissos, campeonatos, FAQ, con
 - Next 16: `priority` virou `preload`; fonte com eixo extra exige `axes`; ler `node_modules/next/dist/docs/` antes de usar API nova.
 - Reels do cliente são 720×1280: não ampliar para tela cheia horizontal (fica borrado); por isso o tríptico.
 - `autoplay` ignora `preload="none"`: vídeo fora da primeira dobra não deve ter `autoplay`.
+- Build em ambiente sem acesso à Google Fonts (nuvem): ver README, seção "Build sem internet".
 - Depois de recriar um arquivo com `rm` + escrita, o Tailwind em dev pode ficar com CSS defasado: salvar o `globals.css` ou reiniciar o `next dev`.

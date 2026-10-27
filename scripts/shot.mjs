@@ -5,7 +5,7 @@ import { chromium } from "playwright-core";
 const [url = "http://localhost:3000/", largura = "1440", saida = "scripts/_shot.png", altura = "900"] = process.argv.slice(2);
 const full = process.argv.includes("--full");
 const mobile = Number(largura) < 700;
-const browser = await chromium.launch({ channel: "chrome" });
+const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: "chrome" });
 const ctx = await browser.newContext({
   viewport: { width: Number(largura), height: Number(altura) },
   deviceScaleFactor: 1,

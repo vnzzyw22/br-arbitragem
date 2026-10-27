@@ -30,8 +30,14 @@ Os testes rodam contra uma **build de produção em outra pasta**, para não pis
 ```bash
 NEXT_PUBLIC_WHATSAPP_NUMBER=5541900000000 NEXT_DIST_DIR=.next-test npx next build   # número FICTÍCIO, só para testar
 NEXT_PUBLIC_WHATSAPP_NUMBER=5541900000000 NEXT_DIST_DIR=.next-test npx next start -p 3300
-node scripts/interacoes.mjs          # 59 verificações: carregamento, hero, vídeo, formulário, rali, mobile, movimento reduzido
+node scripts/interacoes.mjs          # 63 verificações: carregamento, hero, vídeo, formulário, rali, mobile, movimento reduzido
 ```
+
+Sem Chrome instalado (ex.: nuvem), aponte para outro Chromium: `CHROME_PATH=/caminho/do/chrome node scripts/interacoes.mjs`.
+
+### Build sem internet (Google Fonts bloqueada)
+
+O `next/font/google` baixa a fonte no build. Num ambiente sem acesso a `fonts.googleapis.com`, para **testar** localmente: baixe a fonte pelo npm (`npm pack @fontsource-variable/schibsted-grotesk`), crie um módulo que devolva o `@font-face` apontando para o `.woff2` local e rode o build com `NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/caminho/mock.js ... npx next build --webpack` (o Turbopack não aceita o mock). Não muda nada em produção; a Vercel baixa a fonte normalmente.
 
 | Script | O que faz |
 |---|---|
