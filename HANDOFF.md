@@ -8,7 +8,7 @@ Ler primeiro: [README.md](README.md) (como rodar/testar) · [DESIGN.md](DESIGN.m
 ## Decisões do cliente — não reverter sem perguntar
 
 - **Tipografia:** Schibsted Grotesk, peso 600 nos títulos. O cliente achou a serifa (Cormorant) "manjada, com cara de IA" e a 1ª versão (Archivo condensada pesada) agressiva demais. **Não voltar a serifa nem condensada pesada nos títulos.**
-- **Hero:** vídeo de fundo em tela cheia (aprovado). Desktop = tríptico com o **árbitro no centro** e os outros dois clipes nas laterais, com cor casada. Mobile = reel vertical do árbitro. *(Em avaliação no branch `hero-mobile-triptico`: tríptico vertical, a pedido do Vinicius em 27/10. Só entra na `main` depois do ok.)*
+- **Hero:** vídeo de fundo em tela cheia (aprovado). Desktop = tríptico com o **árbitro no centro** e os outros dois clipes nas laterais, com cor casada. Mobile = **tríptico vertical** (árbitro em cima, Copa Gêmeos e arena embaixo), publicado em 27/10 a pedido do Vinicius **para avaliação no site**. Se for recusado, voltar ao reel do árbitro sozinho: `git show d9411fa^:public/video/hero/mobile.mp4` (e o pôster) — ou reverter o commit `d9411fa`.
 - **Campeonatos:** só tipografia (cartaz de escalação). **Sem fotos** (baixa qualidade), **sem descrições de procedência**, **sem bolas nas laterais**.
 - **Fotos:** não publicar imagem de baixa qualidade; preferir seção simples a foto ruim. Pendências em [MIDIA.md](MIDIA.md).
 - **Ilustrações:** apito preto de árbitro com argola dourada (o de contorno foi rejeitado por feio), bola de futevôlei amarela e preta, quadra de areia com **rali animado** (a bola joga de um lado ao outro).
