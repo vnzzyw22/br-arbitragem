@@ -11,7 +11,9 @@ import {
   type Campos,
   type Erros,
 } from "@/lib/whatsapp";
-import { Linha } from "./Motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { Linha, Titulo } from "./Motion";
+import { Apito } from "./Ornamentos";
 
 const vazio: Campos = { nome: "", whatsapp: "", tipo: "", cidade: "", data: "", info: "" };
 
@@ -25,6 +27,21 @@ function Mensagem({ id, texto }: { id: string; texto?: string }) {
     <p id={id} className="mt-2 text-[0.95rem] font-medium text-erro">
       {texto}
     </p>
+  );
+}
+
+// O apito dá um apitaço ao entrar na tela e depois balança pendurado pela argola.
+function ApitoApitando() {
+  const reduzir = useReducedMotion();
+  return (
+    <motion.div
+      className="hidden shrink-0 lg:block"
+      whileInView={reduzir ? undefined : { rotate: [0, -7, 6, -5, 3, 0] }}
+      viewport={{ once: true, margin: "0px 0px -25% 0px" }}
+      transition={{ duration: 0.9, ease: "easeInOut", delay: 0.3 }}
+    >
+      <Apito className="apito-balanco w-[21rem]" />
+    </motion.div>
   );
 }
 
@@ -57,12 +74,15 @@ export function Contato() {
   };
 
   return (
-    <section id="contato" className="on-areia bg-areia py-20 text-preto lg:py-32">
-      <div className="wrap">
+    <section id="contato" className="on-areia relative overflow-hidden bg-areia py-24 text-preto lg:py-36">
+      <div className="wrap relative">
         <Linha cor="bg-preto" />
-        <h2 className="display mt-12 text-[clamp(3rem,13.5vw,5.5rem)] lg:mt-16 lg:text-[clamp(3.6rem,8.4vw,9rem)]">
-          Vamos conversar sobre seu próximo campeonato?
-        </h2>
+        <div className="mt-14 lg:mt-20 lg:flex lg:items-end lg:justify-between lg:gap-12">
+          <Titulo className="display max-w-[20ch] text-[clamp(2.4rem,10.2vw,3.9rem)] lg:text-[clamp(3rem,5.6vw,6.2rem)]">
+            Vamos conversar sobre seu próximo campeonato?
+          </Titulo>
+          <ApitoApitando />
+        </div>
 
         <div className="mt-12 grid gap-12 lg:mt-20 lg:grid-cols-12 lg:gap-x-16">
           <div className="lg:col-span-4">

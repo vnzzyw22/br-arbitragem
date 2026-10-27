@@ -2,7 +2,7 @@
 // Rola a página inteira para disparar os reveals, depois fotografa. Registra erros de console.
 import { chromium } from "playwright-core";
 
-const [url = "http://localhost:3200/", largura = "1440", saida = "scripts/_shot.png", altura = "900"] = process.argv.slice(2);
+const [url = "http://localhost:3000/", largura = "1440", saida = "scripts/_shot.png", altura = "900"] = process.argv.slice(2);
 const full = process.argv.includes("--full");
 const mobile = Number(largura) < 700;
 const browser = await chromium.launch({ channel: "chrome" });
@@ -17,7 +17,7 @@ const erros = [];
 page.on("console", (m) => ["error", "warning"].includes(m.type()) && erros.push(`${m.type()}: ${m.text()}`));
 page.on("pageerror", (e) => erros.push(`pageerror: ${e.message}`));
 await page.goto(url, { waitUntil: "networkidle", timeout: 240000 });
-await page.waitForTimeout(2200);
+await page.waitForTimeout(4500);
 if (full) {
   const total = await page.evaluate(() => document.documentElement.scrollHeight);
   for (let y = 0; y < total; y += Number(altura) * 0.6) {

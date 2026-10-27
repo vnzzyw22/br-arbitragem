@@ -1,12 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo } from "next/font/google";
+import { Schibsted_Grotesk } from "next/font/google";
+import { Loader } from "@/components/Loader";
 import "./globals.css";
 
-// Uma família só: wdth 62 nos títulos (condensada esportiva), wdth 100 no texto.
-const archivo = Archivo({
+// Uma família só (grotesca de redação): 600 nos títulos, 400/500 no texto.
+// A única serifa da página é a da própria logo.
+const schibsted = Schibsted_Grotesk({
   subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
+  variable: "--font-schibsted",
   display: "swap",
 });
 
@@ -28,10 +29,15 @@ export const viewport: Viewport = {
   themeColor: "#0a0a0a",
 };
 
+// Marca a sessão antes da pintura para o carregamento não reaparecer a cada visita.
+const marcaSessao = `try{if(sessionStorage.getItem("br-loader"))document.documentElement.dataset.loader="visto"}catch(e){}`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={archivo.variable}>
+    <html lang="pt-BR" className={schibsted.variable}>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: marcaSessao }} />
+        <Loader />
         <a href="#conteudo" className="pular">
           Pular para o conteúdo
         </a>

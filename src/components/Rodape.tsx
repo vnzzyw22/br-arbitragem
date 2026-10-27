@@ -1,6 +1,7 @@
 import { APOIADORES, INSTAGRAM_HANDLE, INSTAGRAM_URL, PATROCINADOR } from "@/content/site";
 import { WHATSAPP_NUMERO } from "@/lib/whatsapp";
 import { Logo } from "./Logo";
+import { Bola } from "./Ornamentos";
 
 export function Rodape() {
   return (
@@ -9,7 +10,7 @@ export function Rodape() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-16">
           <div className="lg:col-span-4">
             <Logo size={88} />
-            <p className="display mt-6 text-4xl">BR Arbitragem Futevôlei</p>
+            <p className="display mt-6 text-[1.9rem]">BR Arbitragem Futevôlei</p>
             <ul className="mt-6 space-y-1 text-lg">
               <li>
                 <a
@@ -42,7 +43,7 @@ export function Rodape() {
               href={PATROCINADOR.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="display mt-3 inline-block text-5xl transition-colors hover:text-ouro lg:text-6xl"
+              className="display mt-1 inline-block py-2 text-[2.2rem] transition-colors hover:text-ouro lg:text-[2.7rem]"
             >
               {PATROCINADOR.nome}
             </a>
@@ -50,7 +51,7 @@ export function Rodape() {
 
           <div className="lg:col-span-4">
             <p className="text-base text-prata">Apoio</p>
-            <ul className="mt-3 space-y-2 text-xl font-semibold">
+            <ul className="mt-3 space-y-2 text-xl font-medium">
               {APOIADORES.map((nome) => (
                 <li key={nome}>{nome}</li>
               ))}
@@ -58,9 +59,10 @@ export function Rodape() {
           </div>
         </div>
 
-        <p className="mt-16 border-t border-white/15 pt-6 text-sm text-prata">
-          © 2026 BR Arbitragem Futevôlei.
-        </p>
+        <div className="mt-16 flex items-center justify-between gap-6 border-t border-white/15 pt-6 text-sm text-prata">
+          <p>© 2026 BR Arbitragem Futevôlei.</p>
+          <Bola className="quica h-9 w-9" />
+        </div>
       </div>
     </footer>
   );

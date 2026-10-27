@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logo from "@/assets/logo-br.jpg";
+import logo from "@/assets/identidade/logo-br.jpg";
 
 // Logo oficial sem alteração; o corte circular é o próprio contorno da marca.
 export function Logo({ size = 56, className = "", eager = false }: { size?: number; className?: string; eager?: boolean }) {

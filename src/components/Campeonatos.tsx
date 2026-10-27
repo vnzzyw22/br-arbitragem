@@ -1,193 +1,67 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
-import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { BASTIDORES, EVENTOS, INSTAGRAM_URL, type Evento, type Midia } from "@/content/site";
-import { Linha, Revela } from "./Motion";
-import { VideoLoop } from "./VideoLoop";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { EVENTOS, INSTAGRAM_URL } from "@/content/site";
+import { Linha, Titulo } from "./Motion";
 
-const MQ = "(min-width: 1024px)";
-function useDesktop() {
-  return useSyncExternalStore(
-    (cb) => {
-      const m = window.matchMedia(MQ);
-      m.addEventListener("change", cb);
-      return () => m.removeEventListener("change", cb);
-    },
-    () => window.matchMedia(MQ).matches,
-    () => false,
-  );
-}
+const ease = [0.22, 1, 0.36, 1] as const;
 
-function Quadro({ midia, sizes, className = "" }: { midia: Midia; sizes: string; className?: string }) {
-  if (midia.tipo === "video") {
-    return (
-      <div className={`relative ${className}`} role="img" aria-label={midia.alt}>
-        <VideoLoop src={midia.src} poster={midia.poster} preload="none" className="absolute inset-0 h-full w-full" />
-      </div>
-    );
-  }
-  return (
-    <div className={`relative ${className}`}>
-      <Image
-        src={midia.src}
-        alt={midia.alt}
-        fill
-        sizes={sizes}
-        className="object-cover"
-        style={{ objectPosition: midia.posicao ?? "50% 50%" }}
-      />
-    </div>
-  );
-}
-
-function SemFoto({ evento }: { evento: Evento }) {
-  return (
-    <div className="flex h-full flex-col justify-end bg-grafite p-8">
-      <p className="display text-4xl text-prata">Registro no Instagram do torneio.</p>
-      {evento.fonte && (
-        <a
-          href={evento.fonte.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 inline-flex min-h-11 items-center self-start text-lg font-medium underline decoration-2 underline-offset-8 hover:text-ouro"
-        >
-          {evento.fonte.rotulo}
-        </a>
-      )}
-    </div>
-  );
-}
-
-export function Campeonatos() {
-  const [ativo, setAtivo] = useState(EVENTOS[0].id);
+// Uma linha do cartaz. Observa o <li> (que não se move), nunca o texto escondido pela máscara:
+// um alvo recortado por overflow nunca "entra" na tela. O nome sobe pela máscara; no hover o nome
+// avança e acende em ouro, e a linha de cima também.
+function Item({ nome, recuo }: { nome: string; recuo: boolean }) {
+  const ref = useRef<HTMLLIElement>(null);
   const reduzir = useReducedMotion();
-  const desktop = useDesktop();
-  const atual = EVENTOS.find((e) => e.id === ativo) ?? EVENTOS[0];
+  const visto = useInView(ref, { once: true, margin: "0px 0px -12% 0px" });
+  const aberto = visto || reduzir;
 
   return (
-    <section id="campeonatos" className="bg-preto py-20 lg:py-32">
+    <li ref={ref} className="group relative border-t border-white/15">
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 -top-px h-[2px] origin-left scale-x-0 bg-ouro transition-transform duration-700 ease-out group-hover:scale-x-100"
+      />
+      <div className={`py-6 lg:py-9 ${recuo ? "lg:pl-[9%]" : ""}`}>
+        <h3 className="display -mb-[0.1em] overflow-hidden pb-[0.1em] text-[clamp(2.2rem,9.6vw,3.7rem)] lg:text-[clamp(3rem,6.1vw,6.2rem)]">
+          <motion.span
+            className="block"
+            initial={{ y: reduzir ? 0 : "105%" }}
+            animate={{ y: aberto ? 0 : "105%" }}
+            transition={{ duration: 0.9, ease }}
+          >
+            <span className="inline-block transition-[transform,color] duration-500 ease-out group-hover:translate-x-4 group-hover:text-ouro">
+              {nome}
+            </span>
+          </motion.span>
+        </h3>
+      </div>
+    </li>
+  );
+}
+
+// Cartaz de escalação: só tipografia, sem fotos. Os nomes dos eventos são a imagem.
+export function Campeonatos() {
+  return (
+    <section id="campeonatos" className="bg-preto py-24 lg:py-36">
       <div className="wrap">
         <Linha />
-        <h2 className="display mt-12 text-[clamp(2.8rem,11vw,4.6rem)] lg:mt-16 lg:text-[clamp(3.4rem,7vw,7.5rem)]">
+        <Titulo className="display mt-14 text-[clamp(2.3rem,9.4vw,3.5rem)] lg:mt-20 lg:text-[clamp(2.8rem,4.6vw,5rem)]">
           Campeonatos atendidos
-        </h2>
+        </Titulo>
+        <p className="mt-5 max-w-[34ch] text-lg text-prata">Eventos em que a equipe atuou.</p>
 
-        <div className="mt-12 grid gap-x-12 lg:mt-16 lg:grid-cols-12">
-          <ul className="lg:col-span-7">
-            {EVENTOS.map((e) => {
-              const selecionado = e.id === ativo;
-              return (
-                <li key={e.id} className="border-t border-white/15 last:border-b">
-                  <button
-                    type="button"
-                    aria-pressed={selecionado}
-                    onMouseEnter={() => setAtivo(e.id)}
-                    onFocus={() => setAtivo(e.id)}
-                    onClick={() => setAtivo(e.id)}
-                    className={`group relative block w-full py-6 text-left transition-colors lg:py-8 ${
-                      selecionado ? "text-white" : "text-prata hover:text-white"
-                    }`}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className={`absolute inset-x-0 -top-px hidden h-[3px] origin-left bg-ouro transition-transform duration-500 lg:block ${
-                        selecionado ? "scale-x-100" : "scale-x-0"
-                      }`}
-                    />
-                    <span className="display block text-[clamp(2.6rem,10.5vw,4.4rem)] lg:pl-6 lg:text-[clamp(3.2rem,6vw,6rem)]">
-                      {e.nome}
-                    </span>
-                    <span className="mt-2 block max-w-[44ch] text-base text-prata lg:pl-6">{e.descricao}</span>
-                  </button>
+        <ol className="mt-14 border-b border-white/15 lg:mt-20">
+          {EVENTOS.map((e, i) => (
+            <Item key={e.id} nome={e.nome} recuo={i % 2 === 1} />
+          ))}
+        </ol>
 
-                  {/* mobile: a mídia vem junto de cada evento */}
-                  {!desktop && (
-                  <div className="pb-8">
-                    {e.midia ? (
-                      <Quadro midia={e.midia} sizes="100vw" className="aspect-[4/5] w-full" />
-                    ) : (
-                      e.fonte && (
-                        <a
-                          href={e.fonte.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex min-h-11 items-center text-lg font-medium underline decoration-2 underline-offset-8"
-                        >
-                          {e.fonte.rotulo}
-                        </a>
-                      )
-                    )}
-                  </div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-
-          {desktop && (
-          <div className="lg:col-span-5">
-            <div className="sticky top-24 aspect-[4/5] overflow-hidden bg-grafite" aria-live="polite">
-              <AnimatePresence initial={false}>
-                <motion.div
-                  key={atual.id}
-                  className="absolute inset-0"
-                  initial={reduzir ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={reduzir ? undefined : { opacity: 0 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  {atual.midia ? (
-                    <Quadro midia={atual.midia} sizes="40vw" className="h-full w-full" />
-                  ) : (
-                    <SemFoto evento={atual} />
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
-          )}
-        </div>
-
-        <div className="mt-20 grid grid-cols-2 items-start gap-3 sm:gap-5 lg:mt-32 lg:grid-cols-12 lg:gap-8">
-          <Revela className="col-span-2 lg:col-span-5">
-            <Image
-              src={BASTIDORES[0].src}
-              alt={BASTIDORES[0].alt}
-              sizes="(min-width: 1024px) 40vw, 100vw"
-              className="aspect-[4/5] w-full object-cover"
-            />
-          </Revela>
-          <Revela className="lg:col-span-4 lg:mt-24">
-            <Image
-              src={BASTIDORES[1].src}
-              alt={BASTIDORES[1].alt}
-              sizes="(min-width: 1024px) 30vw, 50vw"
-              className="aspect-[4/5] w-full object-cover"
-            />
-          </Revela>
-          <Revela className="lg:col-span-3 lg:mt-8">
-            <Image
-              src={BASTIDORES[2].src}
-              alt={BASTIDORES[2].alt}
-              sizes="(min-width: 1024px) 24vw, 50vw"
-              className="aspect-[4/5] w-full object-cover"
-            />
-          </Revela>
-        </div>
-        <p className="mt-8 text-prata">
-          Mais registros no Instagram{" "}
-          <a
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="-my-3 inline-block py-3 font-medium text-white underline decoration-2 underline-offset-4 hover:text-ouro"
-          >
-            @brarbitragem.ftv
+        <div className="mt-12">
+          <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="btn btn-ouro">
+            Ver mais no Instagram
           </a>
-          .
-        </p>
+        </div>
       </div>
     </section>
   );

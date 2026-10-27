@@ -2,7 +2,7 @@
 // Rola até a seção (dispara as revelações), espera, fotografa o elemento.
 import { chromium } from "playwright-core";
 
-const [largura = "1440", prefixo = "d", url = "http://localhost:3200/"] = process.argv.slice(2);
+const [largura = "1440", prefixo = "d", url = "http://localhost:3000/"] = process.argv.slice(2);
 const mobile = Number(largura) < 700;
 const alturaVp = mobile ? 844 : 900;
 const browser = await chromium.launch({ channel: "chrome" });

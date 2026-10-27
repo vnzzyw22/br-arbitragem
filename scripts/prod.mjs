@@ -3,7 +3,9 @@ import { chromium } from "playwright-core";
 const url = process.argv[2] ?? "http://localhost:3201/";
 const b = await chromium.launch({ channel: "chrome" });
 
-const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+const largura = Number(process.argv[3] ?? 390);
+const movel = largura < 700;
+const ctx = await b.newContext({ viewport: { width: largura, height: movel ? 844 : 900 }, isMobile: movel, hasTouch: movel });
 const p = await ctx.newPage();
 const bytes = { total: 0, imagens: 0, video: 0, js: 0, css: 0, fontes: 0 };
 const itens = [];
@@ -23,6 +25,7 @@ p.on("response", async (r) => {
 const erros = [];
 p.on("console", (m) => m.type() === "error" && erros.push(m.text()));
 await p.goto(url, { waitUntil: "networkidle" });
+await p.waitForFunction(() => document.querySelector(".loader")?.getAttribute("data-pronto") === "true", null, { timeout: 15000 }).catch(() => {});
 await p.waitForTimeout(2500);
 const kb = (n) => Math.round(n / 1024) + " KB";
 console.log("Carga inicial (390px, sem rolar):", Object.fromEntries(Object.entries(bytes).map(([k, v]) => [k, kb(v)])));

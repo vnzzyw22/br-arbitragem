@@ -29,15 +29,12 @@ export function CtaMobile() {
     <div
       aria-hidden={!visivel}
       inert={!visivel}
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-preto px-4 pt-3 transition-transform duration-300 lg:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-preto/80 px-5 pt-3 backdrop-blur-md transition-transform duration-300 lg:hidden ${
         visivel ? "translate-y-0" : "translate-y-full"
       }`}
       style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
     >
-      <a
-        href="#contato"
-        className="flex min-h-14 w-full items-center justify-center bg-ouro text-lg font-bold text-preto active:scale-[0.99]"
-      >
+      <a href="#contato" className="btn btn-ouro w-full">
         Solicitar orçamento
       </a>
     </div>

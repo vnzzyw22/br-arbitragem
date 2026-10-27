@@ -2,20 +2,20 @@
 
 import { useId, useState } from "react";
 import { FAQ } from "@/content/site";
-import { Linha } from "./Motion";
+import { Entrada, Linha, Titulo } from "./Motion";
 
 export function Faq() {
   const [aberto, setAberto] = useState<number | null>(0);
   const base = useId();
 
   return (
-    <section id="duvidas" className="bg-grafite py-20 lg:py-32">
+    <section id="duvidas" className="bg-grafite py-24 lg:py-36">
       <div className="wrap">
         <Linha />
-        <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-x-16">
-          <h2 className="display text-[clamp(2.8rem,11vw,4.6rem)] lg:col-span-5 lg:text-[clamp(3.2rem,5.6vw,6rem)]">
+        <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-x-16">
+          <Titulo className="display text-[clamp(2.3rem,9.4vw,3.5rem)] lg:col-span-5 lg:text-[clamp(2.8rem,4.2vw,4.6rem)]">
             Perguntas frequentes
-          </h2>
+          </Titulo>
           <div className="lg:col-span-7">
             <ul className="border-t border-white/15">
               {FAQ.map((item, i) => {
@@ -24,6 +24,7 @@ export function Faq() {
                 const expandido = aberto === i;
                 return (
                   <li key={item.p} className="border-b border-white/15">
+                    <Entrada atraso={0.07 * i}>
                     <h3>
                       <button
                         id={idBotao}
@@ -57,6 +58,7 @@ export function Faq() {
                         <p className="max-w-[58ch] pb-6 text-prata">{item.r}</p>
                       </div>
                     </div>
+                    </Entrada>
                   </li>
                 );
               })}

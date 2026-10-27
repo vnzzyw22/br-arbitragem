@@ -1,6 +1,8 @@
 # BR Arbitragem Futevôlei — landing page
 
-Next 16 + React 19 + Tailwind 4 + framer-motion. Página única e estática. Direção de arte em [DESIGN.md](DESIGN.md).
+Next 16 + React 19 + Tailwind 4 + framer-motion. Página única e estática.
+- Direção de arte, tipografia e movimento: [DESIGN.md](DESIGN.md)
+- Materiais, auditoria e pendências: [MIDIA.md](MIDIA.md)
 
 ## Rodar
 
@@ -19,20 +21,31 @@ O número vem de `NEXT_PUBLIC_WHATSAPP_NUMBER` (só dígitos, DDI+DDD, ex.: `554
 
 ## Conteúdo
 
-Tudo editável em `src/content/site.ts` (textos, eventos, FAQ, patrocinador e apoiadores). Eventos só entram com registro verificado.
+Textos, eventos, FAQ, patrocinador e apoiadores em `src/content/site.ts`. Eventos só entram com registro (ou confirmação do cliente) e **não precisam de foto**: basta uma linha. Vídeos e fotos: ver [MIDIA.md](MIDIA.md).
 
-## Scripts de verificação (`scripts/`, exigem Chrome + servidor rodando)
+## Verificação (`scripts/`, exigem Chrome)
 
-- `shot.mjs <url> <largura> <saida.png> [altura]`: screenshot, erros de console e rolagem horizontal.
-- `secoes.mjs <largura> <prefixo>`: screenshot de cada seção.
-- `interacoes.mjs`: 33 verificações (CTAs, vídeo, FAQ por teclado, formulário e URL do WhatsApp, barra mobile, pausa, reduced-motion). Rodar com o servidor iniciado com `NEXT_PUBLIC_WHATSAPP_NUMBER` de teste.
-- `prod.mjs <url>`: estado sem WhatsApp configurado, peso de carga e LCP (rodar contra `npm start`).
+Os testes rodam contra uma **build de produção em outra pasta**, para não pisar no servidor de desenvolvimento:
+
+```bash
+NEXT_PUBLIC_WHATSAPP_NUMBER=5541900000000 NEXT_DIST_DIR=.next-test npx next build   # número FICTÍCIO, só para testar
+NEXT_PUBLIC_WHATSAPP_NUMBER=5541900000000 NEXT_DIST_DIR=.next-test npx next start -p 3300
+node scripts/interacoes.mjs          # 59 verificações: carregamento, hero, vídeo, formulário, rali, mobile, movimento reduzido
+```
+
+| Script | O que faz |
+|---|---|
+| `interacoes.mjs [url]` | suíte de comportamento (porta 3300 por padrão) |
+| `contraste.mjs [url]` | contraste real dos botões de vidro sobre o vídeo, em vários instantes |
+| `prod.mjs <url> [largura]` | peso de carga inicial, LCP e estado sem WhatsApp configurado |
+| `shot.mjs`, `secoes.mjs`, `rolagem.mjs` | capturas (hero, cada seção, posições de rolagem) |
+| `loader.mjs`, `rali.mjs` | capturam o carregamento e congelam o rali da quadra em instantes do ciclo |
 
 ## Pendências que dependem do cliente
 
 - [ ] Número de WhatsApp comercial (`NEXT_PUBLIC_WHATSAPP_NUMBER`).
-- [ ] Logo em alta resolução ou vetor. Hoje é a foto de perfil do Instagram (150×150), usada pequena e sem alteração.
-- [ ] Confirmar **Selva Cup, AD's Cup e Rio Open** (sem registro encontrado, ficaram fora) e enviar fotos da **Amsterdam Cup**.
-- [ ] Logos oficiais da DRG Consultoria e dos apoiadores (Sandhit Sportwear, Evolud Distribuidora, Redução Saúde, Auttotag). Hoje só os nomes, sem links. Confirmar também os perfis para linkar.
-- [ ] Cidades/regiões atendidas, canal de e-mail e textos institucionais confirmados (hoje as respostas do FAQ são neutras).
-- [ ] Autorização de uso das fotos/vídeos dos eventos de terceiros (Queiróz Cup, Arena Sun7, Torneio do Bosque).
+- [ ] Materiais de melhor qualidade (vídeos horizontal e vertical, foto da equipe, logo vetorial): lista completa em [MIDIA.md](MIDIA.md).
+- [ ] Confirmar **SPFC Futevôlei** e **Desafio ao Galo** (vieram dos materiais enviados) e **Selva Cup, AD's Cup e Rio Open** (sem registro encontrado, ficaram fora).
+- [ ] Logos oficiais da DRG Consultoria e dos apoiadores; confirmar perfis para linkar.
+- [ ] Cidades/regiões atendidas, canal de e-mail e textos institucionais confirmados.
+- [ ] Autorização de uso das imagens e vídeos de eventos de terceiros.

@@ -1,46 +1,36 @@
-import type { StaticImageData } from "next/image";
-import equipeQuadra from "@/assets/fotos/equipe-quadra.jpg";
-import equipeCortaVento from "@/assets/fotos/equipe-corta-vento.webp";
-import arbitroChuva from "@/assets/fotos/arbitro-chuva.jpg";
-import arenaSun7 from "@/assets/fotos/arena-sun7.jpg";
-import trioNoite from "@/assets/fotos/trio-noite.webp";
-import arbitroApito from "@/assets/fotos/arbitro-apito.webp";
-import equipeBranca from "@/assets/fotos/equipe-branca.webp";
-import equipeTrio from "@/assets/fotos/equipe-trio.jpg";
+// Substituir fotos: trocar o arquivo na pasta indicada mantendo o nome (ver MIDIA.md).
+import equipeTime from "@/assets/equipe/time-sandhit.webp";
+import arbitroSorrindo from "@/assets/equipe/arbitro-sorrindo.jpg";
+import arbitroApito from "@/assets/equipe/arbitro-apito.jpg";
 
 export const INSTAGRAM_URL = "https://www.instagram.com/brarbitragem.ftv/";
 export const INSTAGRAM_HANDLE = "@brarbitragem.ftv";
 
 export const HERO = {
   titulo: ["A excelência", "da arbitragem", "dentro de", "cada jogo."],
-  texto:
-    "Equipe de arbitragem para campeonatos, torneios e circuitos de futevôlei.",
+  texto: "Equipe de arbitragem para campeonatos, torneios e circuitos de futevôlei.",
 };
 
 export const EQUIPE = {
   titulo: "Quem está na linha em cada partida.",
   texto:
     "A BR Arbitragem Futevôlei é uma equipe de arbitragem dedicada ao futevôlei, presente em campeonatos, torneios e circuitos.",
-  principios: [
-    "Imparcialidade",
-    "Compromisso com as regras",
-    "Respeito a atletas e organizadores",
-  ],
+  principios: ["Imparcialidade", "Compromisso com as regras", "Respeito a atletas e organizadores"],
   fotoGrande: {
-    src: equipeQuadra,
-    alt: "Seis integrantes da equipe BR Arbitragem lado a lado na areia, de uniforme preto e amarelo.",
+    src: equipeTime,
+    alt: "Cinco integrantes da equipe de braços cruzados na areia, de uniforme preto, diante de uma tenda da Sandhit.",
   },
   fotoPequena: {
-    src: equipeCortaVento,
-    alt: "Quatro árbitros da BR Arbitragem de corta-vento preto com o selo BR, em quadra à noite.",
+    src: arbitroSorrindo,
+    alt: "Árbitro da BR Arbitragem sorrindo, de camisa branca com o selo BR e o apito na boca.",
   },
 };
 
 export const QUALIDADE = {
   titulo: "Compromissos em cada partida.",
   foto: {
-    src: arbitroChuva,
-    alt: "Árbitro da BR Arbitragem com o apito na boca, atrás da rede, durante uma partida sob chuva.",
+    src: arbitroApito,
+    alt: "Árbitro de camisa branca com o apito na boca e o rádio na cintura, em pé na areia ao lado da cadeira de arbitragem.",
   },
   itens: [
     {
@@ -66,79 +56,18 @@ export const QUALIDADE = {
   ],
 };
 
-export type Midia =
-  | { tipo: "foto"; src: StaticImageData; alt: string; posicao?: string }
-  | { tipo: "video"; src: string; poster: string; alt: string };
+export type Evento = { id: string; nome: string };
 
-export type Evento = {
-  id: string;
-  nome: string;
-  descricao: string;
-  midia: Midia | null;
-  fonte?: { rotulo: string; href: string };
-};
-
-// Só entram eventos com registro verificado (foto, vídeo ou publicação do próprio evento).
-// Selva Cup, AD's Cup e Rio Open: sem registro encontrado — aguardam confirmação do cliente.
+// Para incluir um evento confirmado pelo cliente: acrescentar uma linha aqui (não precisa de foto).
+// A confirmar com o cliente: SPFC Futevôlei e Desafio ao Galo (vieram dos materiais enviados).
+// Fora até confirmação (sem registro encontrado): Selva Cup, AD's Cup e Rio Open.
 export const EVENTOS: Evento[] = [
-  {
-    id: "arena-sun7",
-    nome: "Arena Sun7",
-    descricao: "A equipe em quadra, diante da rede da Arena Sun7.",
-    midia: {
-      tipo: "foto",
-      src: arenaSun7,
-      alt: "Quatro árbitros posam em frente à rede da Arena Sun7, segurando uma camisa preta da BR Arbitragem.",
-      posicao: "50% 40%",
-    },
-  },
-  {
-    id: "queiroz-cup",
-    nome: "Queiróz Cup",
-    descricao: "Fotos e vídeo do evento.",
-    midia: {
-      tipo: "video",
-      src: "/video/queiroz-cup.mp4",
-      poster: "/video/queiroz-cup-poster.webp",
-      alt: "Cenas de partidas de futevôlei no Queiróz Cup, com vista aérea da arena.",
-    },
-  },
-  {
-    id: "torneio-do-bosque",
-    nome: "Torneio do Bosque",
-    descricao: "Equipe com o uniforme do torneio.",
-    midia: {
-      tipo: "foto",
-      src: trioNoite,
-      alt: "Três árbitros da BR Arbitragem com camisas amarelas do Torneio do Bosque, à noite, com a bola nas mãos.",
-      posicao: "50% 30%",
-    },
-  },
-  {
-    id: "amsterdam-cup",
-    nome: "Amsterdam Cup",
-    descricao: "Arbitragem confirmada em publicação do próprio torneio.",
-    midia: null,
-    fonte: {
-      rotulo: "Ver o Instagram do torneio",
-      href: "https://www.instagram.com/amsterdamcup.ftv/",
-    },
-  },
-];
-
-export const BASTIDORES = [
-  {
-    src: arbitroApito,
-    alt: "Árbitro de boné e apito na boca, em pé ao lado do poste da rede.",
-  },
-  {
-    src: equipeBranca,
-    alt: "Cinco árbitros enfileirados na areia, de camisa branca com o selo BR e apito no pescoço.",
-  },
-  {
-    src: equipeTrio,
-    alt: "Três integrantes da equipe de uniforme preto e amarelo diante de um muro verde, com a bola de futevôlei no chão.",
-  },
+  { id: "arena-sun7", nome: "Arena Sun7" },
+  { id: "queiroz-cup", nome: "Queiróz Cup" },
+  { id: "torneio-do-bosque", nome: "Torneio do Bosque" },
+  { id: "spfc-futevolei", nome: "SPFC Futevôlei" },
+  { id: "desafio-ao-galo", nome: "Desafio ao Galo" },
+  { id: "amsterdam-cup", nome: "Amsterdam Cup" },
 ];
 
 export const FAQ = [
@@ -164,13 +93,7 @@ export const FAQ = [
   },
 ];
 
-export const TIPOS_EVENTO = [
-  "Campeonato",
-  "Torneio",
-  "Etapa de circuito",
-  "Evento em arena ou clube",
-  "Outro",
-];
+export const TIPOS_EVENTO = ["Campeonato", "Torneio", "Etapa de circuito", "Evento em arena ou clube", "Outro"];
 
 export const PATROCINADOR = {
   nome: "DRG Consultoria",
@@ -178,9 +101,4 @@ export const PATROCINADOR = {
 };
 
 // Sem logos nem perfis confirmados: apenas os nomes, sem links.
-export const APOIADORES = [
-  "Sandhit Sportwear",
-  "Evolud Distribuidora",
-  "Redução Saúde",
-  "Auttotag",
-];
+export const APOIADORES = ["Sandhit Sportwear", "Evolud Distribuidora", "Redução Saúde", "Auttotag"];

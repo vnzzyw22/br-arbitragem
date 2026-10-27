@@ -7,10 +7,12 @@ import { Faq } from "@/components/Faq";
 import { Contato } from "@/components/Contato";
 import { Rodape } from "@/components/Rodape";
 import { CtaMobile } from "@/components/CtaMobile";
+import { ProgressoBola } from "@/components/Motion";
 
 export default function Home() {
   return (
     <>
+      <ProgressoBola />
       <Nav />
       <main id="conteudo">
         <Hero />
