@@ -129,7 +129,7 @@ export function Hero() {
 
       <motion.div style={reduzir ? undefined : { y: textoY, opacity: textoOpacidade }}>
         <div className="wrap pb-10 pt-32 baixo:pb-6 lg:pb-16">
-          <h1 id="hero-titulo" className="display text-[clamp(2.3rem,9.9vw,3.8rem)] baixo:text-[clamp(1.8rem,8.2vw,2.3rem)] md:text-[clamp(2.8rem,4.6vw,4.6rem)]">
+          <h1 id="hero-titulo" className="display display-hero text-[clamp(2.3rem,9.9vw,3.8rem)] baixo:text-[clamp(1.8rem,8.2vw,2.3rem)] md:text-[clamp(2.8rem,4.5vw,4.5rem)]">
             {HERO.titulo.map((linha, i) => (
               <span key={linha} className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
                 <span className="h-sobe block" style={atraso(0.15 + i * 0.1)}>

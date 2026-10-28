@@ -298,6 +298,15 @@ html[data-loader="visto"] .loader {
     text-wrap: balance;
   }
 
+  /* Título da hero: a mesma Mona Sans expandida dos demais títulos, com peso 800 e entrelinha
+     fechada para ter autoridade sobre o vídeo (comparado com 700, 800 a 100%/120% e Schibsted 800:
+     ver DESIGN.md). Só o h1 da hero usa; o resto do site fica em 500. */
+  .display-hero {
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.032em;
+  }
+
   /* Subtítulos (itens de lista, perguntas, nomes no rodapé): mesma família, mais estreita para ler em corpo menor. */
   .subtitulo {
     font-family: var(--font-titulo);
