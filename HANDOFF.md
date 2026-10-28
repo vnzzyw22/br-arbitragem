@@ -3,7 +3,7 @@
 Landing page da **BR Arbitragem Futevôlei**. Prioridade: converter visitante em pedido de orçamento (WhatsApp).
 Repositório: `github.com/vnzzyw22/br-arbitragem` · Site: https://br-arbitragem.vercel.app (cada push na `main` publica sozinho na Vercel).
 
-Ler primeiro: [README.md](README.md) (como rodar/testar) · [DESIGN.md](DESIGN.md) (direção de arte) · [MIDIA.md](MIDIA.md) (arquivos, auditoria, pendências).
+Ler primeiro: [README.md](README.md) (como rodar/testar) · [docs/FERRAMENTAS.md](docs/FERRAMENTAS.md) (skill /clone-website e scripts) · [DESIGN.md](DESIGN.md) (direção de arte) · [MIDIA.md](MIDIA.md) (arquivos, auditoria, pendências).
 
 ## Regra de publicação (Vinicius, 28/10)
 
@@ -21,6 +21,31 @@ Ler primeiro: [README.md](README.md) (como rodar/testar) · [DESIGN.md](DESIGN.m
 - **Movimento:** o cliente quer mais movimento, sempre com função e coerente com o tema. Tudo respeita `prefers-reduced-motion`.
 - **Botões:** pílula. **Vidro** só sobre o vídeo da hero (vidro de areia no principal, vidro branco no secundário, como no Lobeca); em fundo liso, sólidos (azul de ação no claro, areia no escuro).
 - Não inventar estatísticas, certificações, depoimentos, datas, cidades nem relações comerciais.
+
+## Trabalho em andamento — "Refinamento visual e animação de futevôlei" (28/10, parado às 15:37)
+
+**Branch:** `refinamento-animacao` (saiu da `main` em `1f959e6`). **O site não mudou nada nesta etapa**: só documentação, a skill do Website Cloner e um script rascunho. O brief completo está em [docs/brief/2026-10-28-refinamento-visual-e-animacao.md](docs/brief/2026-10-28-refinamento-visual-e-animacao.md) (os briefs anteriores estão na mesma pasta). Ferramentas e como usar a skill: [docs/FERRAMENTAS.md](docs/FERRAMENTAS.md).
+
+Restrições do brief: não reconstruir do zero; não alterar outros projetos; preservar rotas, conteúdo, formulário e links; não inventar informações, logos ou fotos; evitar dependências novas; **não publicar na `main` nem fazer deploy sem autorização explícita**; não dizer que usou uma skill sem ter rodado.
+
+### 1. Logo no cabeçalho — investigação feita, implementação não
+- Só existe **um** arquivo de logo em todo o histórico: `src/assets/identidade/logo-br.jpg`, **150×150 JPG** (4,3 KB). Nenhum SVG ou PNG maior no repositório nem nos anexos.
+- O que tem nele: círculo branco com aro cinza fino na borda da imagem; **"B" azul `#5888c8`** e **"R" cinza `#787878`** numa serifa de alto contraste; **bola de futebol fantasma** em cinza bem claro (`#ececec` a `#c4c4c4`) atrás do lado esquerdo do B; **"ARBITRAGEM"** em caixa alta, espaçada e inclinada, cinza, embaixo (~5 px de altura no arquivo).
+- A referência **não tem a logo original** (ver [docs/FERRAMENTAS.md](docs/FERRAMENTAS.md)): é uma releitura em Anton + ícone genérico. Logo, a referência é menos fiel que o nosso arquivo e não deve ser copiada.
+- Problemas atuais: no cabeçalho a logo tem 52 px (pequena, sem presença); no rodapé (88 px) e no carregamento (96 px) ela é **ampliada além do original** em tela 2× (fica borrada).
+- **Plano:** (a) terminar `scripts/ferramentas/tracar_logo.py` (correção do aro descrita em FERRAMENTAS.md), medir a fidelidade contra o original e, se ficar fiel, trocar o `<Logo>` por SVG em linha; (b) cabeçalho com a logo maior (~64 px no desktop, ~52 px no celular) e alinhada ao menu; (c) rodapé e carregamento com o SVG nítido; (d) **pedir ao cliente o vetor oficial** (resolve tudo). Não criar lockup horizontal novo nem redesenhar letras.
+
+### 2. Fundo praia contínuo — só planejado
+Hoje as seções alternam azul-escuro / areia / branco com uma onda (`Orla.tsx`) entre todas: é a "alternância mecânica" que o brief recusa. **Plano:** hero (vídeo, véu azul) → uma única linha d'água suave para a areia → Quem somos em areia clara com fotos integradas → Compromissos em água rasa bem clara (cards em branco, areia e azul-esverdeado suave) → Campeonatos em espuma/branco com fotos → FAQ em superfície limpa com perguntas bem separadas → Contato em areia com formulário em painel branco → rodapé azul-profundo. Transições por gradiente suave, sem ondas repetidas, sem textura artificial, sem vidro fora da hero. Tokens novos sugeridos: `--color-agua-rasa` (~`#e3efee`), `--color-espuma` (~`#f7faf9`), azul-esverdeado (~`#2f6f7a`). Conferir contraste com `scripts/contraste-texto.mjs`.
+
+### 3. Título da hero mais forte — só planejado
+Sem terceira família. Comparar pelo menos duas opções **sobre o pôster real**, em desktop e celular: (A) Mona Sans 700–800 com largura ~112%, entrelinha ~1,0 e tracking -0,03em; (B) Schibsted Grotesk 800. Só o `h1` da hero muda (`Hero.tsx`); o resto do site mantém Mona 500 / Schibsted. Conferir se o `next/font` carrega o eixo de peso inteiro (as duas são variáveis) e se o mock de fontes do build offline tem os pesos.
+
+### 4. Animação de futevôlei com 4 jogadores e árbitro — só planejado
+Hoje: `QuadraEmJogo` em `src/components/Ornamentos.tsx` (quadra vista de cima, 2 jogadores, classes `rali-*` em `globals.css`, card `.quadra-card` em `Equipe.tsx`; a suíte testa `.rali-chao`, `.rali-altura`, `.rali-j1`). **Plano:** mesma linguagem (areia `#e1cfb9`, fita branca, rede `#13263a`, dupla azul `#2c5c99` e dupla `#13263a`, bola amarela e preta) mas em **vista lateral**, porque levantamento, ataque com o pé e apito não se leem de cima. SVG ~400×200, ciclo CSS de ~7–8 s: bola chega a A2 → A2 levanta → A1 salta e ataca com o pé por cima da rede → bola cai do lado B (B1 tenta bloquear, B2 não alcança) → **árbitro na cadeira, ao lado da rede, de uniforme**, levanta o braço apontando o lado que pontuou e leva o apito à boca → **duas ondas sonoras** + anel no ponto onde a bola caiu → todos voltam e a bola reaparece para o próximo ciclo. Articulações como grupos aninhados (`translate` no atributo, `rotate` por CSS com origem 0 0). Pausa fora da tela (IntersectionObserver) e **botão de pausar** (WCAG 2.2.2). `prefers-reduced-motion`: quadro parado no apito. Atualizar `scripts/interacoes.mjs` (4 jogadores + 1 árbitro; ondas visíveis só depois do toque da bola no chão) e gravar um vídeo curto de demonstração.
+
+### Para fechar a etapa
+`npx tsc --noEmit` · `npm run lint` · suíte (`README.md`) · contraste · screenshots desktop e celular · comparação com a referência · atualizar DESIGN/HANDOFF/MIDIA/README · commit no branch · **pedir autorização antes de qualquer push na `main`**.
 
 ## Estado atual
 
@@ -47,7 +72,8 @@ Todas as seções prontas: hero, Em quadra (celular), quem somos, compromissos, 
 3. Materiais melhores (vídeos horizontal e vertical, foto original da equipe em alta, fotos originais dos eventos sem imagem — SPFC Futevôlei, Desafio ao Galo, Amsterdam Cup — e da Queiróz Cup em alta, logo vetorial): tabela em [MIDIA.md](MIDIA.md).
 4. Confirmar com o cliente: SPFC Futevôlei e Desafio ao Galo (estão na lista); Selva Cup, AD's Cup e Rio Open (fora). Se "Jogo limpo. Grande espetáculo." é lema da BR (aparece na referência; não usado sem confirmação).
 5. Logos de DRG Consultoria e apoiadores; cidades atendidas; e-mail; textos institucionais.
-6. Skills Impeccable, ui-ux-pro-max, ui-styling, design-system, brand-guidelines e taste não existem no ambiente da nuvem (só no computador do Vinicius, se estiverem lá); nesta sessão foram usadas frontend-design e codemakers-design.
+6. Skills Impeccable, ui-ux-pro-max, ui-styling, design-system, brand-guidelines e taste não existem no ambiente da nuvem (só no computador do Vinicius, se estiverem lá); nesta sessão foram usadas frontend-design e codemakers-design. A skill do AI Website Cloner agora está no repositório (`.claude/skills/clone-website/`, ver [docs/FERRAMENTAS.md](docs/FERRAMENTAS.md)).
+7. **Logo vetorial oficial** (SVG, PDF ou AI) com o cliente: resolve a fidelidade da marca em qualquer tamanho.
 
 ## Armadilhas já resolvidas (para não refazer)
 
