@@ -102,13 +102,14 @@ body {
 
 /* ── Maré: fundo contínuo da areia à água ─────────────────────── */
 /* Cada seção tem uma cor-base sólida (é nela que o texto é medido) e um gradiente que a costura
-   às vizinhas: o fim de uma é exatamente o começo da seguinte. Manchas de luz muito suaves dão
+   às vizinhas. Onde a areia encontra o mar (fim de Quem somos e de Dúvidas) a passagem é a
+   beira-mar desenhada (Praia.tsx), não o gradiente. Manchas de luz muito suaves dão
    profundidade sem textura repetida. Equipe → Compromissos → Campeonatos → Dúvidas → Contato. */
 .fundo-equipe {
   background-color: var(--color-areia);
   background-image:
     radial-gradient(60% 30% at 90% 24%, rgb(255 255 255 / 0.5), transparent 70%),
-    linear-gradient(180deg, var(--color-areia) 0%, var(--color-areia) 74%, var(--color-agua-rasa) 100%);
+    linear-gradient(180deg, var(--color-areia) 0%, var(--color-areia) 80%, var(--color-areia-umida) 100%);
 }
 .fundo-agua {
   background-color: var(--color-agua-media);
@@ -125,7 +126,7 @@ body {
   background-color: var(--color-agua-rasa);
   background-image:
     radial-gradient(50% 30% at 92% 14%, rgb(255 255 255 / 0.6), transparent 70%),
-    linear-gradient(180deg, var(--color-agua-rasa) 0%, var(--color-agua-rasa) 58%, var(--color-areia) 100%);
+    linear-gradient(180deg, var(--color-agua-rasa) 0%, var(--color-agua-rasa) 70%, #cfe3e4 100%);
 }
 .fundo-contato {
   background-color: var(--color-areia);

@@ -15,6 +15,7 @@ Atualizado em 28/10/2026. Estado completo e decisões do cliente: [HANDOFF.md](.
 
 - [x] `src/components/Praia.tsx`: `BeiraMar` (água chegando na areia, com espuma que vai e volta) e `Coqueiro` (silhueta simples na paleta).
 - [x] Beira-mar no fim de Quem somos (areia → mar) e no fim de Dúvidas (mar → areia do Contato); coqueiro ao lado do título de Compromissos e na coluna esquerda de Dúvidas (só desktop).
+- [x] Ajuste de 28/10: a areia de Quem somos segue até a beira e a onda faz a passagem para o mar (e o inverso no fim de Dúvidas); água e espuma mais fortes; coqueiro maior no desktop. **Este último ajuste ainda não foi conferido em captura.**
 - [ ] Conferir em desktop e celular (capturas) e ajustar posição e tamanho dos coqueiros.
 - [ ] Rodar `tsc`, `lint` e a suíte (`scripts/interacoes.mjs`) contra a build de produção.
 - [ ] Atualizar o DESIGN.md: a referência tinha palmeiras e elas tinham ficado de fora; agora entram por pedido do Vinicius.

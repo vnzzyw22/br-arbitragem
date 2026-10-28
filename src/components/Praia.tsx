@@ -4,7 +4,7 @@
 const AREIA = "#f2e8dc";
 const AREIA_UMIDA = "#e8d8c3";
 const AGUA = "#e3efee";
-const AGUA_FUNDA = "#c9e0e2";
+const AGUA_FUNDA = "#b9d6da";
 
 /**
  * Beira-mar na base de uma seção. `para="agua"`: a areia de cima encontra o mar (que continua na
@@ -13,7 +13,7 @@ const AGUA_FUNDA = "#c9e0e2";
 export function BeiraMar({ para }: { para: "agua" | "areia" }) {
   const agua = para === "agua";
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-16 overflow-hidden sm:h-20 lg:h-24">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-20 overflow-hidden sm:h-24 lg:h-28">
       <svg viewBox="0 0 1440 96" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
         {agua ? (
           <>
@@ -35,8 +35,8 @@ export function BeiraMar({ para }: { para: "agua" | "areia" }) {
           d={agua ? "M0 52C220 42 400 60 620 50S1000 38 1220 48 1460 58 1600 50" : "M0 58C220 68 410 52 630 62S1010 72 1230 62 1470 54 1600 60"}
           fill="none"
           stroke="#fff"
-          strokeWidth="2.5"
-          strokeOpacity="0.85"
+          strokeWidth="3.5"
+          strokeOpacity="0.95"
           vectorEffect="non-scaling-stroke"
         />
       </svg>
@@ -45,8 +45,8 @@ export function BeiraMar({ para }: { para: "agua" | "areia" }) {
           d={agua ? "M0 64C240 56 420 72 650 62S1020 52 1250 62 1480 70 1600 62" : "M0 46C240 56 430 40 660 50S1030 60 1260 50 1490 42 1600 48"}
           fill="none"
           stroke="#fff"
-          strokeWidth="1.6"
-          strokeOpacity="0.6"
+          strokeWidth="2"
+          strokeOpacity="0.75"
           vectorEffect="non-scaling-stroke"
         />
       </svg>

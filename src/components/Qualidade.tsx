@@ -103,7 +103,7 @@ export function Qualidade() {
     <section id="qualidade" className="claro fundo-agua relative overflow-hidden pb-24 pt-14 lg:pb-32 lg:pt-20">
       <div className="wrap relative">
         <Linha cor="bg-azul" />
-        <Coqueiro className="pointer-events-none absolute right-5 top-8 w-16 sm:right-8 sm:w-20 lg:right-12 lg:top-6 lg:w-28" />
+        <Coqueiro className="pointer-events-none absolute right-5 top-8 w-16 sm:right-8 sm:w-20 lg:right-12 lg:top-4 lg:w-36" />
         <Titulo className="display mt-12 max-w-[18ch] text-[clamp(1.85rem,7.4vw,2.7rem)] lg:mt-16 lg:text-[clamp(2.1rem,3.4vw,3.7rem)]">
           {QUALIDADE.titulo}
         </Titulo>
