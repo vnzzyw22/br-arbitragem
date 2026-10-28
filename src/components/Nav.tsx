@@ -52,7 +52,7 @@ export function Nav() {
     >
       <nav aria-label="Principal" className="wrap flex h-[4.75rem] items-center justify-between gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr]">
         <a href="#topo" aria-label="BR Arbitragem, voltar ao topo" className="shrink-0 justify-self-start rounded-full">
-          <Logo size={52} eager />
+          <Logo size={64} eager className="h-[3.25rem] w-[3.25rem] shadow-[0_6px_20px_rgb(5_16_28/0.35)] lg:h-16 lg:w-16" />
         </a>
 
         <ul className="hidden items-center gap-1 rounded-full border border-white/20 bg-white/[0.08] p-1.5 shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_10px_30px_rgb(5_16_28/0.25)] backdrop-blur-xl lg:flex">
