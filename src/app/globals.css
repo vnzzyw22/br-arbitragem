@@ -18,6 +18,8 @@
   --color-azul: #5888c8; /* azul da logo: linhas e detalhes (só não-texto) */
   --color-azul-acao: #2c5c99; /* botões e links sobre claro (6,8:1 com branco) */
   --color-ceu: #a8c8ee; /* destaque e foco sobre escuro (8,4:1 no oceano) */
+  --color-agua-clara: #dceaf4; /* água rasa: cards claros (tinta 12,5:1) */
+  --color-agua: #1d5a84; /* água: card de destaque com texto branco (7,4:1) */
   --color-erro: #8f1d1d;
   --color-ouro: #d1a640; /* só ilustrações (argola do apito, bola) */
   --font-sans: var(--font-schibsted), system-ui, sans-serif;
@@ -303,6 +305,24 @@ html[data-loader="visto"] .loader {
     font-stretch: 108%;
     line-height: 1.22;
     letter-spacing: -0.01em;
+  }
+
+  /* Cards: camadas discretas (filete fino, reflexo de 1 px, sombra longa e macia).
+     Raio 20 px nos cards de conteúdo; as fotos dentro deles herdam o recorte. */
+  .cartao {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    border: 1px solid rgb(19 38 58 / 0.08);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.65),
+      0 26px 50px -34px rgb(11 30 49 / 0.55);
+  }
+  .cartao-escuro {
+    border-color: rgb(255 255 255 / 0.12);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.08),
+      0 26px 50px -30px rgb(0 0 0 / 0.6);
   }
 
   .wrap {

@@ -170,21 +170,43 @@ async function nova(opts = {}, esperarLoader = true) {
   await page.waitForTimeout(500);
   ok("FAQ fecha com Espaço", (await botoes.nth(1).getAttribute("aria-expanded")) === "false");
 
-  // Campeonatos: só nomes, sem descrições de procedência
+  // Campeonatos em cards: foto só nos eventos com registro (Arena Sun7, Queiróz Cup, Torneio do Bosque)
   await page.evaluate(() => document.querySelector("#campeonatos").scrollIntoView({ behavior: "instant" }));
   await page.waitForTimeout(1800);
   await page.evaluate(() => window.scrollBy({ top: 500, behavior: "instant" }));
   await page.waitForTimeout(1800);
   const camp = await page.evaluate(() => {
     const s = document.querySelector("#campeonatos");
-    const nomes = [...s.querySelectorAll("h3")].map((h) => ({ t: h.innerText, px: parseFloat(getComputedStyle(h).fontSize), r: Math.round(h.getBoundingClientRect().height) }));
-    return { nomes, texto: s.innerText, bolas: s.querySelectorAll("li svg").length, imgs: s.querySelectorAll("img, video, picture").length, link: s.querySelector("a")?.href };
+    const nomes = [...s.querySelectorAll("h3")].map((h) => ({ t: h.innerText, px: parseFloat(getComputedStyle(h).fontSize) }));
+    const fotos = [...s.querySelectorAll("img")].map((i) => ({ evento: i.closest("li")?.querySelector("h3")?.innerText, alt: i.alt }));
+    return {
+      nomes,
+      fotos,
+      texto: s.innerText,
+      bolas: s.querySelectorAll('svg[viewBox="0 0 200 200"]').length,
+      videos: s.querySelectorAll("video").length,
+      cards: s.querySelectorAll("li > div > article, li > div > a").length,
+      link: s.querySelector("a[href*='instagram']")?.href,
+    };
   });
-  ok("6 campeonatos listados, com nome grande (≥ 48px)", camp.nomes.length === 6 && camp.nomes.every((n) => n.px >= 48 && n.r > 40), camp.nomes.map((n) => `${n.t}:${Math.round(n.px)}px`).join(" | "));
+  ok("6 campeonatos em cards, com nome em destaque (≥ 28px)", camp.nomes.length === 6 && camp.nomes.every((n) => n.px >= 28) && camp.cards === 7, camp.nomes.map((n) => `${n.t}:${Math.round(n.px)}px`).join(" | "));
+  const comFoto = camp.fotos.map((f) => f.evento).sort().join(",");
+  ok("fotos só nos eventos com registro (Arena Sun7, Queiróz Cup, Torneio do Bosque), todas com texto alternativo", comFoto === "Arena Sun7,Queiróz Cup,Torneio do Bosque" && camp.fotos.every((f) => f.alt.length > 20) && camp.videos === 0, comFoto);
   ok("sem descrições de procedência das fotos", !/foto|v[ií]deo|publica[cç][aã]o|registro/i.test(camp.texto.replace(/Ver mais no Instagram/, "")), JSON.stringify(camp.texto.slice(0, 120)));
-  ok("sem fotos nem vídeos na seção de campeonatos", camp.imgs === 0);
   ok("sem bolas nas laterais dos campeonatos", camp.bolas === 0, `(${camp.bolas})`);
-  ok("botão leva ao Instagram da equipe", camp.link === "https://www.instagram.com/brarbitragem.ftv/", camp.link);
+  ok("card do Instagram leva ao perfil da equipe", camp.link === "https://www.instagram.com/brarbitragem.ftv/", camp.link);
+
+  // Quem somos e Compromissos: fotos reais com texto alternativo, compromissos em 5 cards (2 com foto)
+  const cards = await page.evaluate(() => ({
+    equipeFotos: [...document.querySelectorAll("#equipe img")].map((i) => i.alt.length),
+    compromissos: document.querySelectorAll("#qualidade article").length,
+    comFoto: [...document.querySelectorAll("#qualidade article")].filter((a) => a.querySelector("img")).map((a) => a.querySelector("h3").innerText),
+    icones: document.querySelectorAll("#qualidade article h3").length === document.querySelectorAll("#qualidade article svg").length,
+    orlas: [...document.querySelectorAll("main > div[aria-hidden=true] svg")].filter((v) => v.getBoundingClientRect().height > 0).length,
+  }));
+  ok("Quem somos com 2 fotos reais da equipe, com texto alternativo", cards.equipeFotos.length === 2 && cards.equipeFotos.every((n) => n > 20), JSON.stringify(cards.equipeFotos));
+  ok("5 compromissos em cards, foto em Condução e em Postura, um ícone por card", cards.compromissos === 5 && cards.comFoto.join(",") === "Condução responsável,Postura profissional" && cards.icones, JSON.stringify(cards.comFoto));
+  ok("transições de orla entre areia e água (5 no desktop)", cards.orlas === 5, `(${cards.orlas})`);
 
   // Formulário: validação com campos vazios
   await page.evaluate(() => document.querySelector("#contato").scrollIntoView({ behavior: "instant" }));
@@ -228,7 +250,7 @@ async function nova(opts = {}, esperarLoader = true) {
   ok("apito ilustrado no contato e bola no rodapé", orn.apitoContato >= 1 && orn.bolaRodape >= 1, JSON.stringify(orn));
 
   // rali na quadra: a bola realmente se move, sobe e desce, e os jogadores acompanham
-  await page.evaluate(() => document.querySelector("#equipe svg.mt-14").scrollIntoView({ behavior: "instant", block: "center" }));
+  await page.evaluate(() => document.querySelector("#equipe .quadra-card svg").scrollIntoView({ behavior: "instant", block: "center" }));
   await page.waitForTimeout(800);
   const rali = await page.evaluate(async () => {
     const pos = [];
@@ -467,6 +489,40 @@ async function nova(opts = {}, esperarLoader = true) {
     return { valor: marcado?.value, contorno: rotulo ? getComputedStyle(rotulo).outlineStyle : null, erro: !!document.getElementById("erro-tipo") };
   });
   ok("seta do teclado escolhe a próxima opção, com foco visível, e limpa o erro", st2.valor === "Torneio" && st2.contorno !== "none" && st2.erro === false, JSON.stringify(st2));
+  await ctx.close();
+}
+
+// ---------- nitidez em tela 2×: nenhuma foto entregue com menos de 90% dos pixels necessários ----------
+for (const [nome, vp, movel] of [["desktop", { width: 1440, height: 900 }, false], ["celular", { width: 390, height: 844 }, true]]) {
+  const ctx = await browser.newContext({ viewport: vp, deviceScaleFactor: 2, isMobile: movel, hasTouch: movel });
+  const page = await ctx.newPage();
+  await page.goto(url, { waitUntil: "networkidle", timeout: 240000 });
+  await page.waitForTimeout(2500);
+  await page.evaluate(async () => {
+    for (let y = 0; y < document.body.scrollHeight; y += 350) {
+      scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 90));
+    }
+  });
+  await page.waitForTimeout(2500);
+  // naturalWidth de imagem com srcset vem dividido pela densidade: baixa o arquivo entregue (currentSrc)
+  // de novo, sem srcset, para contar os pixels reais.
+  const fotos = await page.evaluate(async () => {
+    const lista = [...document.querySelectorAll("main section:not(#topo) img")].filter((i) => i.getBoundingClientRect().width > 0 && i.currentSrc && !i.closest("#quadra"));
+    return Promise.all(
+      lista.map(async (i) => {
+        const real = new Image();
+        real.src = i.currentSrc;
+        await real.decode();
+        const r = i.getBoundingClientRect();
+        // object-fit: cover precisa cobrir largura e altura da caixa (inclui o zoom da paralaxe)
+        const precisa = Math.max(r.width, r.height * (real.naturalWidth / real.naturalHeight)) * devicePixelRatio;
+        return { alt: i.alt.slice(0, 26), entregue: real.naturalWidth, precisa: Math.round(precisa), razao: +(real.naturalWidth / precisa).toFixed(2) };
+      }),
+    );
+  });
+  const ruins = fotos.filter((f) => f.razao < 0.9);
+  ok(`fotos nítidas em tela 2× (${nome}, ${fotos.length} fotos, menor razão ${Math.min(...fotos.map((f) => f.razao))})`, fotos.length >= 7 && ruins.length === 0, JSON.stringify(ruins.slice(0, 3)));
   await ctx.close();
 }
 

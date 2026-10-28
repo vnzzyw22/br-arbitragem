@@ -38,10 +38,14 @@ Medida nos materiais reais: o azul vem da logo (`#5888C8`) e a areia, do própri
 | `azul` | `#5888C8` | azul da logo: linhas de quadra (só não-texto) | 3,0:1 na areia, 4,0:1 no oceano |
 | `azul-acao` | `#2C5C99` | botões e links sobre claro, foco no claro | branco 6,8:1; na areia 5,6:1 |
 | `ceu` | `#A8C8EE` | destaque e foco sobre escuro, barra de progresso | no oceano 8,4:1 |
+| `agua-clara` | `#DCEAF4` | água rasa: cards claros (Postura, SPFC) | tinta 12,5:1 |
+| `agua` | `#1D5A84` | água: cards de destaque com texto branco (Integridade, Instagram, fecho do FAQ) | branco 7,4:1 (céu só em ícone, 4,3:1) |
 | `erro` | `#8F1D1D` | erros sobre areia | 7,3:1 |
 | `ouro` | `#D1A640` | só ilustrações (argola do apito, bola) | — |
 
 Ritmo das seções: hero (vídeo) → Em quadra, só no celular (oceano) → Quem somos (areia) → Compromissos (oceano) → Campeonatos (branco) → Dúvidas (oceano) → Contato (areia) → rodapé (oceano-profundo). Seções claras usam a classe `.claro` (texto em tinta e foco em azul de ação).
+
+**Orla (28/10):** entre seções de areia e água, uma onda baixa e irregular com filete de espuma (`src/components/Orla.tsx`): a seção de baixo entra na de cima como a linha d'água. Estática, decorativa, em todas as transições depois da hero.
 
 ## Hero
 
@@ -63,20 +67,30 @@ Tudo respeita `prefers-reduced-motion` (fica parado).
 - **Menu:** o marcador de vidro desliza até a seção que está no meio da tela.
 - **Títulos:** sobem por máscara ao entrar na tela.
 - **Fotos:** cortina de entrada + paralaxe discreta (zoom máx. 1,08).
-- **Listas:** entrada escalonada (Quem somos, Compromissos, FAQ).
+- **Etiquetas de princípios (Quem somos):** entrada escalonada.
 - **Quadra em jogo (Quem somos):** rali em loop de 4,8 s, vista de cima, na areia real com fita branca e rede. A bola cruza a rede, sobe e desce com sombra no chão; dois jogadores (azul e tinta) vão ao encontro dela.
 - **Bola de progresso:** corre pela linha azul-céu na base do menu.
-- **Campeonatos:** nome sobe por máscara; no hover avança e acende no azul de ação, e a linha de cima se desenha.
+- **Cards (Compromissos, Campeonatos, Dúvidas):** entrada escalonada discreta. Sem hover onde não há clique.
 - **Apito (Contato):** apitaço ao entrar na tela e balanço pela argola. **Bola (rodapé):** quica.
+
+## Cards e fotografia (28/10)
+
+Pedido do Vinicius: menos texto corrido, mais cards e fotos reais. Base `.cartao`: raio de 20 px, filete fino, reflexo de 1 px e sombra longa e macia (`.cartao-escuro` sobre azul). Cards que não levam a lugar nenhum **não têm hover** (só o card do Instagram, que é link). Ícones próprios em SVG (`src/components/Icones.tsx`): grade de 24 px, traço de 1,6, sem biblioteca nova.
+
+- **Quem somos:** composição editorial — a equipe em quadra como foto principal (com legenda), o retrato de um árbitro sobreposto no canto com moldura branca, texto de uma frase, princípios em etiquetas e a quadra em jogo num card de "prancheta".
+- **Compromissos:** grade assimétrica de 5 cards; o tamanho segue o conteúdo — Condução (foto do árbitro em ação, card alto), Regras (areia com grão), Postura (água clara com a foto da equipe uniformizada), Organização (branco) e Integridade (água, frase grande). Ordem visual = ordem do código.
+- **Campeonatos:** cards; foto **só** quando a imagem é do próprio evento (Arena Sun7 e Torneio do Bosque em capa com véu azul na base; Queiróz Cup com a vista aérea como selo). SPFC, Desafio ao Galo e Amsterdam Cup são cartazes tipográficos com a quadra desenhada como selo. Fecha com o card do Instagram.
+- **Dúvidas:** acordeão em cards compactos, uma pergunta aberta por vez, "+/−" num círculo; card final leva ao formulário.
+- **Contato:** passos numerados (sequência real: formulário → WhatsApp → conversa) e o formulário num painel branco com campos em caixa.
 
 ## Componentes
 
 - **Menu (desktop):** logo à esquerda, pílula de vidro central com Equipe, Compromissos, Campeonatos e Dúvidas, e o CTA à direita. A seção visível fica marcada (`aria-current="location"`). Ao rolar, a barra vira vidro azul-profundo. No celular só a logo (a barra inferior leva ao orçamento).
 - **Botões:** pílula, sem `→`.
-- **Campos:** só linha inferior, rótulo sempre visível, erro inline e foco no primeiro inválido.
+- **Campos:** em caixa (borda fina, branco), rótulo sempre visível, borda vermelha e erro inline quando inválido, foco no primeiro inválido.
 - **Tipo de evento:** opções em botões de pílula (rádios reais por baixo, `role="radiogroup"` com `aria-invalid`), 48 px de altura, setas do teclado funcionam, foco visível. Substituiu a lista suspensa: um toque no celular. A mensagem do WhatsApp é a mesma.
-- Listas por filetes (Compromissos, Campeonatos, FAQ), sem cards.
-- **Campeonatos = cartaz de escalação só de tipografia**: nomes grandes, escalonados. Sem fotos e sem descrições de procedência. Incluir um evento = uma linha em `src/content/site.ts`.
+- Princípios em etiquetas; Compromissos, Campeonatos e FAQ em cards (ver acima). Nada de cinco caixas iguais: tamanho e superfície variam com o conteúdo.
+- **Campeonatos:** incluir um evento = uma linha em `src/content/site.ts`; foto opcional, só com associação visível ao evento. Sem descrições de procedência no texto.
 - **Em quadra (só celular em pé):** abaixo da hero, os dois clipes laterais do tríptico **inteiros**, em cards 5:9 que rolam para o lado; indicador em linha acende em azul-céu o vídeo da frente. Só o da frente toca; baixa só ao chegar na tela; pausa; pôsteres com movimento reduzido ou economia de dados.
 - CTA persistente no mobile: barra inferior de vidro azul-profundo com botão de areia; aparece depois da hero e some quando o formulário está na tela.
 

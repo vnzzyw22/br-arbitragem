@@ -14,7 +14,8 @@ Ler primeiro: [README.md](README.md) (como rodar/testar) · [DESIGN.md](DESIGN.m
 - **Tipografia (28/10):** **exatamente duas famílias** — Mona Sans 500 expandida nos títulos e Schibsted Grotesk no texto, botões, menu e formulário. **Nenhum itálico** em nenhum elemento e nenhuma fonte extra. Antes: serifa (Cormorant) rejeitada como "manjada, com cara de IA"; Archivo condensada pesada, agressiva demais. A suíte confere as três regras.
 - **Paleta (28/10):** praia — **areia clara, branco e tons de azul**, com aparência cinematográfica. Azul tirado da logo, areia tirada do vídeo. O preto e o dourado saíram da interface; ficam só nas ilustrações (bola, apito).
 - **Hero:** vídeo de fundo em tela cheia (aprovado). Desktop = tríptico com o **árbitro no centro** e os outros dois clipes nas laterais. Mobile = reel vertical do árbitro. **Tríptico vertical em painéis foi publicado e rejeitado em 27/10: "tudo cortado, nem dá pra ver os vídeos". Não dividir a tela do celular em painéis.** No lugar, a faixa **Em quadra** (só celular) com os outros dois clipes inteiros, publicada em 27/10 para avaliação; se for recusada, remover `<EmQuadra />` de `src/app/page.tsx`.
-- **Campeonatos:** só tipografia (cartaz de escalação). **Sem fotos**, **sem descrições de procedência**, **sem bolas nas laterais**.
+- **Cards e fotografia (28/10, pedido do Vinicius):** menos texto corrido, mais cards e fotos reais. Compromissos em grade assimétrica de cards (não cinco caixas iguais), Campeonatos em cards, FAQ em acordeão de cards. Superfícies de areia, branco e água; transição de "orla" entre seções.
+- **Campeonatos:** foto **só** quando a imagem é do próprio evento e a associação está visível (Arena Sun7 = faixa da rede; Torneio do Bosque = escudo nas camisas de árbitro; Queiróz Cup = quadro do vídeo do evento). Os demais só com o nome. **Sem descrições de procedência**, **sem bolas nas laterais**. (Antes, 27/10, a seção era só tipografia; mudou pelo pedido de 28/10.)
 - **Fotos:** não publicar imagem de baixa qualidade; preferir seção simples a foto ruim. A foto do time (Sandhit) foi **retirada** em 28/10 (compressão e nitidez artificial). Pendências em [MIDIA.md](MIDIA.md).
 - **Ilustrações:** apito preto de árbitro com argola dourada, bola de futevôlei amarela e preta, quadra de areia com **rali animado**.
 - **Movimento:** o cliente quer mais movimento, sempre com função e coerente com o tema. Tudo respeita `prefers-reduced-motion`.
@@ -25,7 +26,13 @@ Ler primeiro: [README.md](README.md) (como rodar/testar) · [DESIGN.md](DESIGN.m
 
 Todas as seções prontas: hero, Em quadra (celular), quem somos, compromissos, campeonatos, FAQ, contato (WhatsApp), rodapé, carregamento com progresso real e barra de CTA mobile.
 
-**Sessão de 28/10/2026 (branch `revisao-visual`, ainda NÃO publicado):**
+**Sessão de 28/10/2026, parte 2 (branch local `cards-fotografia`, NÃO publicado — o Vinicius pediu para não subir nada até terminar):**
+- Redesenho orientado a cards e fotografia: Quem somos editorial (equipe em quadra + retrato + princípios em etiquetas + quadra em card), Compromissos em bento com 2 fotos e ícones próprios, Campeonatos em cards com fotos dos próprios eventos, FAQ em cards, Contato com passos e formulário em painel, orla entre seções, grão de areia nos cards cor de areia.
+- 5 fotos recuperadas do histórico do git e reauditadas no tamanho de uso (ver [MIDIA.md](MIDIA.md)); nenhuma ampliada além do nativo em tela 2× (teste novo; pior caso 95%).
+- Verificado: **86/86**; contraste de todo texto fora da hero (78 elementos no desktop, 80 no celular); vidro sobre o vídeo 6,89:1; carga inicial igual (fotos novas só baixam ao rolar: +280 KB desktop, +680 KB celular 3×).
+- Comparação lado a lado com a referência em 1440×773 e 390×844: `.shots/cards-comparacao-*.png` (pasta fora do git).
+
+**Sessão de 28/10/2026, parte 1 (publicada às 14:32):**
 - Revisão visual completa: duas famílias tipográficas sem itálico; paleta areia, branco e azul; véu azul-profundo na hero; botões de vidro em pílula; menu de vidro central que marca a seção atual; tipo de evento em botões no formulário (mesma validação e mesma mensagem); quadra ilustrada em areia real; foto do time retirada e as outras duas limitadas à resolução nativa.
 - Investigação da referência `br-arbitragem-one.vercel.app` com o método do **AI Website Cloner** (instalado fora do repo, em `/home/claude/ferramentas/ai-website-cloner-template`, que some quando o ambiente da nuvem é reciclado; para reinstalar: clonar `JCodesMore/ai-website-cloner-template` numa pasta separada, `git remote remove origin`, `npm install`). Resumo do que foi e do que não foi aproveitado no [DESIGN.md](DESIGN.md).
 - Verificado: **81/81** checagens automáticas; contraste de todo texto fora da hero (66 elementos no desktop, 68 no celular) ≥ 4,5:1; auditor de contraste provado com caso ruim (`scripts/autoteste-contraste.mjs`); botões de vidro sobre o vídeo, pior caso **6,89:1**; sem erros de console; sem rolagem horizontal.
@@ -35,9 +42,9 @@ Todas as seções prontas: hero, Em quadra (celular), quem somos, compromissos, 
 
 ## Pendências
 
-1. **Autorização para publicar** a revisão de 28/10 (prévia no branch ou direto na `main`).
+1. **Autorização para publicar** o branch `cards-fotografia` (prévia ou direto na `main`).
 2. **Número de WhatsApp** → `NEXT_PUBLIC_WHATSAPP_NUMBER` na Vercel (Project Settings → Environment Variables, depois redeploy). Sem ele o formulário fica desativado, de propósito.
-3. Materiais melhores (vídeos horizontal e vertical, **foto da equipe original** para repor a retirada, logo vetorial): tabela em [MIDIA.md](MIDIA.md).
+3. Materiais melhores (vídeos horizontal e vertical, foto original da equipe em alta, fotos originais dos eventos sem imagem — SPFC Futevôlei, Desafio ao Galo, Amsterdam Cup — e da Queiróz Cup em alta, logo vetorial): tabela em [MIDIA.md](MIDIA.md).
 4. Confirmar com o cliente: SPFC Futevôlei e Desafio ao Galo (estão na lista); Selva Cup, AD's Cup e Rio Open (fora). Se "Jogo limpo. Grande espetáculo." é lema da BR (aparece na referência; não usado sem confirmação).
 5. Logos de DRG Consultoria e apoiadores; cidades atendidas; e-mail; textos institucionais.
 6. Skills Impeccable, ui-ux-pro-max, ui-styling, design-system, brand-guidelines e taste não existem no ambiente da nuvem (só no computador do Vinicius, se estiverem lá); nesta sessão foram usadas frontend-design e codemakers-design.

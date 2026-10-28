@@ -17,15 +17,25 @@ import { Apito } from "./Ornamentos";
 
 const vazio: Campos = { nome: "", whatsapp: "", tipo: "", cidade: "", data: "", info: "" };
 
+// Passos tirados do próprio fluxo do formulário e das respostas do FAQ (nada além do que o site faz).
+const PASSOS = [
+  { titulo: "Preencha os dados do evento", texto: "Nome, WhatsApp, tipo de evento e cidade. Data e detalhes são opcionais." },
+  { titulo: "O WhatsApp abre com a mensagem pronta", texto: "Você confere o texto antes de mandar." },
+  { titulo: "Toque em enviar na conversa", texto: "Os detalhes são combinados diretamente com a equipe." },
+];
+
+// Campos em caixa (mais claros no celular que só a linha inferior): borda fina, foco em azul de
+// ação (o contorno global de foco continua), borda vermelha quando inválido.
 const campo =
-  "block w-full border-0 border-b-2 border-tinta bg-transparent px-0 py-3 text-lg text-tinta placeholder:text-tinta/70";
+  "mt-2 block w-full rounded-xl border border-tinta/20 bg-white px-4 py-3 text-lg text-tinta placeholder:text-tinta/65 " +
+  "transition-colors hover:border-tinta/40 focus:border-azul-acao aria-[invalid=true]:border-erro";
 const rotulo = "block text-base font-medium text-tinta";
 
 // Opção do tipo de evento em botão (um toque no celular, em vez da lista suspensa). O rádio real
 // fica por baixo: setas do teclado, leitor de tela e validação continuam os do navegador.
 const opcao =
   "relative inline-flex min-h-12 cursor-pointer select-none items-center rounded-full border px-5 text-base font-medium transition-colors " +
-  "border-tinta/30 bg-white/55 text-tinta hover:border-tinta " +
+  "border-tinta/25 bg-areia/60 text-tinta hover:border-tinta " +
   "has-[:checked]:border-tinta has-[:checked]:bg-tinta has-[:checked]:text-areia " +
   "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-azul-acao";
 
@@ -82,24 +92,38 @@ export function Contato() {
   };
 
   return (
-    <section id="contato" className="claro textura-areia relative overflow-hidden bg-areia py-24 lg:py-36">
+    <section id="contato" className="claro textura-areia relative overflow-hidden bg-areia pb-24 pt-14 lg:pb-32 lg:pt-20">
       <div className="wrap relative">
         <Linha cor="bg-azul" />
-        <div className="mt-14 lg:mt-20 lg:flex lg:items-end lg:justify-between lg:gap-12">
+        <div className="mt-12 lg:mt-16 lg:flex lg:items-end lg:justify-between lg:gap-12">
           <Titulo className="display max-w-[20ch] text-[clamp(2rem,8.6vw,3.3rem)] lg:text-[clamp(2.6rem,4.6vw,5rem)]">
             Vamos conversar sobre seu próximo campeonato?
           </Titulo>
           <ApitoApitando />
         </div>
 
-        <div className="mt-12 grid gap-12 lg:mt-20 lg:grid-cols-12 lg:gap-x-16">
-          <div className="lg:col-span-4">
+        <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-12 lg:gap-x-14">
+          <div className="lg:col-span-5">
             <p className="max-w-[34ch] text-xl leading-snug">
               Conte um pouco sobre seu evento e entre em contato com a BR Arbitragem para solicitar uma proposta.
             </p>
-            <p className="mt-8 max-w-[34ch] text-base text-tinta/80">
-              Ao enviar, o WhatsApp abre com a mensagem pronta. A conversa só começa quando você toca em enviar lá.
-            </p>
+            {/* Como funciona: é uma sequência real (formulário → WhatsApp → conversa), por isso numerada. */}
+            <ol className="mt-8 space-y-4">
+              {PASSOS.map((p, i) => (
+                <li key={p.titulo} className="flex gap-4">
+                  <span
+                    aria-hidden="true"
+                    className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-tinta text-[0.95rem] font-semibold text-areia"
+                  >
+                    {i + 1}
+                  </span>
+                  <span>
+                    <span className="subtitulo block text-[1.1rem]">{p.titulo}</span>
+                    <span className="mt-0.5 block text-tinta/75">{p.texto}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
             <p className="mt-8 text-base">
               Prefere o Instagram?{" "}
               <a
@@ -113,7 +137,7 @@ export function Contato() {
             </p>
           </div>
 
-          <form onSubmit={enviar} noValidate className="grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:col-span-8">
+          <form onSubmit={enviar} noValidate className="cartao grid gap-x-6 gap-y-7 bg-white p-5 sm:grid-cols-2 sm:p-8 lg:col-span-7">
             <div>
               <label htmlFor="campo-nome" className={rotulo}>
                 Nome do organizador

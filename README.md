@@ -30,7 +30,7 @@ Os testes rodam contra uma **build de produção em outra pasta**, para não pis
 ```bash
 NEXT_PUBLIC_WHATSAPP_NUMBER=5541900000000 NEXT_DIST_DIR=.next-test npx next build   # número FICTÍCIO, só para testar
 NEXT_PUBLIC_WHATSAPP_NUMBER=5541900000000 NEXT_DIST_DIR=.next-test npx next start -p 3300
-node scripts/interacoes.mjs          # 81 verificações: carregamento, hero, vídeo, tipografia (2 famílias, sem itálico), contraste, menu, formulário, rali, mobile, movimento reduzido
+node scripts/interacoes.mjs          # 86 verificações: carregamento, hero, vídeo, tipografia (2 famílias, sem itálico), contraste, nitidez das fotos em tela 2×, cards, menu, formulário, rali, mobile, movimento reduzido
 ```
 
 Sem Chrome instalado (ex.: nuvem), aponte para outro Chromium: `CHROME_PATH=/caminho/do/chrome node scripts/interacoes.mjs`.

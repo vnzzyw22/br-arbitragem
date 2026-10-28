@@ -8,10 +8,15 @@
 | Hero mobile | `public/video/hero/mobile.mp4` + `mobile-poster.webp` | 720×1280, 10 s, sem áudio, 1 MB (reel do árbitro) |
 | Em quadra (celular) | `public/video/quadra/jogada.mp4`, `arena.mp4` + pôsteres `.webp` | 600×1080 cada, 7,8 s, ~950 KB: painéis esquerdo e direito do `desktop.mp4`, sem recorte nem ampliação (`ffmpeg -i desktop.mp4 -vf crop=600:1080:0:0` / `crop=600:1080:1320:0`, crf 28, maxrate 900k). Com os reels originais 720×1280 ficariam um pouco mais nítidos |
 | Logo | `src/assets/identidade/logo-br.jpg` | 150×150 (foto de perfil do Instagram) |
-| Quem somos | `src/assets/equipe/arbitro-sorrindo.jpg` | 1080×1311, exibida com no máximo 440 px de largura |
-| Compromissos | `src/assets/equipe/arbitro-apito.jpg` | 1080×1350, exibida com no máximo 460 px de largura |
+| Quem somos (principal) | `src/assets/equipe/equipe-quadra.jpg` | 1128×1128, até ~530 px na tela (com a paralaxe) |
+| Quem somos (detalhe) | `src/assets/equipe/arbitro-sorrindo.jpg` | 1080×1311, até 220 px |
+| Compromissos · Condução | `src/assets/equipe/arbitro-apito.jpg` | 1080×1350, card de até ~545 px |
+| Compromissos · Postura | `src/assets/equipe/equipe-trio.jpg` | 1080×1344, até ~340 px |
+| Campeonatos · Arena Sun7 | `src/assets/campeonatos/arena-sun7.jpg` | 2000×2000, capa de até ~900 px |
+| Campeonatos · Torneio do Bosque | `src/assets/campeonatos/torneio-do-bosque.webp` | 1080×1080, capa de até ~440 px |
+| Campeonatos · Queiróz Cup | `src/assets/campeonatos/queiroz-cup-aerea.webp` | 320×400 (quadro de 13,0 s do vídeo do evento), miniatura de até 160 px |
 
-Regra de tamanho (28/10): uma foto nunca aparece maior que a sua resolução nativa permite em tela de alta densidade (2×). Com 1080 px, o limite é ~460–540 px de largura na tela; por isso as duas fotos têm `max-w` e `sizes` fixos. Quando chegar arquivo maior, aumentar o limite junto.
+Regra de tamanho: uma foto nunca aparece maior que a sua resolução nativa permite em tela de alta densidade (2×). A suíte mede isso (`fotos nítidas em tela 2×`): baixa o arquivo realmente entregue e exige pelo menos 90% dos pixels que a caixa pede (hoje o pior caso é 95%). Quando chegar arquivo maior, aumentar o limite (`max-w` e `sizes`) junto.
 
 **Depois de trocar qualquer arquivo da hero, aumente `VERSAO` em `src/lib/midia.ts`**: o nome continua o mesmo, então sem isso celulares e a CDN podem seguir mostrando a versão antiga.
 
@@ -59,10 +64,27 @@ ffmpeg -ss 2 -i public/video/hero/mobile.mp4 -frames:v 1 -c:v libwebp -quality 8
 | `527634017` (1080×1311) | Quem somos (única foto da seção) | árbitro sorrindo com o selo BR na camisa, boa luz; levemente macia, por isso limitada a 440 px |
 | `488548770` (1080×1350) | Compromissos | árbitro com apito, boa composição; macia (sem compressão visível), limitada a 460 px |
 
+### Recuperados do histórico do projeto (28/10)
+
+Pedido do Vinicius: mais fotos reais nas seções. Estes arquivos estavam no histórico do git (versão de 27/10 15:50) e foram reauditados **no tamanho em que aparecem agora**, em 100% e em tela 2×:
+
+| Arquivo | Uso | Auditoria |
+|---|---|---|
+| `equipe-quadra.jpg` (1128²) | Quem somos, foto principal | nítida, boa luz, equipe uniformizada com o selo BR em quadra |
+| `equipe-trio.jpg` (1080×1344) | Compromissos · Postura profissional | nítida, uniformes com o selo "REFEREE BR"; ilustra exatamente "uniforme, presença e conduta" |
+| `arena-sun7.jpg` (2000²) | card Arena Sun7 | nítida e em alta; associação visível: a faixa da rede diz "ARENA SUN7" e a camisa segurada é a do uniforme BR (selo e Sandhit) |
+| `trio-noite.webp` → `torneio-do-bosque.webp` (1080²) | card Torneio do Bosque | noturna com ruído em 100%, **boa reduzida** (card ≤ 440 px); associação visível: escudo do Torneio do Bosque e selo BR nas camisas de árbitro |
+| quadro de `queiroz-cup.mp4` (540×960) | miniatura da Queiróz Cup | vista aérea das quadras; só como miniatura (a fonte não aguenta card inteiro) |
+
+Esses eventos tinham saído da seção Campeonatos a pedido do cliente (27/10). Voltaram porque o pedido de 28/10 é usar fotos associadas a cada evento; se o cliente preferir sem, é tirar o campo `foto` do evento em `src/content/site.ts`.
+
 ### Rejeitados
 
 | Arquivo | Motivo |
 |---|---|
+| `arbitro-chuva.jpg` (1080×1109) | reauditado em 28/10: macio e com ruído de chuva em 100%; não acrescenta ao que as outras fotos mostram |
+| `equipe-corta-vento.webp`, `equipe-branca.webp` | reauditados em 28/10: mantidos fora (ruído noturno; luz chapada e compressão) |
+| quadro do banner "Queiroz Cup" (vídeo do evento) | logos de patrocinadores em destaque |
 | foto do time (`683605514`, 1080²) | **retirada em 28/10.** Nitidez artificial com halo, faixas de cor nas camisas escuras e rostos "crocantes"; aparecia com 822 px (ampliada 1,5× em tela 2×). O arquivo saiu do repositório; o original continua em `Downloads` |
 | `brarbitragem.ftv (1).mp4` | compilação cheia de legendas sobrepostas ("Grande Final"…); 720p |
 | `spfcfutevolei.mp4` | montagem com cortes rápidos, muito motion blur e marcas de terceiros em destaque |
@@ -72,7 +94,7 @@ ffmpeg -ss 2 -i public/video/hero/mobile.mp4 -frames:v 1 -c:v libwebp -quality 8
 | `694122933` (equipe com jogadores do SPFC) | ruído, faixas de terceiros |
 | `489…`, `490…`, `522…` (arbitragemftv) | 720–776 px de largura: perdem nitidez acima de ~400 px |
 
-### Removidos da página a pedido do cliente (baixa qualidade)
+### Removidos da página a pedido do cliente (27/10), parte reintegrada em 28/10
 
 As fotos da seção **Campeonatos** (Arena Sun7, Torneio do Bosque, SPFC Futevôlei, Desafio ao Galo, faixa de bastidores) e o vídeo do Queiróz Cup. A seção agora é só tipografia. Os arquivos originais continuam em `Downloads`; não estão no projeto.
 
@@ -82,8 +104,8 @@ As fotos da seção **Campeonatos** (Arena Sun7, Torneio do Bosque, SPFC Futevô
 |---|---|---|---|
 | Hero desktop | vídeo **horizontal** de árbitros em quadra, câmera estável, espaço livre à esquerda | 16:9, 1920×1080 ou mais, 8–15 s | hoje é um tríptico montado de reels verticais 720p |
 | Hero mobile | vídeo **vertical** do árbitro em ação | 9:16, 1080×1920 | o atual tem 720×1280 |
-| Quem somos | foto da equipe uniformizada, **arquivo original** (não do Instagram) | ≥ 2000 px no lado maior, quadrada ou 4:3 | a do time foi retirada (compressão e realce); hoje a seção tem só o retrato do árbitro |
+| Quem somos | foto da equipe uniformizada, **arquivo original** (não do Instagram) | ≥ 2000 px no lado maior, 5:4 | a atual (`equipe-quadra`) tem 1128 px: limita a foto a ~530 px na tela |
+| Campeonatos | foto original de cada evento (SPFC Futevôlei, Desafio ao Galo, Amsterdam Cup, e maior para a Queiróz Cup) | ≥ 1600 px | hoje 3 eventos só com o nome e a Queiróz Cup só em miniatura (fonte de 540 px) |
 | Compromissos | retrato do árbitro em ação (apito, sinalização) | 4:5, ≥ 1600×2000 | a atual tem 1080×1350 |
 | Identidade | logo em **vetor (SVG)** ou PNG transparente | ≥ 1000 px | hoje é a foto de perfil 150×150 com fundo branco |
-| Campeonatos (opcional) | fotos originais de cada evento, se quiserem voltar a mostrá-las | ≥ 2000 px | as disponíveis eram de 720–1080 px |
 | Rodapé | logos de DRG Consultoria, Sandhit, Evolud, Redução Saúde e Auttotag (SVG) | — | hoje só os nomes |
