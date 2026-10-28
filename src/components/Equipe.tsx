@@ -2,6 +2,7 @@ import Image from "next/image";
 import { EQUIPE } from "@/content/site";
 import { Entrada, FotoParallax, Linha, Revela, Titulo } from "./Motion";
 import { JogadaFutevolei } from "./Futevolei";
+import { BeiraMar } from "./Praia";
 
 // Composição editorial: a equipe em quadra é a imagem principal; o retrato de um árbitro entra por
 // cima, com moldura branca, como uma foto impressa. Texto curto, princípios em etiquetas e a quadra
@@ -64,6 +65,8 @@ export function Equipe() {
           </div>
         </div>
       </div>
+      {/* a areia termina na água: o mar chega aqui e continua em Compromissos */}
+      <BeiraMar para="agua" />
     </section>
   );
 }

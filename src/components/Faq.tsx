@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import { FAQ } from "@/content/site";
 import { Entrada, Linha, Titulo } from "./Motion";
+import { BeiraMar, Coqueiro } from "./Praia";
 
 // Acordeão em cards compactos: uma pergunta aberta por vez (a primeira começa aberta), o card
 // aberto clareia e o "+" vira "−" num círculo. Fecha com um card que leva ao formulário.
@@ -11,13 +12,14 @@ export function Faq() {
   const base = useId();
 
   return (
-    <section id="duvidas" className="claro fundo-duvidas pb-24 pt-14 lg:pb-32 lg:pt-20">
+    <section id="duvidas" className="claro fundo-duvidas relative overflow-hidden pb-28 pt-14 lg:pb-36 lg:pt-20">
       <div className="wrap">
         <Linha cor="bg-azul" />
         <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-x-16">
           <div className="lg:col-span-4">
             <Titulo className="display text-[clamp(2rem,8vw,3rem)] lg:text-[clamp(2.4rem,3.6vw,3.9rem)]">Perguntas frequentes</Titulo>
             <p className="mt-5 max-w-[30ch] text-lg text-tinta/75">O que os organizadores costumam perguntar antes de pedir o orçamento.</p>
+            <Coqueiro className="mt-12 hidden w-36 lg:block" />
           </div>
           <div className="lg:col-span-8">
             <ul className="space-y-2.5">
@@ -90,6 +92,8 @@ export function Faq() {
           </div>
         </div>
       </div>
+      {/* a água chega na areia do Contato */}
+      <BeiraMar para="areia" />
     </section>
   );
 }

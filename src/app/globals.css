@@ -351,6 +351,19 @@ html[data-loader="visto"] .loader {
   58%, 100% { transform: scale(1.5); opacity: 0; }
 }
 
+/* Espuma da beira-mar (Praia.tsx): vai e volta devagar, como a água na areia */
+@keyframes mar-espuma {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-2.5%, 3px); }
+}
+.mar-espuma {
+  animation: mar-espuma 7s ease-in-out infinite;
+}
+.mar-espuma-2 {
+  animation-duration: 9s;
+  animation-direction: reverse;
+}
+
 /* Bola quicando (rodapé) e apito balançando (contato) */
 @keyframes quica {
   0% { transform: translateY(0) scale(1.08, 0.92); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
