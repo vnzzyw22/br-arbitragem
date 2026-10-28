@@ -58,7 +58,8 @@ hero (vídeo, véu azul) → **uma única linha d'água** (a areia de Quem somos
 - Cada seção tem uma **cor-base sólida** (é nela que o auditor mede o texto) e um gradiente que a costura às vizinhas: o fim de uma é exatamente o começo da seguinte (`.fundo-equipe`, `.fundo-agua`, `.fundo-espuma`, `.fundo-duvidas`, `.fundo-contato` em `globals.css`).
 - Profundidade só com manchas de luz muito suaves (gradientes radiais brancos). Sem ondas repetidas, sem textura fotográfica, sem vidro fora da hero. O grão de areia some onde Quem somos vira água (`.textura-fade`).
 - Os únicos blocos escuros são a hero e o rodapé; o azul-marinho e o azul-esverdeado entram como acento nos cards (Amsterdam Cup em `oceano`; Integridade, Instagram e fecho do FAQ em `mar`).
-- Estudo da referência (método do `/clone-website`, só observação): ela usa base de areia `#F4ECDF` e mar `#2F5D66` com texturas fotográficas. Aproveitado o princípio (dois humores, areia e mar, cards que pertencem à superfície); não aproveitadas as texturas, o sol/palmeiras e as ondas recortadas.
+- Estudo da referência (método do `/clone-website`, só observação): ela usa base de areia `#F4ECDF` e mar `#2F5D66` com texturas fotográficas. Aproveitado o princípio (dois humores, areia e mar, cards que pertencem à superfície); não aproveitadas as texturas, o sol e as ondas recortadas. **Coqueiros entraram depois, por pedido do Vinicius (28/10)**, junto com a beira-mar.
+- **Beira-mar e coqueiros (`Praia.tsx`):** a água chega na areia no fim de Quem somos (areia → mar de Compromissos) e no fim de Dúvidas (mar → areia do Contato), com espuma que vai e volta devagar. Os coqueiros ficam **sempre na areia**, plantados na beira-mar de Quem somos (par no desktop, um pequeno no celular), com sombra no chão; nunca sobre seção de água (a suíte confere). Os brilhos radiais do fundo não encostam no topo das seções, para não marcar emenda reta entre elas.
 
 Seções claras usam a classe `.claro` (texto em tinta e foco em azul de ação); desde 28/10 são todas, menos hero, Em quadra e rodapé.
 
@@ -82,10 +83,9 @@ Tudo respeita `prefers-reduced-motion` (fica parado).
 - **Menu:** o marcador de vidro desliza até a seção que está no meio da tela.
 - **Títulos:** sobem por máscara ao entrar na tela.
 - **Fotos:** cortina de entrada + paralaxe discreta (zoom máx. 1,08).
-- **Etiquetas de princípios (Quem somos):** entrada escalonada.
 - **Jogada na quadra (Quem somos, `Futevolei.tsx`):** loop contínuo de 7 s, vista de cima, no mesmo traço simples do rali anterior (areia real, fita branca, rede, jogadores em ombros + cabeça). Quatro atletas, dois de cada lado, e o **árbitro na cadeira junto ao poste** (camisa preta com mangas amarelas, como o uniforme real). B2 saca → A1 recebe e levanta → A2 ataca por cima da rede (salto = escala leve) → a bola cai entre B1 e B2, com anel na areia → o árbitro **estende o braço para o lado que pontuou e apita: duas ondas saem dele 0,28 s depois do toque** → todos voltam e a bola reaparece com B2. A altura da bola é escala, com sombra no chão. É um detalhe da seção, não o foco (pedido do Vinicius: simples, em segundo plano, sem botão, como um vídeo contínuo). Para fora da tela; com movimento reduzido fica parada no quadro do apito (55,5% do ciclo). Uma versão em vista lateral, mais desenhada e com botão de pausa, foi feita e **descartada** pelo Vinicius em 28/10.
 - **Bola de progresso:** corre pela linha azul-céu na base do menu.
-- **Cards (Compromissos, Campeonatos, Dúvidas):** entrada escalonada discreta. Sem hover onde não há clique.
+- **Cards, etiquetas e parágrafos:** **sem entrada animada** (o "sobe e aparece" escalonado saiu em 28/10 na crítica de design: era o mesmo efeito em todas as seções, o padrão genérico que a regra 3 proíbe). O movimento fica no que é do tema: linha de quadra, título, fotos, jogada, espuma, bola de progresso, apito e bola quicando. A suíte confere que os cards já estão inteiros antes de a página rolar até eles. Sem hover onde não há clique.
 - **Apito (Contato):** apitaço ao entrar na tela e balanço pela argola. **Bola (rodapé):** quica.
 
 ## Cards e fotografia (28/10)

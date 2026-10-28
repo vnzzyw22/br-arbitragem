@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { EVENTOS, INSTAGRAM_HANDLE, INSTAGRAM_URL, type Evento } from "@/content/site";
-import { Entrada, Linha, Titulo } from "./Motion";
+import { Linha, Titulo } from "./Motion";
 
 // Eventos atendidos em cards. Foto só quando a imagem é do próprio evento (associação visível
 // e registrada em site.ts/MIDIA.md): Arena Sun7 e Torneio do Bosque em capa; Queiróz Cup em
@@ -108,15 +108,15 @@ export function Campeonatos() {
         </div>
 
         <ul className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-14 lg:grid-cols-3 lg:gap-5">
-          {EVENTOS.map((e, i) => (
+          {EVENTOS.map((e) => (
             <li key={e.id} className={`flex ${largura(e)}`}>
-              <Entrada atraso={0.05 * i} className="flex w-full [&>article]:w-full">
+              <div className="flex w-full [&>article]:w-full">
                 <Cartao e={e} />
-              </Entrada>
+              </div>
             </li>
           ))}
           <li className="col-span-2 flex lg:col-span-1">
-            <Entrada atraso={0.3} className="flex w-full">
+            <div className="flex w-full">
               <a
                 href={INSTAGRAM_URL}
                 target="_blank"
@@ -131,7 +131,7 @@ export function Campeonatos() {
                   </span>
                 </span>
               </a>
-            </Entrada>
+            </div>
           </li>
         </ul>
       </div>

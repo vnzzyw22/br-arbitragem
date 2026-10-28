@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { EQUIPE } from "@/content/site";
-import { Entrada, FotoParallax, Linha, Revela, Titulo } from "./Motion";
+import { FotoParallax, Linha, Revela, Titulo } from "./Motion";
 import { JogadaFutevolei } from "./Futevolei";
-import { BeiraMar } from "./Praia";
+import { BeiraMar, Coqueiro } from "./Praia";
 
 // Composição editorial: a equipe em quadra é a imagem principal; o retrato de um árbitro entra por
 // cima, com moldura branca, como uma foto impressa. Texto curto, princípios em etiquetas e a quadra
@@ -10,7 +10,7 @@ import { BeiraMar } from "./Praia";
 // retrato 1080 px → até 230 px). Um só desenho da jogada: a grade o reposiciona no desktop.
 export function Equipe() {
   return (
-    <section id="equipe" className="claro textura-areia textura-fade fundo-equipe relative overflow-hidden pb-24 pt-14 lg:pb-32 lg:pt-20">
+    <section id="equipe" className="claro textura-areia textura-fade fundo-equipe relative overflow-hidden pb-32 pt-14 sm:pb-36 lg:pb-32 lg:pt-20">
       <div className="wrap relative">
         <Linha cor="bg-azul" />
         <div className="mt-12 grid items-start gap-x-14 gap-y-12 lg:mt-16 lg:grid-cols-12">
@@ -18,18 +18,14 @@ export function Equipe() {
             <Titulo className="display max-w-[15ch] text-[clamp(1.85rem,7.4vw,2.7rem)] lg:text-[clamp(2.1rem,3.2vw,3.4rem)]">
               {EQUIPE.titulo}
             </Titulo>
-            <Entrada atraso={0.1}>
-              <p className="mt-6 max-w-[40ch] text-lg text-tinta/80">{EQUIPE.texto}</p>
-            </Entrada>
+            <p className="mt-6 max-w-[40ch] text-lg text-tinta/80">{EQUIPE.texto}</p>
             <ul aria-label="Princípios da equipe" className="mt-8 flex flex-wrap gap-2.5">
-              {EQUIPE.principios.map((p, i) => (
+              {EQUIPE.principios.map((p) => (
                 <li key={p}>
-                  <Entrada atraso={0.15 + 0.08 * i}>
-                    <span className="inline-flex min-h-10 items-center gap-2.5 rounded-full border border-tinta/10 bg-white/75 px-4 text-[0.95rem] font-medium text-tinta shadow-[0_10px_24px_-18px_rgb(11_30_49/0.6)]">
-                      <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-azul-acao" />
-                      {p}
-                    </span>
-                  </Entrada>
+                  <span className="inline-flex min-h-10 items-center gap-2.5 rounded-full border border-tinta/10 bg-white/75 px-4 text-[0.95rem] font-medium text-tinta shadow-[0_10px_24px_-18px_rgb(11_30_49/0.6)]">
+                    <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-azul-acao" />
+                    {p}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -67,6 +63,11 @@ export function Equipe() {
       </div>
       {/* a areia termina na água: o mar chega aqui e continua em Compromissos */}
       <BeiraMar para="agua" />
+      {/* coqueiros plantados na areia molhada, logo acima de onde a água chega */}
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-[2.6rem] right-[4%] flex items-end sm:bottom-[3.1rem] lg:bottom-[3.6rem] lg:right-[7%]">
+        <Coqueiro className="w-12 sm:w-16 lg:w-36" />
+        <Coqueiro className="-ml-6 hidden w-24 -scale-x-100 lg:block" />
+      </div>
     </section>
   );
 }

@@ -73,24 +73,6 @@ export function Titulo({ children, className = "" }: { children: ReactNode; clas
   );
 }
 
-// Entrada de itens de lista: sobe e aparece com atraso escalonado.
-export function Entrada({ children, atraso = 0, className = "" }: { children: ReactNode; atraso?: number; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduzir = useReducedMotion();
-  const visto = useInView(ref, { once: true, margin: "0px 0px -8% 0px" });
-  const aberto = visto || reduzir;
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={{ opacity: reduzir ? 1 : 0, y: reduzir ? 0 : 22 }}
-      animate={{ opacity: aberto ? 1 : 0, y: aberto ? 0 : 22 }}
-      transition={{ duration: 0.8, ease, delay: atraso }}
-    >
-      {children}
-    </motion.div>
-  );
-}
 
 // A bola corre pela linha de quadra no topo da tela conforme a página rola: é o progresso de leitura.
 export function ProgressoBola() {

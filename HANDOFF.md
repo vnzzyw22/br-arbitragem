@@ -26,16 +26,18 @@ Ler primeiro: [README.md](README.md) (como rodar/testar) · [docs/FERRAMENTAS.md
 
 ## Refinamento visual e animação (28/10, parte 3) — pronto na branch, AGUARDANDO AUTORIZAÇÃO
 
-**Branch local:** `refinamento-visual-2026-10-28` (saiu da `main` em `d24056b`). **Nada foi publicado**: sem push na `main` e sem branch de prévia. Para ver: `git checkout refinamento-visual-2026-10-28 && npm run dev`. Brief: [docs/brief/2026-10-28-refinamento-visual-e-animacao.md](docs/brief/2026-10-28-refinamento-visual-e-animacao.md).
+**Branch:** `refinamento-visual-2026-10-28` (saiu da `main` em `d24056b`), salva no GitHub. **A `main` não foi alterada**: o site no ar continua na versão anterior. Para ver: `git checkout refinamento-visual-2026-10-28 && npm run dev`. Brief: [docs/brief/2026-10-28-refinamento-visual-e-animacao.md](docs/brief/2026-10-28-refinamento-visual-e-animacao.md).
 
 1. **Logo:** SVG traçado dos pixels do único arquivo existente (JPG 150×150), sem redesenhar; erro médio 2,4/255 a 150 px. Cabeçalho 52 px (celular) / 64 px (desktop), nítido em 2×/3×; rodapé e carregamento também. Detalhes em [MIDIA.md](MIDIA.md); método reproduzível em [docs/FERRAMENTAS.md](docs/FERRAMENTAS.md).
 2. **Título da hero:** Mona Sans 800 a 116%, tracking −0,032em, só no h1 (comparado com 4 alternativas sobre o vídeo real; ver [DESIGN.md](DESIGN.md)).
 3. **Fundo praia:** cor-base sólida por seção + gradiente que costura as vizinhas; Compromissos e Dúvidas saíram do azul-escuro para água rasa; cards em branco, areia, água funda e azul-esverdeado (`--color-mar`); uma só onda (sobre o vídeo).
+5. **Beira-mar e coqueiros (pedido do Vinicius):** `src/components/Praia.tsx`. Água chegando na areia no fim de Quem somos e no fim de Dúvidas; coqueiros plantados na areia da beira-mar de Quem somos (fechado na nuvem às 19h: antes estavam boiando nas seções de água).
+6. **Crítica de design (skill `frontend-design`, 28/10 à noite):** saiu a entrada genérica "sobe e aparece" de cards, etiquetas e parágrafos (era igual em todas as seções); corrigida uma emenda reta entre seções causada pelos brilhos radiais do fundo.
 4. **Jogada:** `src/components/Futevolei.tsx`, vista de cima, 7 s: B2 saca → A1 levanta → A2 ataca → bola na areia (anel) → árbitro estende o braço para o lado A e apita (duas ondas 0,28 s depois do toque). Para fora da tela; movimento reduzido = quadro do apito. Vídeo de demonstração local: `.shots/jogada-demo.mp4`.
 
-Verificado nesta etapa: `tsc` e `lint` limpos; **88/88** na suíte (build de produção); contraste do vidro sobre o vídeo, pior caso **6,50:1**; contraste de todo texto fora da hero; sem erros de console e sem rolagem horizontal em 1440, 390 e 360 px. Capturas em `.shots/depois/` (fora do git). Uma rodada da suíte teve uma falha intermitente em "Em quadra: só o vídeo da frente toca" (seção não alterada); passou na repetição.
+Verificado nesta etapa: `tsc` e `lint` limpos; **90/90** na suíte (inclui coqueiros só na areia e cards sem entrada genérica; última rodada 28/10 à noite) (build de produção); contraste do vidro sobre o vídeo, pior caso **6,50:1**; contraste de todo texto fora da hero; sem erros de console e sem rolagem horizontal em 1440, 390 e 360 px. Capturas em `.shots/depois/` (fora do git). Uma rodada da suíte teve uma falha intermitente em "Em quadra: só o vídeo da frente toca" (seção não alterada); passou na repetição.
 
-**Falta:** autorização do Vinicius para publicar (prévia ou `main`); retorno do cliente sobre fundo, título e jogada; crítica formal com `impeccable` e auditoria `web-design-guidelines` desta versão (não rodadas nesta sessão).
+**Falta:** autorização do Vinicius para publicar (prévia ou `main`); retorno do cliente sobre fundo, título e jogada; crítica formal com `impeccable` e auditoria `web-design-guidelines` desta versão (não existem na nuvem; rodar no computador do Vinicius). A crítica com `frontend-design` foi feita.
 
 ## Estado atual
 

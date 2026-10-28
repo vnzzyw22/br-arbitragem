@@ -9,16 +9,14 @@ Atualizado em 28/10/2026. Estado completo e decisões do cliente: [HANDOFF.md](.
 - **Prévia online:** o push da branch pode gerar uma prévia na Vercel (o link aparece na página da branch no GitHub ou no painel da Vercel).
 - **Publicar de verdade:** só com autorização do Vinicius: merge da branch na `main` e push (a Vercel publica sozinha).
 
-## 1. Em andamento (faltam minutos)
+## 1. Elementos de praia — concluído (28/10, 19h)
 
-**Elementos de praia (pedido de 28/10):** coqueiros e o mar chegando na areia, como na referência.
-
-- [x] `src/components/Praia.tsx`: `BeiraMar` (água chegando na areia, com espuma que vai e volta) e `Coqueiro` (silhueta simples na paleta).
-- [x] Beira-mar no fim de Quem somos (areia → mar) e no fim de Dúvidas (mar → areia do Contato); coqueiro ao lado do título de Compromissos e na coluna esquerda de Dúvidas (só desktop).
-- [x] Ajuste de 28/10: a areia de Quem somos segue até a beira e a onda faz a passagem para o mar (e o inverso no fim de Dúvidas); água e espuma mais fortes; coqueiro maior no desktop. **Este último ajuste ainda não foi conferido em captura.**
-- [ ] Conferir em desktop e celular (capturas) e ajustar posição e tamanho dos coqueiros.
-- [ ] Rodar `tsc`, `lint` e a suíte (`scripts/interacoes.mjs`) contra a build de produção.
-- [ ] Atualizar o DESIGN.md: a referência tinha palmeiras e elas tinham ficado de fora; agora entram por pedido do Vinicius.
+- [x] `src/components/Praia.tsx`: `BeiraMar` (água chegando na areia, espuma que vai e volta) e `Coqueiro`.
+- [x] Coqueiros **plantados na areia** da beira-mar de Quem somos (par no desktop, um no celular), com sombra; saíram de Compromissos e Dúvidas, onde boiavam sobre a água.
+- [x] Emenda reta entre seções corrigida (brilhos radiais do fundo afastados do topo).
+- [x] Conferido em capturas: 1440, 1280, 1024, 390 e 360 px.
+- [x] `tsc`, `lint` e suíte: **90/90** contra a build de produção.
+- [x] DESIGN.md atualizado (coqueiros por pedido do Vinicius; movimento).
 
 ## 2. Pronto na branch, falta só aprovar e publicar
 
@@ -27,15 +25,17 @@ Atualizado em 28/10/2026. Estado completo e decisões do cliente: [HANDOFF.md](.
 | Logo | SVG traçado dos pixels do JPG original; maior no cabeçalho (52 px celular / 64 px desktop), nítida em telas 2×/3× | erro médio 2,4/255 contra o original |
 | Título da hero | Mona Sans 800 só no h1 (comparado com 4 alternativas) | desktop, celular e 360×640 |
 | Fundo praia | areia → água rasa → espuma → areia, por gradiente; uma só onda (sobre o vídeo) | contraste de todo o texto |
+| Beira-mar e coqueiros | água chegando na areia; coqueiros só na areia | suíte: base dos coqueiros na beira-mar de Quem somos |
+| Movimento | sem "sobe e aparece" genérico nos cards (crítica com `frontend-design`) | suíte: 20 cards inteiros antes de rolar |
 | Jogada | quadra vista de cima, 4 jogadores + árbitro que estende o braço e apita; simples, em segundo plano, sem botão | suíte: apito 0,28 s depois da bola tocar a areia |
 
-Última verificação completa (antes dos elementos de praia): `tsc` e `lint` limpos, **88/88** na suíte, vidro sobre o vídeo 6,50:1, sem erros de console e sem rolagem horizontal em 1440/390/360 px.
+Última verificação completa (28/10, 19h, com tudo acima): `tsc` e `lint` limpos, **90/90** na suíte, vidro sobre o vídeo 6,49:1 (pior caso, medido de novo), sem erros de console e sem rolagem horizontal em 1440/390/360 px.
 
 ## 3. Pendências técnicas (não bloqueiam a publicação)
 
-- **Crítica formal da versão nova:** rodar a skill `impeccable` (crítica de design) e a `web-design-guidelines` (auditoria de acessibilidade/UX). Não foram rodadas nesta versão.
-- **Movimento repetido:** todas as seções usam a mesma entrada escalonada dos cards e o mesmo "título sobe por máscara". Discreto, mas repetitivo; avaliar na crítica.
-- **Teste intermitente:** "Em quadra: só o vídeo da frente toca" falhou uma vez com a máquina carregada e passou ao repetir. Se voltar a falhar, aumentar a espera do teste.
+- **Crítica formal da versão nova:** feita com `frontend-design` (resultado acima). Falta rodar `impeccable` e `web-design-guidelines`, que só existem no computador do Vinicius.
+- **Movimento:** a entrada escalonada dos cards saiu. Continua em todas as seções o "título sobe por máscara" com a linha de quadra; é discreto e marca o início de cada seção, mas pode ser reavaliado na crítica com `impeccable`.
+- **Teste intermitente:** "Em quadra: só o vídeo da frente toca" falhou uma vez com a máquina carregada e passou ao repetir (nas duas rodadas de 28/10 à noite passou). Se voltar a falhar, aumentar a espera do teste.
 - **Desempenho real:** medir a URL publicada com PageSpeed/Lighthouse depois de publicar.
 - **Celular de verdade:** testar a barra de CTA e o formulário com o teclado aberto num aparelho real.
 

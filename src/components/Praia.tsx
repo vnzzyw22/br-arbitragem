@@ -13,7 +13,7 @@ const AGUA_FUNDA = "#b9d6da";
 export function BeiraMar({ para }: { para: "agua" | "areia" }) {
   const agua = para === "agua";
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-20 overflow-hidden sm:h-24 lg:h-28">
+    <div aria-hidden="true" data-beira-mar={para} className="pointer-events-none absolute inset-x-0 bottom-0 h-20 overflow-hidden sm:h-24 lg:h-28">
       <svg viewBox="0 0 1440 96" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
         {agua ? (
           <>
@@ -54,10 +54,13 @@ export function BeiraMar({ para }: { para: "agua" | "areia" }) {
   );
 }
 
-/** Coqueiro em silhueta simples: tronco curvo e folhas em azul-esverdeado (o `mar` da paleta). */
+/** Coqueiro em silhueta simples: tronco curvo e folhas em azul-esverdeado (o `mar` da paleta).
+ *  Fica sempre na areia (base em y = 170, com sombra), nunca sobre a água. */
 export function Coqueiro({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 170" aria-hidden="true" className={className}>
+    <svg viewBox="0 0 120 176" aria-hidden="true" data-coqueiro="" className={className}>
+      {/* sombra na areia, para o coqueiro ficar plantado */}
+      <ellipse cx="58" cy="171" rx="20" ry="3.2" fill="#5f4b37" opacity="0.18" />
       {/* tronco */}
       <path d="M52 170C55 130 60 92 68 50l7 1C69 92 64 132 63 170Z" fill="#7a6248" />
       <path d="M56 150h7M57 132h7M59 114h7M61 96h7M63 78h7M65 62h6" stroke="#5f4b37" strokeWidth="1.4" strokeLinecap="round" />

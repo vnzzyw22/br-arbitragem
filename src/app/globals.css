@@ -114,7 +114,7 @@ body {
 .fundo-agua {
   background-color: var(--color-agua-media);
   background-image:
-    radial-gradient(55% 30% at 8% 12%, rgb(255 255 255 / 0.55), transparent 70%),
+    radial-gradient(50% 22% at 10% 34%, rgb(255 255 255 / 0.55), transparent 70%),
     radial-gradient(50% 28% at 96% 62%, rgb(255 255 255 / 0.35), transparent 70%),
     linear-gradient(180deg, var(--color-agua-rasa) 0%, var(--color-agua-media) 30%, var(--color-agua-media) 72%, var(--color-espuma) 100%);
 }
@@ -125,7 +125,7 @@ body {
 .fundo-duvidas {
   background-color: var(--color-agua-rasa);
   background-image:
-    radial-gradient(50% 30% at 92% 14%, rgb(255 255 255 / 0.6), transparent 70%),
+    radial-gradient(46% 24% at 90% 40%, rgb(255 255 255 / 0.6), transparent 70%),
     linear-gradient(180deg, var(--color-agua-rasa) 0%, var(--color-agua-rasa) 70%, #cfe3e4 100%);
 }
 .fundo-contato {

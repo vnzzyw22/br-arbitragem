@@ -510,6 +510,22 @@ async function nova(opts = {}, esperarLoader = true) {
     JSON.stringify({ ...a.fundos, gradiente: costura.gradiente }),
   );
   ok("uma única linha d'água no desktop (sobre o vídeo da hero), sem ondas entre as seções", costura.orlas === 0 && costura.orlaHero, JSON.stringify(costura));
+  // coqueiros: sempre plantados na areia, na beira-mar (nunca boiando numa seção de água)
+  const coqueiros = await page.evaluate(() => {
+    const beira = document.querySelector("#equipe [data-beira-mar=agua]")?.getBoundingClientRect();
+    return [...document.querySelectorAll("[data-coqueiro]")]
+      .filter((c) => c.getBoundingClientRect().width > 0)
+      .map((c) => {
+        const r = c.getBoundingClientRect();
+        // posição da base dentro da faixa da beira-mar (0 = topo da faixa, 1 = fundo)
+        return { secao: c.closest("section")?.id, base: beira ? +((r.bottom - beira.top) / beira.height).toFixed(2) : null };
+      });
+  });
+  ok(
+    "coqueiros plantados na areia da beira-mar (Quem somos), nenhum sobre a água",
+    coqueiros.length > 0 && coqueiros.every((c) => c.secao === "equipe" && c.base >= 0.3 && c.base <= 0.62),
+    JSON.stringify(coqueiros),
+  );
   ok(`contraste ≥ 4,5:1 (3:1 em texto grande) em todo texto fora da hero (desktop, ${a.medidos} elementos)`, a.falhas.length === 0, a.falhas.slice(0, 4).join(" | "));
 
   // menu: a seção no meio da tela fica marcada
@@ -530,6 +546,32 @@ async function nova(opts = {}, esperarLoader = true) {
   ok(`contraste ≥ 4,5:1 em todo texto fora da hero (celular, ${a.medidos} elementos)`, a.falhas.length === 0, a.falhas.slice(0, 4).join(" | "));
   const alvo = await page.evaluate(() => Math.min(...[...document.querySelectorAll("#contato fieldset label")].map((l) => l.getBoundingClientRect().height)));
   ok("botões de tipo de evento com alvo de toque ≥ 44px", alvo >= 44, `${alvo}px`);
+  await ctx.close();
+}
+
+{
+  // movimento com função: os cards não têm a entrada genérica "sobe e aparece" (regra 3 do projeto);
+  // antes de rolar até eles já estão inteiros, sem opacidade nem deslocamento herdados
+  const { ctx, page } = await nova({ viewport: { width: 1440, height: 900 } });
+  const cards = await page.evaluate(() =>
+    ["#qualidade li", "#campeonatos li", "#duvidas li", "#equipe ul li"].flatMap((sel) =>
+      [...document.querySelectorAll(sel)].map((li) => {
+        let op = 1, mexe = false;
+        for (let el = li; el; el = el.parentElement) {
+          const cs = getComputedStyle(el);
+          op *= +cs.opacity;
+          if (cs.transform !== "none" && el !== li && !el.matches("section, main, body, html")) mexe = mexe || /matrix\(1, 0, 0, 1, 0, [1-9]/.test(cs.transform);
+        }
+        for (const el of li.querySelectorAll("*")) {
+          const cs = getComputedStyle(el);
+          if (+cs.opacity < 1 && !el.closest("[aria-hidden=true]") && el.closest("[inert]") === null) op = Math.min(op, +cs.opacity);
+        }
+        return { sel, op: +op.toFixed(2), mexe };
+      }),
+    ),
+  );
+  const ruins = cards.filter((c) => c.op < 1 || c.mexe);
+  ok(`cards sem entrada genérica: ${cards.length} itens inteiros antes de rolar até eles`, cards.length >= 15 && ruins.length === 0, JSON.stringify(ruins.slice(0, 4)));
   await ctx.close();
 }
 
