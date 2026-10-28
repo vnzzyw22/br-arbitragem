@@ -26,7 +26,7 @@ Ler primeiro: [README.md](README.md) (como rodar/testar) · [DESIGN.md](DESIGN.m
 
 Todas as seções prontas: hero, Em quadra (celular), quem somos, compromissos, campeonatos, FAQ, contato (WhatsApp), rodapé, carregamento com progresso real e barra de CTA mobile.
 
-**Sessão de 28/10/2026, parte 2 (branch local `cards-fotografia`, NÃO publicado — o Vinicius pediu para não subir nada até terminar):**
+**Sessão de 28/10/2026, parte 2 (publicada na `main` em 28/10 à tarde, depois da prévia `br-arbitragem-git-cards-fotografia-vnzzyw.vercel.app` aprovada pelo Vinicius):**
 - Redesenho orientado a cards e fotografia: Quem somos editorial (equipe em quadra + retrato + princípios em etiquetas + quadra em card), Compromissos em bento com 2 fotos e ícones próprios, Campeonatos em cards com fotos dos próprios eventos, FAQ em cards, Contato com passos e formulário em painel, orla entre seções, grão de areia nos cards cor de areia.
 - 5 fotos recuperadas do histórico do git e reauditadas no tamanho de uso (ver [MIDIA.md](MIDIA.md)); nenhuma ampliada além do nativo em tela 2× (teste novo; pior caso 95%).
 - Verificado: **86/86**; contraste de todo texto fora da hero (78 elementos no desktop, 80 no celular); vidro sobre o vídeo 6,89:1; carga inicial igual (fotos novas só baixam ao rolar: +280 KB desktop, +680 KB celular 3×).
@@ -42,7 +42,7 @@ Todas as seções prontas: hero, Em quadra (celular), quem somos, compromissos, 
 
 ## Pendências
 
-1. **Autorização para publicar** o branch `cards-fotografia` (prévia ou direto na `main`).
+1. **Retorno do cliente** sobre a versão com cards e fotos (publicada em 28/10), principalmente as fotos de evento que tinham saído em 27/10 (Arena Sun7, Torneio do Bosque).
 2. **Número de WhatsApp** → `NEXT_PUBLIC_WHATSAPP_NUMBER` na Vercel (Project Settings → Environment Variables, depois redeploy). Sem ele o formulário fica desativado, de propósito.
 3. Materiais melhores (vídeos horizontal e vertical, foto original da equipe em alta, fotos originais dos eventos sem imagem — SPFC Futevôlei, Desafio ao Galo, Amsterdam Cup — e da Queiróz Cup em alta, logo vetorial): tabela em [MIDIA.md](MIDIA.md).
 4. Confirmar com o cliente: SPFC Futevôlei e Desafio ao Galo (estão na lista); Selva Cup, AD's Cup e Rio Open (fora). Se "Jogo limpo. Grande espetáculo." é lema da BR (aparece na referência; não usado sem confirmação).
