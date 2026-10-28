@@ -1,6 +1,7 @@
 import { useId } from "react";
 
-// Ornamentos ilustrados: o vocabulário da quadra de areia (apito, bola de futevôlei, quadra em jogo).
+// Ornamentos ilustrados: o vocabulário da quadra de areia (apito, bola de futevôlei). A jogada
+// animada, com os quatro atletas e o árbitro, fica em Futevolei.tsx.
 type P = { className?: string };
 
 /** Apito preto de árbitro com argola dourada, em vista lateral. */
@@ -43,7 +44,7 @@ export function Apito({ className = "" }: P) {
 }
 
 /** Miolo da bola de futevôlei (coordenadas 0–200), reutilizável dentro de outros SVGs. */
-function BolaCorpo({ id }: { id: string }) {
+export function BolaCorpo({ id }: { id: string }) {
   const corte = `${id}-k`;
   const brilho = `${id}-b`;
   return (
@@ -87,59 +88,6 @@ export function Bola({ className = "" }: P) {
   return (
     <svg viewBox="0 0 200 200" aria-hidden="true" className={className}>
       <BolaCorpo id={id} />
-    </svg>
-  );
-}
-
-// Jogador visto de cima: ombros e cabeça, de frente para a rede.
-function Jogador({ cor, lado }: { cor: string; lado: 1 | -1 }) {
-  return (
-    <g>
-      <ellipse cx="0" cy="0" rx="5.2" ry="10" fill={cor} />
-      <circle cx={1.6 * lado} cy="0" r="4.3" fill="#0a0a0a" stroke={cor} strokeWidth="1.5" />
-    </g>
-  );
-}
-
-/**
- * Quadra de areia vista de cima, com um rali em andamento: a bola cruza a rede, sobe e desce
- * (escala + sombra no chão) e os dois jogadores se deslocam ao encontro dela. As animações
- * são CSS puro (ver globals.css, "rali") e ficam paradas com prefers-reduced-motion.
- */
-export function QuadraEmJogo({ className = "" }: P) {
-  const id = useId();
-  return (
-    <svg viewBox="0 0 360 180" fill="none" aria-hidden="true" className={className} preserveAspectRatio="xMidYMid meet">
-      {/* areia (a cor medida no vídeo) e fita branca de demarcação */}
-      <rect x="0" y="0" width="360" height="180" rx="4" fill="#e1cfb9" />
-      <rect x="10" y="10" width="340" height="160" fill="none" stroke="#fff" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
-      {/* rede e postes */}
-      <path d="M180 4v172" stroke="#13263a" strokeWidth="3" vectorEffect="non-scaling-stroke" />
-      <circle cx="180" cy="5" r="3.2" fill="#13263a" />
-      <circle cx="180" cy="175" r="3.2" fill="#13263a" />
-      {/* ondas de contato com a bola */}
-      <circle className="rali-onda" cx="70" cy="104" r="14" stroke="#2c5c99" strokeWidth="1.8" />
-      <circle className="rali-onda rali-onda-2" cx="290" cy="100" r="14" stroke="#2c5c99" strokeWidth="1.8" />
-      {/* jogadores */}
-      <g className="rali-j1">
-        <Jogador cor="#2c5c99" lado={1} />
-      </g>
-      <g className="rali-j2">
-        <Jogador cor="#13263a" lado={-1} />
-      </g>
-      {/* bola: percurso no chão > altura > giro; a sombra fica no chão */}
-      <g className="rali-chao">
-        <g className="rali-sombra">
-          <ellipse cx="6" cy="9" rx="9" ry="4.2" fill="#5a4630" />
-        </g>
-        <g className="rali-altura">
-          <g className="rali-giro">
-            <g transform="translate(-9 -9) scale(0.09)">
-              <BolaCorpo id={id} />
-            </g>
-          </g>
-        </g>
-      </g>
     </svg>
   );
 }

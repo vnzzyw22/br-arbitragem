@@ -30,7 +30,7 @@ Os testes rodam contra uma **build de produção em outra pasta**, para não pis
 ```bash
 NEXT_PUBLIC_WHATSAPP_NUMBER=5541900000000 NEXT_DIST_DIR=.next-test npx next build   # número FICTÍCIO, só para testar
 NEXT_PUBLIC_WHATSAPP_NUMBER=5541900000000 NEXT_DIST_DIR=.next-test npx next start -p 3300
-node scripts/interacoes.mjs          # 86 verificações: carregamento, hero, vídeo, tipografia (2 famílias, sem itálico), contraste, nitidez das fotos em tela 2×, cards, menu, formulário, rali, mobile, movimento reduzido
+node scripts/interacoes.mjs          # 88 verificações: carregamento, hero, vídeo, tipografia (2 famílias, sem itálico), contraste, fundo contínuo, nitidez das fotos em tela 2×, cards, menu, formulário, jogada (4 atletas + árbitro, apito depois do toque), mobile, movimento reduzido
 ```
 
 Sem Chrome instalado (ex.: nuvem), aponte para outro Chromium: `CHROME_PATH=/caminho/do/chrome node scripts/interacoes.mjs`.
@@ -47,7 +47,8 @@ O `next/font/google` baixa as fontes no build. Num ambiente sem acesso a `fonts.
 | `autoteste-contraste.mjs [url]` | prova do auditor: injeta texto ruim (rgb e oklab) e um bom; precisa reprovar só os ruins |
 | `prod.mjs <url> [largura]` | peso de carga inicial, LCP e estado sem WhatsApp configurado |
 | `shot.mjs`, `secoes.mjs`, `rolagem.mjs` | capturas (hero, cada seção, posições de rolagem) |
-| `loader.mjs`, `rali.mjs` | capturam o carregamento e congelam o rali da quadra em instantes do ciclo |
+| `loader.mjs`, `rali.mjs` | capturam o carregamento e congelam a jogada da quadra em instantes do ciclo (`.shots/jogada-NN.png`; para vídeo: `ffmpeg -framerate 25 -i q%04d.png …` sobre quadros a 25 qps) |
+| `ferramentas/logo/*.mjs` | reconstroem a logo em SVG a partir do JPG e medem a fidelidade (ver [docs/FERRAMENTAS.md](docs/FERRAMENTAS.md)) |
 
 ## Pendências que dependem do cliente
 

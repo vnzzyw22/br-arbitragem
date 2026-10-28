@@ -11,16 +11,13 @@ em desktop e mobile. Ao fim de cada etapa: commit em branch local; push (na main
 branch de prévia) SÓ com autorização do Vinicius.
 ```
 
-**Se for retomar o refinamento de 28/10 (logo, fundo praia, título da hero, animação com 4 jogadores e árbitro)**, use este:
+**O refinamento de 28/10 (logo, fundo praia, título da hero, jogada com 4 jogadores e árbitro) está pronto na branch local `refinamento-visual-2026-10-28`**, aguardando autorização para publicar (ver HANDOFF.md). Para revisar ou ajustar, use este:
 
 ```
-Continue o projeto da BR Arbitragem Futevôlei no branch refinamento-animacao
-(git fetch && git checkout refinamento-animacao). Leia HANDOFF.md, principalmente a seção
-"Trabalho em andamento", o brief em docs/brief/2026-10-28-refinamento-visual-e-animacao.md
-e docs/FERRAMENTAS.md (como usar a skill /clone-website, que está em .claude/skills).
-Execute os 4 itens na ordem: logo, título da hero, fundo praia, animação. Antes de dar
-por pronto: tsc, lint, suíte de testes e screenshots em desktop e celular. Commit no
-branch; push na main SÓ com autorização do Vinicius.
+Continue o projeto da BR Arbitragem Futevôlei na branch refinamento-visual-2026-10-28.
+Leia HANDOFF.md (seção "Refinamento visual e animação") e DESIGN.md. Antes de dar por
+pronto: tsc, lint, suíte de testes e screenshots em desktop e celular. Commit na branch;
+push (prévia ou main) SÓ com autorização do Vinicius.
 ```
 
 ---

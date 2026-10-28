@@ -4,7 +4,7 @@ Landing page única. Objetivo: transformar o organizador de campeonato em pedido
 
 ## Conceito: "na linha", na praia
 
-O árbitro trabalha na linha: na fita de demarcação da areia, colado na rede, com o apito. A página usa esse vocabulário real: um traço azul (a linha de quadra) abre cada seção, a bola de futevôlei corre por uma linha no topo conforme a página rola e a quadra de areia aparece vista de cima, com um rali em andamento. Desde 28/10 a paleta é a da praia, **areia clara, branco e azul**, a pedido do Vinicius: autoridade calma, com a energia do jogo e a luz da areia.
+O árbitro trabalha na linha: na fita de demarcação da areia, colado na rede, com o apito. A página usa esse vocabulário real: um traço azul (a linha de quadra) abre cada seção, a bola de futevôlei corre por uma linha no topo conforme a página rola e a quadra de areia aparece vista de cima, com uma jogada completa que termina no apito do árbitro. Desde 28/10 a paleta é a da praia, **areia clara, branco e azul**, a pedido do Vinicius: autoridade calma, com a energia do jogo e a luz da areia.
 
 ## Tipografia: exatamente duas famílias, nenhum itálico
 
@@ -12,12 +12,14 @@ Regra do cliente (28/10): duas famílias em todo o site, nenhum itálico em nenh
 
 | Papel | Família | Peso | Largura | Classe |
 |---|---|---|---|---|
-| Títulos (h1, h2), nomes dos campeonatos, marca no rodapé | **Mona Sans** | 500 | 116% (expandida) | `.display` |
+| Título da hero (só o h1) | **Mona Sans** | 800 | 116% (expandida) | `.display .display-hero` |
+| Títulos (h2), nomes dos campeonatos, marca no rodapé | **Mona Sans** | 500 | 116% (expandida) | `.display` |
 | Subtítulos (itens de lista, perguntas do FAQ, apoiadores) | **Mona Sans** | 500 | 108% | `.subtitulo` |
 | Texto, formulário, legendas | **Schibsted Grotesk** | 400 | — | padrão do `body` |
 | Menu, rótulos, opções do formulário | Schibsted Grotesk | 500 | — | `font-medium` |
 | Botões | Schibsted Grotesk | 600 | — | `.btn` |
 
+- **Título da hero (28/10):** pedido de mais força só no h1, sem terceira família. Comparadas sobre o vídeo real, em 1440×900 e 390×844: Mona 700 a 112%, Mona 800 a 120% (letras encostavam), Mona 800 a 100% (perdia a largura que é a assinatura dos títulos) e Schibsted 800 (limpa, mas genérica e sem ligação com os outros títulos). Escolhida: **Mona 800 a 116%, tracking −0,032em, entrelinha 1,0** — a mesma família e a mesma largura dos demais títulos, só com mais peso. No desktop o tamanho voltou a 4,5vw (máx. 4,5rem) para não encostar no árbitro do vídeo.
 - A largura expandida da Mona Sans dá o ar esportivo (placar, camisa de jogo) sem peso nem condensação; o peso 500 mantém a elegância. A Schibsted, estreita e de redação, contrasta com ela e lê bem no celular.
 - Itálico bloqueado no CSS global (`font-style: normal !important` e `font-synthesis: none`) e nas fontes (`style: "normal"` no `next/font`).
 - **Descartadas:** Cormorant, Hedvig Letters Serif, Gloock, Libre Caslon e Instrument Serif ("editorial de IA"); Archivo e Anton (pesadas/condensadas); Epilogue e Jost (genéricas); Hubot Sans (mecânica), Saira (automotiva), Encode Sans (neutra), Familjen e Funnel (informais). Comparadas renderizadas sobre o pôster real da hero.
@@ -38,14 +40,27 @@ Medida nos materiais reais: o azul vem da logo (`#5888C8`) e a areia, do própri
 | `azul` | `#5888C8` | azul da logo: linhas de quadra (só não-texto) | 3,0:1 na areia, 4,0:1 no oceano |
 | `azul-acao` | `#2C5C99` | botões e links sobre claro, foco no claro | branco 6,8:1; na areia 5,6:1 |
 | `ceu` | `#A8C8EE` | destaque e foco sobre escuro, barra de progresso | no oceano 8,4:1 |
-| `agua-clara` | `#DCEAF4` | água rasa: cards claros (Postura, SPFC) | tinta 12,5:1 |
-| `agua` | `#1D5A84` | água: cards de destaque com texto branco (Integridade, Instagram, fecho do FAQ) | branco 7,4:1 (céu só em ícone, 4,3:1) |
+| `agua-clara` | `#DCEAF4` | card claro sobre branco (SPFC) | tinta 12,5:1 |
+| `agua` | `#1D5A84` | (reserva; saiu dos cards em 28/10, ver `mar`) | branco 7,4:1 |
+| `agua-rasa` | `#E3EFEE` | fundo: fim de Quem somos, começo de Compromissos, Dúvidas | tinta 13,1:1 |
+| `agua-media` | `#D3E6E6` | fundo: miolo de Compromissos (cor-base medida pelo auditor) | tinta 11,9:1 |
+| `agua-funda` | `#BCD9DD` | card de água sobre a água média (Postura) | tinta 10,3:1 |
+| `espuma` | `#F7FAF9` | fundo: fim de Compromissos, começo de Campeonatos | tinta 14,6:1 |
+| `areia-umida` | `#E8D8C3` | fundo: fim do Contato | tinta 11:1 |
+| `mar` | `#256069` | azul-esverdeado: cards de destaque com texto branco (Integridade, Instagram, fecho do FAQ) | branco 7,1:1; branco 80% 5,2:1 |
 | `erro` | `#8F1D1D` | erros sobre areia | 7,3:1 |
 | `ouro` | `#D1A640` | só ilustrações (argola do apito, bola) | — |
 
-Ritmo das seções: hero (vídeo) → Em quadra, só no celular (oceano) → Quem somos (areia) → Compromissos (oceano) → Campeonatos (branco) → Dúvidas (oceano) → Contato (areia) → rodapé (oceano-profundo). Seções claras usam a classe `.claro` (texto em tinta e foco em azul de ação).
+**Maré: fundo contínuo (28/10, parte 3).** O brief recusou a alternância mecânica azul-escuro / areia / branco com uma onda entre todas as seções. Agora a página é uma composição só, que desce da areia à água rasa e volta à areia:
 
-**Orla (28/10):** entre seções de areia e água, uma onda baixa e irregular com filete de espuma (`src/components/Orla.tsx`): a seção de baixo entra na de cima como a linha d'água. Estática, decorativa, em todas as transições depois da hero.
+hero (vídeo, véu azul) → **uma única linha d'água** (a areia de Quem somos lava sobre o vídeo; no celular em pé fica depois da faixa Em quadra) → Quem somos em areia clara com luz suave, virando água rasa → Compromissos em água rasa → espuma → Campeonatos em espuma/branco → água rasa → Dúvidas em água rasa → areia → Contato em areia → areia úmida → rodapé azul-profundo.
+
+- Cada seção tem uma **cor-base sólida** (é nela que o auditor mede o texto) e um gradiente que a costura às vizinhas: o fim de uma é exatamente o começo da seguinte (`.fundo-equipe`, `.fundo-agua`, `.fundo-espuma`, `.fundo-duvidas`, `.fundo-contato` em `globals.css`).
+- Profundidade só com manchas de luz muito suaves (gradientes radiais brancos). Sem ondas repetidas, sem textura fotográfica, sem vidro fora da hero. O grão de areia some onde Quem somos vira água (`.textura-fade`).
+- Os únicos blocos escuros são a hero e o rodapé; o azul-marinho e o azul-esverdeado entram como acento nos cards (Amsterdam Cup em `oceano`; Integridade, Instagram e fecho do FAQ em `mar`).
+- Estudo da referência (método do `/clone-website`, só observação): ela usa base de areia `#F4ECDF` e mar `#2F5D66` com texturas fotográficas. Aproveitado o princípio (dois humores, areia e mar, cards que pertencem à superfície); não aproveitadas as texturas, o sol/palmeiras e as ondas recortadas.
+
+Seções claras usam a classe `.claro` (texto em tinta e foco em azul de ação); desde 28/10 são todas, menos hero, Em quadra e rodapé.
 
 ## Hero
 
@@ -68,7 +83,7 @@ Tudo respeita `prefers-reduced-motion` (fica parado).
 - **Títulos:** sobem por máscara ao entrar na tela.
 - **Fotos:** cortina de entrada + paralaxe discreta (zoom máx. 1,08).
 - **Etiquetas de princípios (Quem somos):** entrada escalonada.
-- **Quadra em jogo (Quem somos):** rali em loop de 4,8 s, vista de cima, na areia real com fita branca e rede. A bola cruza a rede, sobe e desce com sombra no chão; dois jogadores (azul e tinta) vão ao encontro dela.
+- **Jogada na quadra (Quem somos, `Futevolei.tsx`):** loop contínuo de 7 s, vista de cima, no mesmo traço simples do rali anterior (areia real, fita branca, rede, jogadores em ombros + cabeça). Quatro atletas, dois de cada lado, e o **árbitro na cadeira junto ao poste** (camisa preta com mangas amarelas, como o uniforme real). B2 saca → A1 recebe e levanta → A2 ataca por cima da rede (salto = escala leve) → a bola cai entre B1 e B2, com anel na areia → o árbitro **estende o braço para o lado que pontuou e apita: duas ondas saem dele 0,28 s depois do toque** → todos voltam e a bola reaparece com B2. A altura da bola é escala, com sombra no chão. É um detalhe da seção, não o foco (pedido do Vinicius: simples, em segundo plano, sem botão, como um vídeo contínuo). Para fora da tela; com movimento reduzido fica parada no quadro do apito (55,5% do ciclo). Uma versão em vista lateral, mais desenhada e com botão de pausa, foi feita e **descartada** pelo Vinicius em 28/10.
 - **Bola de progresso:** corre pela linha azul-céu na base do menu.
 - **Cards (Compromissos, Campeonatos, Dúvidas):** entrada escalonada discreta. Sem hover onde não há clique.
 - **Apito (Contato):** apitaço ao entrar na tela e balanço pela argola. **Bola (rodapé):** quica.
@@ -85,6 +100,7 @@ Pedido do Vinicius: menos texto corrido, mais cards e fotos reais. Base `.cartao
 
 ## Componentes
 
+- **Logo (28/10):** SVG reconstruído a partir dos pixels do único arquivo existente (JPG 150×150), sem redesenhar: B azul, R cinza, bola fantasma e ARBITRAGEM, no disco branco. 52 px no celular e 64 px no desktop, alinhada ao centro da pílula do menu; no rodapé (88 px) e no carregamento (96 px) agora fica nítida em tela 2×. Detalhes e fidelidade em [MIDIA.md](MIDIA.md).
 - **Menu (desktop):** logo à esquerda, pílula de vidro central com Equipe, Compromissos, Campeonatos e Dúvidas, e o CTA à direita. A seção visível fica marcada (`aria-current="location"`). Ao rolar, a barra vira vidro azul-profundo. No celular só a logo (a barra inferior leva ao orçamento).
 - **Botões:** pílula, sem `→`.
 - **Campos:** em caixa (borda fina, branco), rótulo sempre visível, borda vermelha e erro inline quando inválido, foco no primeiro inválido.

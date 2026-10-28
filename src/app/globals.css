@@ -22,11 +22,11 @@
   --color-agua: #1d5a84; /* água: card de destaque com texto branco (7,4:1) */
   /* Maré: o fundo da página desce da areia à água rasa e à espuma (ver .fundo-* abaixo). */
   --color-areia-umida: #e8d8c3; /* areia molhada: fim do Contato */
-  --color-agua-rasa: #e3efee; /* água rasa, a mais clara (tinta 13,6:1) */
+  --color-agua-rasa: #e3efee; /* água rasa, a mais clara (tinta 13,1:1) */
   --color-agua-media: #d3e6e6; /* água rasa, no meio de Compromissos (tinta 11,9:1) */
-  --color-agua-funda: #bcd9dd; /* card de água sobre a água média (tinta 10,1:1) */
+  --color-agua-funda: #bcd9dd; /* card de água sobre a água média (tinta 10,3:1) */
   --color-espuma: #f7faf9;
-  --color-mar: #256069; /* azul-esverdeado: cards de destaque com texto branco (7,3:1; 80% branco 5,4:1) */
+  --color-mar: #256069; /* azul-esverdeado: cards de destaque com texto branco (7,1:1; 80% branco 5,2:1) */
   --color-erro: #8f1d1d;
   --color-ouro: #d1a640; /* só ilustrações (argola do apito, bola) */
   --font-sans: var(--font-schibsted), system-ui, sans-serif;
@@ -227,87 +227,128 @@ html[data-loader="visto"] .loader {
   animation: h-surge 0.8s ease-out var(--d, 0s) both;
 }
 
-/* ── Rali na quadra (vista de cima) ───────────────────────────── */
-/* Ciclo de 4,8 s: a bola cruza a rede (sobe e desce), os jogadores vão ao encontro dela. */
-.rali-chao,
-.rali-altura,
-.rali-giro,
-.rali-sombra,
-.rali-j1,
-.rali-j2 {
+/* ── Jogada na quadra (vista de cima, Futevolei.tsx) ─────────── */
+/* Ciclo de 7 s, tudo no mesmo relógio (sem atrasos): 0% B2 saca · 22% A1 recebe e levanta ·
+   40% A2 ataca (salto = escala) · 48% a bola toca a areia (anel) entre B1 e B2 · 52% o árbitro
+   estende o braço para o lado A e apita (duas ondas) · 84–97% todos voltam, a bola some e
+   reaparece com B2. A altura da bola é escala, como no rali anterior; a sombra fica no chão. */
+.fv [class*="fv-"] {
   transform-box: view-box;
   transform-origin: 0 0;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
-.rali-chao {
-  transform: translate(180px, 90px);
-  animation: rali-chao 4.8s linear infinite;
-}
-.rali-altura {
-  animation: rali-altura 4.8s linear infinite;
-}
-.rali-giro {
-  animation: rali-giro 2.4s linear infinite;
-}
-.rali-sombra {
-  animation: rali-sombra 4.8s linear infinite;
-}
-.rali-j1 {
-  transform: translate(52px, 100px);
-  animation: rali-j1 4.8s ease-in-out infinite;
-}
-.rali-j2 {
-  transform: translate(320px, 92px);
-  animation: rali-j2 4.8s ease-in-out infinite;
-}
-.rali-onda {
+.fv .fv-onda-1,
+.fv .fv-onda-2,
+.fv .fv-anel {
   transform-box: fill-box;
   transform-origin: center;
   opacity: 0;
-  animation: rali-onda 4.8s ease-out infinite;
 }
-.rali-onda-2 {
-  animation-delay: 2.4s;
+.fv-parado [class*="fv-"] {
+  animation-play-state: paused;
 }
 
-@keyframes rali-chao {
-  0% { transform: translate(70px, 104px); }
-  25% { transform: translate(180px, 86px); }
-  50% { transform: translate(290px, 100px); }
-  75% { transform: translate(180px, 92px); }
-  100% { transform: translate(70px, 104px); }
+.fv-bola { animation-name: fv-bola; }
+.fv-bola-chao { animation-name: fv-bola-chao; }
+.fv-bola-altura { animation-name: fv-bola-altura; }
+.fv-bola-sombra { animation-name: fv-bola-sombra; }
+.fv-bola-giro { animation-name: fv-bola-giro; }
+@keyframes fv-bola {
+  0%, 84% { opacity: 1; }
+  88%, 94% { opacity: 0; }
+  100% { opacity: 1; }
 }
-@keyframes rali-altura {
+@keyframes fv-bola-chao {
+  0% { transform: translate(292px, 68px); }
+  22% { transform: translate(70px, 116px); }
+  40% { transform: translate(140px, 74px); }
+  48% { transform: translate(264px, 138px); }
+  52%, 89.9% { transform: translate(272px, 142px); }
+  90%, 100% { transform: translate(292px, 68px); }
+}
+@keyframes fv-bola-altura {
   0% { transform: scale(1); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
-  25% { transform: scale(1.9); animation-timing-function: cubic-bezier(0.7, 0, 0.8, 0.3); }
-  50% { transform: scale(1); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
-  75% { transform: scale(1.9); animation-timing-function: cubic-bezier(0.7, 0, 0.8, 0.3); }
-  100% { transform: scale(1); }
+  11% { transform: scale(1.9); animation-timing-function: cubic-bezier(0.7, 0, 0.8, 0.3); }
+  22% { transform: scale(1.05); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
+  31% { transform: scale(2.1); animation-timing-function: cubic-bezier(0.7, 0, 0.8, 0.3); }
+  40% { transform: scale(1.4); animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
+  48% { transform: scale(1); animation-timing-function: ease-out; }
+  50% { transform: scale(1.15); animation-timing-function: ease-in; }
+  52%, 100% { transform: scale(1); }
 }
-@keyframes rali-giro {
-  to { transform: rotate(360deg); }
+@keyframes fv-bola-sombra {
+  0%, 48%, 52%, 100% { transform: scale(1); opacity: 0.55; }
+  11%, 31% { transform: scale(0.7); opacity: 0.22; }
+  22% { transform: scale(0.95); opacity: 0.5; }
+  40% { transform: scale(0.85); opacity: 0.35; }
 }
-@keyframes rali-sombra {
-  0%, 50%, 100% { transform: scale(1); opacity: 0.55; }
-  25%, 75% { transform: scale(0.72); opacity: 0.25; }
+@keyframes fv-bola-giro {
+  0% { transform: rotate(0deg); }
+  52%, 100% { transform: rotate(-1080deg); }
 }
-@keyframes rali-j1 {
-  0% { transform: translate(52px, 100px); }
-  25% { transform: translate(40px, 92px); }
-  50% { transform: translate(28px, 94px); }
-  75% { transform: translate(42px, 98px); }
-  100% { transform: translate(52px, 100px); }
+
+/* atletas: vão ao encontro da bola; o salto de A2 no ataque e de B1 no bloqueio é uma escala leve */
+.fv-a1 { animation-name: fv-a1; animation-timing-function: ease-in-out; }
+.fv-a2 { animation-name: fv-a2; animation-timing-function: ease-in-out; }
+.fv-b1 { animation-name: fv-b1; animation-timing-function: ease-in-out; }
+.fv-b2 { animation-name: fv-b2; animation-timing-function: ease-in-out; }
+@keyframes fv-a1 {
+  0%, 10% { transform: translate(60px, 118px); }
+  20%, 26% { transform: translate(55px, 121px); }
+  40%, 100% { transform: translate(60px, 118px); }
 }
-@keyframes rali-j2 {
-  0% { transform: translate(320px, 92px); }
-  25% { transform: translate(314px, 94px); }
-  50% { transform: translate(302px, 100px); }
-  75% { transform: translate(314px, 96px); }
-  100% { transform: translate(320px, 92px); }
+@keyframes fv-a2 {
+  0%, 26% { transform: translate(128px, 70px); }
+  38% { transform: translate(135px, 73px); }
+  40% { transform: translate(137px, 73px) scale(1.14); }
+  44%, 84% { transform: translate(136px, 73px); }
+  97%, 100% { transform: translate(128px, 70px); }
 }
-@keyframes rali-onda {
-  0% { transform: scale(0.2); opacity: 0.8; }
-  9% { transform: scale(1.5); opacity: 0; }
-  100% { transform: scale(1.5); opacity: 0; }
+@keyframes fv-b1 {
+  0%, 34% { transform: translate(232px, 104px); }
+  41% { transform: translate(203px, 93px) scale(1.12); }
+  46%, 84% { transform: translate(206px, 95px); }
+  97%, 100% { transform: translate(232px, 104px); }
+}
+@keyframes fv-b2 {
+  0%, 40% { transform: translate(300px, 66px); }
+  49%, 84% { transform: translate(287px, 115px); }
+  97%, 100% { transform: translate(300px, 66px); }
+}
+
+/* árbitro: o braço se estende para o lado A (que pontuou) e as ondas do apito saem dele */
+.fv-arb-braco { animation-name: fv-arb-braco; }
+.fv-onda-1 { animation-name: fv-onda-1; }
+.fv-onda-2 { animation-name: fv-onda-2; }
+.fv-anel { animation-name: fv-anel; }
+.fv .fv-onda-1,
+.fv .fv-onda-2,
+.fv .fv-anel {
+  animation-timing-function: cubic-bezier(0.2, 0.6, 0.35, 1);
+}
+@keyframes fv-arb-braco {
+  0%, 49% { transform: scale(0); }
+  52%, 80% { transform: scale(1); }
+  86%, 100% { transform: scale(0); }
+}
+@keyframes fv-onda-1 {
+  0%, 51.9% { transform: scale(0.25); opacity: 0; }
+  52% { transform: scale(0.35); opacity: 1; }
+  58% { transform: scale(1.45); opacity: 0.75; }
+  63%, 100% { transform: scale(1.9); opacity: 0; }
+}
+@keyframes fv-onda-2 {
+  0%, 54.9% { transform: scale(0.25); opacity: 0; }
+  55% { transform: scale(0.35); opacity: 1; }
+  61% { transform: scale(1.45); opacity: 0.75; }
+  66%, 100% { transform: scale(1.9); opacity: 0; }
+}
+@keyframes fv-anel {
+  0%, 47.9% { transform: scale(0.2); opacity: 0; }
+  48% { transform: scale(0.25); opacity: 1; }
+  58%, 100% { transform: scale(1.5); opacity: 0; }
 }
 
 /* Bola quicando (rodapé) e apito balançando (contato) */
@@ -524,13 +565,6 @@ section[id] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rali-chao,
-  .rali-altura,
-  .rali-giro,
-  .rali-sombra,
-  .rali-j1,
-  .rali-j2,
-  .rali-onda,
   .quica,
   .apito-balanco {
     animation: none !important;
@@ -548,6 +582,14 @@ section[id] {
     animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  /* A jogada fica parada no quadro do apito (55,5% do ciclo): bola na areia, braço do árbitro
+     estendido e as duas ondas visíveis. Especificidade maior que a regra * acima. */
+  .fv [class*="fv-"] {
+    animation-duration: 7s !important;
+    animation-delay: -3.885s !important;
+    animation-iteration-count: infinite !important;
+    animation-play-state: paused !important;
   }
 }
 

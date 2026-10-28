@@ -144,6 +144,7 @@ async function nova(opts = {}, esperarLoader = true) {
       h1: f("h1").fontFamily,
       h1peso: f("h1").fontWeight,
       h2: f("#qualidade h2").fontFamily,
+      h2peso: f("#qualidade h2").fontWeight,
       corpo: f("body").fontFamily,
       botao: f("#topo a[href='#contato']").fontFamily,
       campo: f("#campo-nome").fontFamily,
@@ -153,9 +154,9 @@ async function nova(opts = {}, esperarLoader = true) {
   ok("exatamente duas famílias no texto (Mona Sans e Schibsted Grotesk)", tipo.fams.length === 2 && duas(tipo.fams), JSON.stringify(tipo.fams));
   ok("nenhuma fonte extra carregada", duas(tipo.carregadas), JSON.stringify(tipo.carregadas));
   ok(
-    "títulos em Mona Sans 500; texto, botões e campos em Schibsted",
-    /Mona Sans/.test(tipo.h1) && /Mona Sans/.test(tipo.h2) && tipo.h1peso === "500" && [tipo.corpo, tipo.botao, tipo.campo].every((x) => /Schibsted/.test(x)),
-    JSON.stringify({ h1: tipo.h1.split(",")[0], peso: tipo.h1peso, botao: tipo.botao.split(",")[0] }),
+    "títulos em Mona Sans (h1 da hero 800, demais 500); texto, botões e campos em Schibsted",
+    /Mona Sans/.test(tipo.h1) && /Mona Sans/.test(tipo.h2) && tipo.h1peso === "800" && tipo.h2peso === "500" && [tipo.corpo, tipo.botao, tipo.campo].every((x) => /Schibsted/.test(x)),
+    JSON.stringify({ h1: tipo.h1.split(",")[0], peso: tipo.h1peso, h2peso: tipo.h2peso, botao: tipo.botao.split(",")[0] }),
   );
   ok("nenhum itálico na página", tipo.italicos.length === 0, tipo.italicos.slice(0, 4).join(" | "));
 
@@ -202,11 +203,9 @@ async function nova(opts = {}, esperarLoader = true) {
     compromissos: document.querySelectorAll("#qualidade article").length,
     comFoto: [...document.querySelectorAll("#qualidade article")].filter((a) => a.querySelector("img")).map((a) => a.querySelector("h3").innerText),
     icones: document.querySelectorAll("#qualidade article h3").length === document.querySelectorAll("#qualidade article svg").length,
-    orlas: [...document.querySelectorAll("main > div[aria-hidden=true] svg")].filter((v) => v.getBoundingClientRect().height > 0).length,
   }));
   ok("Quem somos com 2 fotos reais da equipe, com texto alternativo", cards.equipeFotos.length === 2 && cards.equipeFotos.every((n) => n > 20), JSON.stringify(cards.equipeFotos));
   ok("5 compromissos em cards, foto em Condução e em Postura, um ícone por card", cards.compromissos === 5 && cards.comFoto.join(",") === "Condução responsável,Postura profissional" && cards.icones, JSON.stringify(cards.comFoto));
-  ok("transições de orla entre areia e água (5 no desktop)", cards.orlas === 5, `(${cards.orlas})`);
 
   // Formulário: validação com campos vazios
   await page.evaluate(() => document.querySelector("#contato").scrollIntoView({ behavior: "instant" }));
@@ -249,27 +248,75 @@ async function nova(opts = {}, esperarLoader = true) {
   const orn = await page.evaluate(() => ({ apitoContato: document.querySelectorAll("#contato svg").length, bolaRodape: document.querySelectorAll("footer svg").length }));
   ok("apito ilustrado no contato e bola no rodapé", orn.apitoContato >= 1 && orn.bolaRodape >= 1, JSON.stringify(orn));
 
-  // rali na quadra: a bola realmente se move, sobe e desce, e os jogadores acompanham
+  // jogada na quadra (Futevolei.tsx): primeiro, de verdade em movimento
   await page.evaluate(() => document.querySelector("#equipe .quadra-card svg").scrollIntoView({ behavior: "instant", block: "center" }));
   await page.waitForTimeout(800);
-  const rali = await page.evaluate(async () => {
-    const pos = [];
-    for (let i = 0; i < 40; i++) {
-      const m = new DOMMatrix(getComputedStyle(document.querySelector("#equipe .rali-chao")).transform);
-      const a = new DOMMatrix(getComputedStyle(document.querySelector("#equipe .rali-altura")).transform);
-      const j = new DOMMatrix(getComputedStyle(document.querySelector("#equipe .rali-j1")).transform);
-      pos.push({ x: Math.round(m.e), esc: +a.a.toFixed(2), j1: Math.round(j.e) });
-      await new Promise((r) => setTimeout(r, 140));
-    }
-    return pos;
+  const andando = await page.evaluate(async () => {
+    const x = () => new DOMMatrix(getComputedStyle(document.querySelector("#equipe .fv-bola-chao")).transform).e;
+    const a = x();
+    await new Promise((r) => setTimeout(r, 600));
+    return { antes: Math.round(a), depois: Math.round(x()), estado: document.querySelector("#equipe svg.fv").getAnimations({ subtree: true })[0]?.playState };
   });
-  const xs = rali.map((p) => p.x);
-  const esc = rali.map((p) => p.esc);
-  const j1 = rali.map((p) => p.j1);
-  ok("bola da quadra cruza de um lado ao outro (rali)", Math.max(...xs) - Math.min(...xs) > 120, JSON.stringify(xs));
-  // 40 leituras x 140 ms = 5,6 s: cobre o ciclo de 4,8 s com passo fino (400 ms caía sempre nas mesmas fases e às vezes pulava o ponto mais baixo)
-  ok("bola sobe e desce (altura varia)", Math.max(...esc) > 1.7 && Math.min(...esc) < 1.35, JSON.stringify(esc));
-  ok("jogador se desloca junto com a bola", Math.max(...j1) - Math.min(...j1) > 8, JSON.stringify(j1));
+  ok("jogada em loop contínuo enquanto visível", andando.antes !== andando.depois && andando.estado === "running", JSON.stringify(andando));
+
+  // fora da tela a jogada para (CPU e bateria)
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await page.waitForTimeout(700);
+  const parada = await page.evaluate(() => {
+    const svg = document.querySelector("#equipe svg.fv");
+    return { classe: svg.classList.contains("fv-parado"), estados: [...new Set(svg.getAnimations({ subtree: true }).map((a) => a.playState))] };
+  });
+  ok("jogada para fora da tela", parada.classe && parada.estados.length === 1 && parada.estados[0] === "paused", JSON.stringify(parada));
+  await page.evaluate(() => document.querySelector("#equipe .quadra-card svg").scrollIntoView({ behavior: "instant", block: "center" }));
+  await page.waitForTimeout(800);
+
+  // (play() da Web Animations tira o controle do CSS: por isso a pausa fora da tela é checada antes)
+  // depois, o ciclo inteiro lido em instantes exatos (Web Animations: currentTime), sem depender do relógio do teste
+  const jogada = await page.evaluate(() => {
+    const svg = document.querySelector("#equipe svg.fv");
+    const anims = svg.getAnimations({ subtree: true });
+    const T = anims[0].effect.getComputedTiming().duration;
+    const em = (t) => anims.forEach((a) => (a.pause(), (a.currentTime = t)));
+    const m = (sel) => new DOMMatrix(getComputedStyle(svg.querySelector(sel)).transform);
+    const op = (sel) => +getComputedStyle(svg.querySelector(sel)).opacity;
+    const amostras = [];
+    for (let t = 0; t < T; t += 20) {
+      em(t);
+      amostras.push({
+        t,
+        bx: m(".fv-bola-chao").e,
+        alt: m(".fv-bola-altura").a,
+        onda: op(".fv-onda-1"),
+        braco: m(".fv-arb-braco").a,
+        a: [m(".fv-a1").e, m(".fv-a2").e],
+        b: [m(".fv-b1").e, m(".fv-b2").e],
+      });
+    }
+    anims.forEach((a) => a.play());
+    const rede = 180;
+    const toque = amostras.find((p) => p.t > T * 0.4 && p.bx > rede && p.alt <= 1.001); // a bola chega à areia do lado B
+    const apito = amostras.find((p) => p.onda > 0.05);
+    return {
+      T,
+      atletas: svg.querySelectorAll(".fv-a1, .fv-a2, .fv-b1, .fv-b2").length,
+      arbitro: !!svg.querySelector(".fv-arb-braco"),
+      ladoCerto: amostras.every((p) => p.a.every((x) => x < rede) && p.b.every((x) => x > rede)),
+      xs: [Math.round(Math.min(...amostras.map((p) => p.bx))), Math.round(Math.max(...amostras.map((p) => p.bx)))],
+      alturas: [+Math.min(...amostras.map((p) => p.alt)).toFixed(2), +Math.max(...amostras.map((p) => p.alt)).toFixed(2)],
+      toque: toque?.t,
+      apito: apito?.t,
+      ondaAntes: Math.max(...amostras.filter((p) => toque && p.t < toque.t).map((p) => p.onda)),
+      bracoNoApito: apito && +apito.braco.toFixed(2),
+    };
+  });
+  ok("jogada: 4 atletas (2 de cada lado, sempre no seu lado da rede) e 1 árbitro", jogada.atletas === 4 && jogada.arbitro && jogada.ladoCerto, JSON.stringify(jogada));
+  ok("jogada: a bola cruza a rede e sobe e desce", jogada.xs[0] < 100 && jogada.xs[1] > 260 && jogada.alturas[1] > 1.8 && jogada.alturas[0] <= 1, JSON.stringify({ xs: jogada.xs, alturas: jogada.alturas }));
+  ok(
+    "jogada: o apito (ondas) só vem depois que a bola toca a areia, até 0,5 s depois, com o braço do árbitro estendido",
+    jogada.toque > 0 && jogada.apito > jogada.toque && jogada.apito - jogada.toque <= 500 && jogada.ondaAntes === 0 && jogada.bracoNoApito > 0.8,
+    JSON.stringify({ toque: jogada.toque, apito: jogada.apito, ondaAntes: jogada.ondaAntes, braco: jogada.bracoNoApito }),
+  );
+
 
   // bola de progresso correndo pela linha e paralaxe da hero
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
@@ -349,8 +396,18 @@ async function nova(opts = {}, esperarLoader = true) {
   const temVideo = await page.locator("#topo video").count();
   const poster = await page.locator("#topo img").count();
   ok("prefers-reduced-motion: sem vídeo, pôster no lugar", temVideo === 0 && poster >= 1, `video=${temVideo} poster=${poster}`);
-  const rm = await page.evaluate(() => ({ anim: getComputedStyle(document.querySelector("#equipe .rali-chao")).animationName, prog: document.querySelectorAll("[data-progresso]").length }));
-  ok("prefers-reduced-motion: rali parado e sem bola de progresso", rm.anim === "none" && rm.prog === 0, JSON.stringify(rm));
+  const rm = await page.evaluate(() => {
+    const svg = document.querySelector("#equipe svg.fv");
+    const onda = svg.querySelector(".fv-onda-1");
+    return {
+      estado: getComputedStyle(onda).animationPlayState,
+      onda: +(+getComputedStyle(onda).opacity).toFixed(2),
+      onda2: +(+getComputedStyle(svg.querySelector(".fv-onda-2")).opacity).toFixed(2),
+      braco: +new DOMMatrix(getComputedStyle(svg.querySelector(".fv-arb-braco")).transform).a.toFixed(2),
+      prog: document.querySelectorAll("[data-progresso]").length,
+    };
+  });
+  ok("prefers-reduced-motion: jogada parada no quadro do apito (braço estendido, ondas visíveis) e sem bola de progresso", rm.estado === "paused" && rm.onda > 0.3 && rm.onda2 > 0.3 && rm.braco > 0.9 && rm.prog === 0, JSON.stringify(rm));
   const transform = await page.evaluate(() => getComputedStyle(document.querySelector("#topo h1 span span")).transform);
   ok("prefers-reduced-motion: título sem deslocamento", transform === "none" || transform === "matrix(1, 0, 0, 1, 0, 0)", transform);
   await ctx.close();

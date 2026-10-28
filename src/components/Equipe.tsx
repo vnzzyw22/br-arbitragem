@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { EQUIPE } from "@/content/site";
 import { Entrada, FotoParallax, Linha, Revela, Titulo } from "./Motion";
-import { QuadraEmJogo } from "./Ornamentos";
+import { JogadaFutevolei } from "./Futevolei";
 
 // Composição editorial: a equipe em quadra é a imagem principal; o retrato de um árbitro entra por
 // cima, com moldura branca, como uma foto impressa. Texto curto, princípios em etiquetas e a quadra
 // em jogo num card. Fotos limitadas à resolução nativa (equipe 1128 px → até 520 px com a paralaxe;
-// retrato 1080 px → até 230 px). Um só desenho da quadra: a grade o reposiciona no desktop.
+// retrato 1080 px → até 230 px). Um só desenho da jogada: a grade o reposiciona no desktop.
 export function Equipe() {
   return (
     <section id="equipe" className="claro textura-areia textura-fade fundo-equipe relative overflow-hidden pb-24 pt-14 lg:pb-32 lg:pt-20">
@@ -58,9 +58,9 @@ export function Equipe() {
             </div>
           </figure>
 
-          {/* quadra de areia vista de cima, com um rali em andamento, num card de "prancheta" */}
+          {/* jogada de futevôlei com os quatro atletas e o árbitro, num card de "prancheta" */}
           <div className="quadra-card cartao bg-white/60 p-3 sm:p-4 lg:col-span-5 lg:row-start-2">
-            <QuadraEmJogo className="block w-full" />
+            <JogadaFutevolei />
           </div>
         </div>
       </div>

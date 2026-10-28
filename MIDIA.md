@@ -7,7 +7,8 @@
 | Hero desktop | `public/video/hero/desktop.mp4` + `desktop-poster.webp` | 1920×1080, 7,8 s, sem áudio, 2,3 MB (tríptico) |
 | Hero mobile | `public/video/hero/mobile.mp4` + `mobile-poster.webp` | 720×1280, 10 s, sem áudio, 1 MB (reel do árbitro) |
 | Em quadra (celular) | `public/video/quadra/jogada.mp4`, `arena.mp4` + pôsteres `.webp` | 600×1080 cada, 7,8 s, ~950 KB: painéis esquerdo e direito do `desktop.mp4`, sem recorte nem ampliação (`ffmpeg -i desktop.mp4 -vf crop=600:1080:0:0` / `crop=600:1080:1320:0`, crf 28, maxrate 900k). Com os reels originais 720×1280 ficariam um pouco mais nítidos |
-| Logo | `src/assets/identidade/logo-br.jpg` | 150×150 (foto de perfil do Instagram) |
+| Logo (usada no site) | `src/assets/identidade/logo-br.svg` | SVG de 20 KB reconstruído dos pixels do JPG abaixo (28/10, ver "Logo em SVG") |
+| Logo (original) | `src/assets/identidade/logo-br.jpg` | 150×150 (foto de perfil do Instagram); fica como fonte da reconstrução |
 | Quem somos (principal) | `src/assets/equipe/equipe-quadra.jpg` | 1128×1128, até ~530 px na tela (com a paralaxe) |
 | Quem somos (detalhe) | `src/assets/equipe/arbitro-sorrindo.jpg` | 1080×1311, até 220 px |
 | Compromissos · Condução | `src/assets/equipe/arbitro-apito.jpg` | 1080×1350, card de até ~545 px |
@@ -15,6 +16,14 @@
 | Campeonatos · Arena Sun7 | `src/assets/campeonatos/arena-sun7.jpg` | 2000×2000, capa de até ~900 px |
 | Campeonatos · Torneio do Bosque | `src/assets/campeonatos/torneio-do-bosque.webp` | 1080×1080, capa de até ~440 px |
 | Campeonatos · Queiróz Cup | `src/assets/campeonatos/queiroz-cup-aerea.webp` | 320×400 (quadro de 13,0 s do vídeo do evento), miniatura de até 160 px |
+
+### Logo em SVG (28/10)
+
+Só existe um arquivo de logo em todo o histórico (o JPG 150×150); a referência `br-arbitragem-one` não tem a logo original (é uma releitura em Anton). Por isso o SVG foi **traçado a partir dos próprios pixels**, sem redesenhar nenhuma letra: separação das camadas por cor no ponto de meia cobertura da borda (B azul, R e ARBITRAGEM em cinza, bola fantasma em cinza claro), ampliação 8× e contorno com `potrace`; as cores são a média do miolo de cada camada no original (`#5D8AC6`, `#7D7D7D`, `#E6E8E6`). Método e scripts: [docs/FERRAMENTAS.md](docs/FERRAMENTAS.md).
+
+- **Fidelidade medida** (SVG renderizado contra o JPG, dentro do disco): erro médio **2,4/255 a 150 px**, 0,25% dos pixels com diferença forte; 3,9/255 a 300 px (aí comparado com o original ampliado, que já é borrado).
+- **Aro:** o círculo cinza do JPG tem raio ≈ 77,5 px num quadro de 150 (medido por ajuste de círculo), ou seja, fica fora do corte circular que o site sempre usou; dentro de r ≤ 75 o original é todo branco. O SVG reproduz o que aparece: disco branco sem aro.
+- **Limite:** a palavra ARBITRAGEM tem ~5 px de altura no original. O traçado é fiel no tamanho em que ela aparece (2 a 3 px no cabeçalho, ~3 px no rodapé e no carregamento); ampliada muito, as letras ficam arredondadas. Para usos grandes (banner, camisa), só com o **vetor oficial do cliente**.
 
 Regra de tamanho: uma foto nunca aparece maior que a sua resolução nativa permite em tela de alta densidade (2×). A suíte mede isso (`fotos nítidas em tela 2×`): baixa o arquivo realmente entregue e exige pelo menos 90% dos pixels que a caixa pede (hoje o pior caso é 95%). Quando chegar arquivo maior, aumentar o limite (`max-w` e `sizes`) junto.
 
@@ -107,5 +116,5 @@ As fotos da seção **Campeonatos** (Arena Sun7, Torneio do Bosque, SPFC Futevô
 | Quem somos | foto da equipe uniformizada, **arquivo original** (não do Instagram) | ≥ 2000 px no lado maior, 5:4 | a atual (`equipe-quadra`) tem 1128 px: limita a foto a ~530 px na tela |
 | Campeonatos | foto original de cada evento (SPFC Futevôlei, Desafio ao Galo, Amsterdam Cup, e maior para a Queiróz Cup) | ≥ 1600 px | hoje 3 eventos só com o nome e a Queiróz Cup só em miniatura (fonte de 540 px) |
 | Compromissos | retrato do árbitro em ação (apito, sinalização) | 4:5, ≥ 1600×2000 | a atual tem 1080×1350 |
-| Identidade | logo em **vetor (SVG)** ou PNG transparente | ≥ 1000 px | hoje é a foto de perfil 150×150 com fundo branco |
+| Identidade | logo em **vetor (SVG)** ou PNG transparente | ≥ 1000 px | hoje é um SVG traçado da foto de perfil 150×150 (fiel em tamanho pequeno; o vetor oficial resolve qualquer tamanho) |
 | Rodapé | logos de DRG Consultoria, Sandhit, Evolud, Redução Saúde e Auttotag (SVG) | — | hoje só os nomes |
