@@ -9,7 +9,7 @@ import { QuadraEmJogo } from "./Ornamentos";
 // retrato 1080 px → até 230 px). Um só desenho da quadra: a grade o reposiciona no desktop.
 export function Equipe() {
   return (
-    <section id="equipe" className="claro textura-areia relative overflow-hidden bg-areia pb-24 pt-14 lg:pb-32 lg:pt-20">
+    <section id="equipe" className="claro textura-areia textura-fade fundo-equipe relative overflow-hidden pb-24 pt-14 lg:pb-32 lg:pt-20">
       <div className="wrap relative">
         <Linha cor="bg-azul" />
         <div className="mt-12 grid items-start gap-x-14 gap-y-12 lg:mt-16 lg:grid-cols-12">

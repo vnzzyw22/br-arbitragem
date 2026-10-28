@@ -92,7 +92,7 @@ export function Contato() {
   };
 
   return (
-    <section id="contato" className="claro textura-areia relative overflow-hidden bg-areia pb-24 pt-14 lg:pb-32 lg:pt-20">
+    <section id="contato" className="claro textura-areia fundo-contato relative overflow-hidden pb-24 pt-14 lg:pb-32 lg:pt-20">
       <div className="wrap relative">
         <Linha cor="bg-azul" />
         <div className="mt-12 lg:mt-16 lg:flex lg:items-end lg:justify-between lg:gap-12">

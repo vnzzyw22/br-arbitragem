@@ -19,18 +19,14 @@ export default function Home() {
       <main id="conteudo">
         <Hero />
         <EmQuadra />
-        {/* linha d'água entre areia e mar (a faixa Em quadra só existe no celular em pé) */}
+        {/* única linha d'água fora da hero: só no celular em pé, onde a faixa Em quadra (azul)
+            separa a hero da areia. Daí em diante o fundo muda por gradiente (.fundo-* no CSS). */}
         <Orla de="oceano" para="areia" className="paisagem:hidden" />
         <Equipe />
-        <Orla de="areia" para="oceano" />
         <Qualidade />
-        <Orla de="oceano" para="branco" />
         <Campeonatos />
-        <Orla de="branco" para="oceano" />
         <Faq />
-        <Orla de="oceano" para="areia" />
         <Contato />
-        <Orla de="areia" para="oceano-profundo" />
       </main>
       <Rodape />
       <CtaMobile />

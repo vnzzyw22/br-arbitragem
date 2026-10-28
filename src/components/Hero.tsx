@@ -5,6 +5,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { HERO } from "@/content/site";
 import { economiaDeDados } from "@/lib/economia";
 import { HERO_MIDIA } from "@/lib/midia";
+import { Orla } from "./Orla";
 
 // Substituir o filme: trocar os arquivos em public/video/hero e aumentar VERSAO em src/lib/midia.ts (ver MIDIA.md).
 // Os reels do cliente são verticais: no desktop entra um tríptico 1920×1080 (3 recortes lado
@@ -155,6 +156,10 @@ export function Hero() {
           </div>
         </div>
       </motion.div>
+
+      {/* A linha d'água: a areia de Quem somos lava sobre o vídeo. Só no desktop (no celular em pé
+          vem a faixa Em quadra, e a onda fica depois dela). Abaixo do texto: não cobre nada. */}
+      <Orla de="transparente" para="areia" className="absolute inset-x-0 bottom-0 z-10 hidden !h-12 paisagem:block lg:!h-14" />
     </section>
   );
 }

@@ -437,11 +437,22 @@ async function nova(opts = {}, esperarLoader = true) {
 {
   const { ctx, page } = await nova();
   const a = await auditarContraste(page);
+  // fundo contínuo (maré): cor-base de cada seção (é nela que o texto é medido) + gradiente que costura as bordas
+  const costura = await page.evaluate(() => {
+    const ids = ["equipe", "qualidade", "campeonatos", "duvidas", "contato"];
+    const gradiente = ids.map((id) => getComputedStyle(document.getElementById(id)).backgroundImage.includes("linear-gradient"));
+    // linhas d'água (Orla) visíveis entre as seções: no desktop nenhuma; a única fica sobre o vídeo da hero
+    const orlas = [...document.querySelectorAll("main > div[aria-hidden=true]")].filter((e) => getComputedStyle(e).display !== "none").length;
+    const onda = document.querySelector("#topo > div[aria-hidden=true] > svg");
+    const orlaHero = !!onda && getComputedStyle(onda.parentElement).display !== "none";
+    return { gradiente, orlas, orlaHero };
+  });
   ok(
-    "seções alternam areia, azul profundo e branco",
-    a.fundos.equipe === "rgb(242, 232, 220)" && a.fundos.qualidade === "rgb(16, 43, 68)" && a.fundos.campeonatos === "rgb(255, 255, 255)" && a.fundos.duvidas === "rgb(16, 43, 68)" && a.fundos.contato === "rgb(242, 232, 220)",
-    JSON.stringify(a.fundos),
+    "fundo contínuo: areia → água rasa → espuma → água rasa → areia, cada seção com gradiente",
+    a.fundos.equipe === "rgb(242, 232, 220)" && a.fundos.qualidade === "rgb(211, 230, 230)" && a.fundos.campeonatos === "rgb(255, 255, 255)" && a.fundos.duvidas === "rgb(227, 239, 238)" && a.fundos.contato === "rgb(242, 232, 220)" && costura.gradiente.every(Boolean),
+    JSON.stringify({ ...a.fundos, gradiente: costura.gradiente }),
   );
+  ok("uma única linha d'água no desktop (sobre o vídeo da hero), sem ondas entre as seções", costura.orlas === 0 && costura.orlaHero, JSON.stringify(costura));
   ok(`contraste ≥ 4,5:1 (3:1 em texto grande) em todo texto fora da hero (desktop, ${a.medidos} elementos)`, a.falhas.length === 0, a.falhas.slice(0, 4).join(" | "));
 
   // menu: a seção no meio da tela fica marcada

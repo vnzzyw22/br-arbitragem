@@ -99,7 +99,7 @@ function Cartao({ e }: { e: Evento }) {
 
 export function Campeonatos() {
   return (
-    <section id="campeonatos" className="claro bg-branco pb-24 pt-14 lg:pb-32 lg:pt-20">
+    <section id="campeonatos" className="claro fundo-espuma pb-24 pt-14 lg:pb-32 lg:pt-20">
       <div className="wrap">
         <Linha cor="bg-azul" />
         <div className="mt-12 flex flex-wrap items-end justify-between gap-x-10 gap-y-4 lg:mt-16">
@@ -121,7 +121,7 @@ export function Campeonatos() {
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cartao cartao-escuro group flex w-full flex-col justify-between gap-8 bg-agua p-6 text-white transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[#1a5179] sm:p-7 lg:min-h-[21rem]"
+                className="cartao cartao-escuro group flex w-full flex-col justify-between gap-8 bg-mar p-6 text-white transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[#1c4e56] sm:p-7 lg:min-h-[21rem]"
               >
                 <span className="text-white/80">Acompanhe a equipe</span>
                 <span>

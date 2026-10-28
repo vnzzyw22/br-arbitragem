@@ -11,9 +11,9 @@ import { Entrada, Linha, Titulo } from "./Motion";
 const LAYOUT = [
   { superficie: "bg-white text-tinta", grade: "lg:col-span-5 lg:row-span-2", escuro: false },
   { superficie: "textura-areia bg-areia text-tinta", grade: "lg:col-span-7", escuro: false },
-  { superficie: "bg-agua-clara text-tinta", grade: "lg:col-span-7", escuro: false },
+  { superficie: "bg-agua-funda text-tinta", grade: "lg:col-span-7", escuro: false },
   { superficie: "bg-white text-tinta", grade: "lg:col-span-5", escuro: false },
-  { superficie: "bg-agua text-white", grade: "lg:col-span-7", escuro: true },
+  { superficie: "bg-mar text-white", grade: "lg:col-span-7", escuro: true },
 ];
 
 function Cabecalho({ item, escuro }: { item: Compromisso; escuro: boolean }) {
@@ -99,9 +99,9 @@ function Cartao({ item, i }: { item: Compromisso; i: number }) {
 
 export function Qualidade() {
   return (
-    <section id="qualidade" className="relative overflow-hidden bg-oceano pb-24 pt-14 lg:pb-32 lg:pt-20">
+    <section id="qualidade" className="claro fundo-agua relative overflow-hidden pb-24 pt-14 lg:pb-32 lg:pt-20">
       <div className="wrap relative">
-        <Linha />
+        <Linha cor="bg-azul" />
         <Titulo className="display mt-12 max-w-[18ch] text-[clamp(1.85rem,7.4vw,2.7rem)] lg:mt-16 lg:text-[clamp(2.1rem,3.4vw,3.7rem)]">
           {QUALIDADE.titulo}
         </Titulo>

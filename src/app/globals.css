@@ -20,6 +20,13 @@
   --color-ceu: #a8c8ee; /* destaque e foco sobre escuro (8,4:1 no oceano) */
   --color-agua-clara: #dceaf4; /* água rasa: cards claros (tinta 12,5:1) */
   --color-agua: #1d5a84; /* água: card de destaque com texto branco (7,4:1) */
+  /* Maré: o fundo da página desce da areia à água rasa e à espuma (ver .fundo-* abaixo). */
+  --color-areia-umida: #e8d8c3; /* areia molhada: fim do Contato */
+  --color-agua-rasa: #e3efee; /* água rasa, a mais clara (tinta 13,6:1) */
+  --color-agua-media: #d3e6e6; /* água rasa, no meio de Compromissos (tinta 11,9:1) */
+  --color-agua-funda: #bcd9dd; /* card de água sobre a água média (tinta 10,1:1) */
+  --color-espuma: #f7faf9;
+  --color-mar: #256069; /* azul-esverdeado: cards de destaque com texto branco (7,3:1; 80% branco 5,4:1) */
   --color-erro: #8f1d1d;
   --color-ouro: #d1a640; /* só ilustrações (argola do apito, bola) */
   --font-sans: var(--font-schibsted), system-ui, sans-serif;
@@ -91,6 +98,44 @@ body {
   opacity: 0.5;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.33 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* ── Maré: fundo contínuo da areia à água ─────────────────────── */
+/* Cada seção tem uma cor-base sólida (é nela que o texto é medido) e um gradiente que a costura
+   às vizinhas: o fim de uma é exatamente o começo da seguinte. Manchas de luz muito suaves dão
+   profundidade sem textura repetida. Equipe → Compromissos → Campeonatos → Dúvidas → Contato. */
+.fundo-equipe {
+  background-color: var(--color-areia);
+  background-image:
+    radial-gradient(60% 30% at 90% 24%, rgb(255 255 255 / 0.5), transparent 70%),
+    linear-gradient(180deg, var(--color-areia) 0%, var(--color-areia) 74%, var(--color-agua-rasa) 100%);
+}
+.fundo-agua {
+  background-color: var(--color-agua-media);
+  background-image:
+    radial-gradient(55% 30% at 8% 12%, rgb(255 255 255 / 0.55), transparent 70%),
+    radial-gradient(50% 28% at 96% 62%, rgb(255 255 255 / 0.35), transparent 70%),
+    linear-gradient(180deg, var(--color-agua-rasa) 0%, var(--color-agua-media) 30%, var(--color-agua-media) 72%, var(--color-espuma) 100%);
+}
+.fundo-espuma {
+  background-color: #fff;
+  background-image: linear-gradient(180deg, var(--color-espuma) 0%, #fff 14%, #fff 76%, var(--color-agua-rasa) 100%);
+}
+.fundo-duvidas {
+  background-color: var(--color-agua-rasa);
+  background-image:
+    radial-gradient(50% 30% at 92% 14%, rgb(255 255 255 / 0.6), transparent 70%),
+    linear-gradient(180deg, var(--color-agua-rasa) 0%, var(--color-agua-rasa) 58%, var(--color-areia) 100%);
+}
+.fundo-contato {
+  background-color: var(--color-areia);
+  background-image: linear-gradient(180deg, var(--color-areia) 0%, var(--color-areia) 68%, var(--color-areia-umida) 100%);
+}
+
+/* O grão de areia some onde a seção vira água (só nas seções de fundo contínuo). */
+.textura-fade::before {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 92%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 92%);
 }
 
 .pular {
