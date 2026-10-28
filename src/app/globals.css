@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-/* Tokens — ver DESIGN.md. Paleta do brief, ouro calibrado no amarelo real do uniforme. */
+/* Tokens — ver DESIGN.md. Praia: areia clara (medida no próprio vídeo), branco e azul (o da logo).
+   O amarelo e o preto ficam só nas ilustrações (bola, apito), como na bola e no uniforme reais. */
 /* Celular baixo em pé (ex.: 360×640): a hero compacta para não cobrir o rosto do árbitro. */
 @custom-variant baixo (@media (max-height: 700px) and (max-aspect-ratio: 1/1));
 
@@ -8,21 +9,36 @@
 @custom-variant paisagem (@media (min-aspect-ratio: 1/1));
 
 @theme inline {
-  --color-preto: #0a0a0a;
-  --color-grafite: #17191c;
-  --color-prata: #a6a9ae;
-  --color-ouro: #d1a640;
-  --color-areia: #e9dcc6;
+  --color-areia: #f2e8dc; /* areia clara: a do vídeo (#e1cfb9) clareada para superfície */
+  --color-areia-forte: #e1cfb9; /* areia real medida no vídeo: quadra ilustrada, divisórias */
+  --color-branco: #ffffff;
+  --color-tinta: #13263a; /* texto sobre claro (12,7:1 na areia) */
+  --color-oceano: #102b44; /* seções escuras */
+  --color-oceano-profundo: #0b1e31; /* rodapé, carregamento e véu do vídeo */
+  --color-azul: #5888c8; /* azul da logo: linhas e detalhes (só não-texto) */
+  --color-azul-acao: #2c5c99; /* botões e links sobre claro (6,8:1 com branco) */
+  --color-ceu: #a8c8ee; /* destaque e foco sobre escuro (8,4:1 no oceano) */
   --color-erro: #8f1d1d;
+  --color-ouro: #d1a640; /* só ilustrações (argola do apito, bola) */
   --font-sans: var(--font-schibsted), system-ui, sans-serif;
+  --font-titulo: var(--font-mona), var(--font-schibsted), system-ui, sans-serif;
+}
+
+/* Sem itálico em nenhum elemento (inclui o itálico automático de em/i/cite/address). */
+*,
+*::before,
+*::after {
+  font-style: normal !important;
+  font-synthesis: none;
 }
 
 html {
-  background: var(--color-preto);
+  background: var(--color-oceano-profundo);
   color: #fff;
   color-scheme: dark;
   scroll-behavior: smooth;
-  -webkit-tap-highlight-color: rgb(209 166 64 / 0.25);
+  -webkit-tap-highlight-color: rgb(88 136 200 / 0.25);
+  --foco: var(--color-ceu);
 }
 
 a,
@@ -43,27 +59,36 @@ body {
 }
 
 ::selection {
-  background: var(--color-ouro);
-  color: var(--color-preto);
+  background: var(--color-azul-acao);
+  color: #fff;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-ouro);
+  outline: 2px solid var(--foco);
   outline-offset: 4px;
 }
 
-.on-areia {
+/* Seções claras (areia e branco): texto em tinta e foco no azul de ação. */
+.claro {
+  color: var(--color-tinta);
   color-scheme: light;
+  --foco: var(--color-azul-acao);
 }
 
-.on-areia :focus-visible {
-  outline-color: var(--color-preto);
+/* Grão de areia: ruído muito leve sobre as seções de areia (sem imagem externa). */
+.textura-areia {
+  position: relative;
+  isolation: isolate;
 }
-
-.on-areia select,
-.on-areia option {
-  background-color: var(--color-areia);
-  color: var(--color-preto);
+.textura-areia::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.33 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
 }
 
 .pular {
@@ -73,10 +98,10 @@ body {
   z-index: 300;
   transform: translateY(-200%);
   opacity: 0;
-  background: var(--color-ouro);
-  color: var(--color-preto);
+  background: var(--color-areia);
+  color: var(--color-tinta);
   padding: 0.75rem 1.25rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .pular:focus {
@@ -96,7 +121,7 @@ html[data-loader="visto"] .loader {
   z-index: 200;
   display: grid;
   place-items: center;
-  background: var(--color-preto);
+  background: var(--color-oceano-profundo);
   transition:
     opacity 0.6s ease,
     visibility 0.6s;
@@ -260,12 +285,24 @@ html[data-loader="visto"] .loader {
 }
 
 @layer components {
-  /* Títulos: Schibsted Grotesk 600, caixa normal, tracking fechado */
+  /* Títulos: Mona Sans 500 expandida. A largura dá o ar esportivo (placar, camisa);
+     o peso médio mantém a elegância. Caixa normal, nunca itálico. */
   .display {
-    font-weight: 600;
-    line-height: 1.04;
-    letter-spacing: -0.03em;
+    font-family: var(--font-titulo);
+    font-weight: 500;
+    font-stretch: 116%;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
     text-wrap: balance;
+  }
+
+  /* Subtítulos (itens de lista, perguntas, nomes no rodapé): mesma família, mais estreita para ler em corpo menor. */
+  .subtitulo {
+    font-family: var(--font-titulo);
+    font-weight: 500;
+    font-stretch: 108%;
+    line-height: 1.22;
+    letter-spacing: -0.01em;
   }
 
   .wrap {
@@ -295,7 +332,7 @@ html[data-loader="visto"] .loader {
     justify-content: center;
     gap: 0.6rem;
     padding: 0.9rem 2rem;
-    border-radius: 0.25rem;
+    border-radius: 999px;
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.2;
@@ -308,87 +345,102 @@ html[data-loader="visto"] .loader {
       box-shadow 220ms ease;
   }
 
+  .btn:hover {
+    transform: translateY(-1px);
+  }
   .btn:active {
-    transform: scale(0.98);
+    transform: translateY(0) scale(0.98);
   }
 
   /* Brilho que cruza o botão no hover (só decorativo, não muda a leitura) */
-  .btn-ouro,
+  .btn-azul,
+  .btn-claro,
   .btn-glass,
-  .btn-glass-ouro {
+  .btn-glass-claro {
     position: relative;
     overflow: hidden;
   }
-  .btn-ouro::after,
+  .btn-azul::after,
+  .btn-claro::after,
   .btn-glass::after,
-  .btn-glass-ouro::after {
+  .btn-glass-claro::after {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.4) 50%, transparent 65%);
+    background: linear-gradient(110deg, transparent 38%, rgb(255 255 255 / 0.22) 50%, transparent 62%);
     transform: translateX(-130%);
     transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .btn-ouro:hover::after,
+  .btn-azul:hover::after,
+  .btn-claro:hover::after,
   .btn-glass:hover::after,
-  .btn-glass-ouro:hover::after {
+  .btn-glass-claro:hover::after {
     transform: translateX(130%);
   }
 
-  /* Ouro sólido: para seções de cor lisa, onde o vidro não tem imagem para desfocar. */
-  .btn-ouro {
-    color: var(--color-preto);
-    background: var(--color-ouro);
-    border: 1px solid var(--color-ouro);
+  /* Sólidos, para fundos lisos (o vidro sem imagem atrás fica barrento):
+     azul de ação sobre claro; areia sobre o azul profundo. */
+  .btn-azul {
+    color: #fff;
+    background: var(--color-azul-acao);
+    border: 1px solid var(--color-azul-acao);
   }
-  .btn-ouro:hover {
+  .btn-azul:hover {
+    background: var(--color-tinta);
+    border-color: var(--color-tinta);
+  }
+  .btn-claro {
+    color: var(--color-tinta);
+    background: var(--color-areia);
+    border: 1px solid var(--color-areia);
+  }
+  .btn-claro:hover {
     background: #fff;
     border-color: #fff;
   }
 
-  /* Vidro principal (só sobre vídeo/imagem): tinta de ouro + desfoque + filete claro. Texto branco. */
-  .btn-glass-ouro {
+  /* Vidro (só sobre o vídeo da hero), na linha do Lobeca: pílula fosca, filete fino, reflexo
+     de 1 px no topo e sombra macia. O principal é vidro de areia, quase opaco, com texto em tinta:
+     continua o mais evidente da tela e não depende do quadro do vídeo para ter contraste. */
+  .btn-glass-claro {
+    color: var(--color-tinta);
+    background: linear-gradient(180deg, rgb(250 245 238 / 0.9) 0%, rgb(236 224 208 / 0.84) 100%);
+    border: 1px solid rgb(255 255 255 / 0.75);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.9),
+      0 12px 32px rgb(5 16 28 / 0.32);
+  }
+  .btn-glass-claro:hover {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.96) 0%, rgb(244 236 224 / 0.92) 100%);
+  }
+
+  /* Vidro secundário: branco fosco, como o do Lobeca */
+  .btn-glass {
     color: #fff;
-    background: rgb(209 166 64 / 0.4);
-    border: 1px solid rgb(240 208 128 / 0.75);
+    background: rgb(255 255 255 / 0.12);
+    border: 1px solid rgb(255 255 255 / 0.34);
     -webkit-backdrop-filter: blur(14px) saturate(140%);
     backdrop-filter: blur(14px) saturate(140%);
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.32),
-      0 10px 30px rgb(0 0 0 / 0.3);
-    text-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
-  }
-  .btn-glass-ouro:hover {
-    background: rgb(209 166 64 / 0.58);
-    border-color: rgb(250 226 160 / 0.95);
-  }
-
-  /* Vidro secundário: neutro */
-  .btn-glass {
-    color: #fff;
-    background: rgb(255 255 255 / 0.1);
-    border: 1px solid rgb(255 255 255 / 0.38);
-    -webkit-backdrop-filter: blur(12px) saturate(130%);
-    backdrop-filter: blur(12px) saturate(130%);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22);
-    text-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 10px 28px rgb(0 0 0 / 0.22);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
   }
   .btn-glass:hover {
-    background: rgb(255 255 255 / 0.2);
-    border-color: rgb(255 255 255 / 0.65);
+    background: rgb(255 255 255 / 0.22);
+    border-color: rgb(255 255 255 / 0.6);
   }
 
   /* Sem backdrop-filter: fundo sólido escuro, mesma leitura. */
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .btn-glass-ouro {
-      background: rgb(112 86 24 / 0.94);
-    }
-    .btn-glass-ouro:hover {
-      background: rgb(140 108 32 / 0.96);
+    .btn-glass-claro {
+      background: var(--color-areia);
     }
     .btn-glass {
-      background: rgb(10 10 10 / 0.72);
+      background: rgb(11 30 49 / 0.78);
     }
   }
 }

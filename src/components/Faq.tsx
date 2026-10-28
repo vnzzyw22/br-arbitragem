@@ -9,11 +9,11 @@ export function Faq() {
   const base = useId();
 
   return (
-    <section id="duvidas" className="bg-grafite py-24 lg:py-36">
+    <section id="duvidas" className="bg-oceano py-24 lg:py-36">
       <div className="wrap">
         <Linha />
         <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-x-16">
-          <Titulo className="display text-[clamp(2.3rem,9.4vw,3.5rem)] lg:col-span-5 lg:text-[clamp(2.8rem,4.2vw,4.6rem)]">
+          <Titulo className="display text-[clamp(2rem,8vw,3rem)] lg:col-span-5 lg:text-[clamp(2.4rem,3.6vw,3.9rem)]">
             Perguntas frequentes
           </Titulo>
           <div className="lg:col-span-7">
@@ -32,7 +32,7 @@ export function Faq() {
                         aria-expanded={expandido}
                         aria-controls={idPainel}
                         onClick={() => setAberto(expandido ? null : i)}
-                        className="flex min-h-16 w-full items-center justify-between gap-6 py-5 text-left text-xl font-semibold transition-colors hover:text-ouro"
+                        className="flex min-h-16 w-full items-center justify-between gap-6 py-5 text-left subtitulo text-[1.15rem] sm:text-[1.25rem] transition-colors hover:text-ceu"
                       >
                         <span>{item.p}</span>
                         <span aria-hidden="true" className="relative block h-4 w-4 shrink-0">
@@ -55,7 +55,7 @@ export function Faq() {
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <p className="max-w-[58ch] pb-6 text-prata">{item.r}</p>
+                        <p className="max-w-[58ch] pb-6 text-white/75">{item.r}</p>
                       </div>
                     </div>
                     </Entrada>

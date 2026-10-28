@@ -58,15 +58,15 @@ export function EmQuadra() {
   }, []);
 
   return (
-    <section id="quadra" aria-labelledby="quadra-titulo" className="bg-preto py-20 paisagem:hidden">
+    <section id="quadra" aria-labelledby="quadra-titulo" className="bg-oceano py-20 paisagem:hidden">
       <div className="wrap">
         <Linha />
         <div className="mt-12 flex items-end justify-between gap-6">
           <div>
-            <Titulo className="display text-[clamp(2.1rem,8.4vw,3.1rem)]">
+            <Titulo className="display text-[clamp(1.85rem,7.4vw,2.7rem)]">
               <span id="quadra-titulo">{EM_QUADRA.titulo}</span>
             </Titulo>
-            <p className="mt-3 text-prata">{EM_QUADRA.texto}</p>
+            <p className="mt-3 text-white/75">{EM_QUADRA.texto}</p>
           </div>
           {animar && (
             <button
@@ -92,7 +92,7 @@ export function EmQuadra() {
             key={item.video}
             role="img"
             aria-label={item.alt}
-            className="relative aspect-[5/9] w-[min(78%,calc(68svh*5/9))] max-w-[420px] shrink-0 snap-start overflow-hidden rounded-[4px] bg-grafite"
+            className="relative aspect-[5/9] w-[min(78%,calc(68svh*5/9))] max-w-[420px] shrink-0 snap-start overflow-hidden rounded-[4px] bg-oceano-profundo"
           >
             {/* Pôster local, já no tamanho certo; <img> com lazy para não baixar no desktop (seção oculta). */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -117,10 +117,10 @@ export function EmQuadra() {
         ))}
       </div>
 
-      {/* Indicador em linha de quadra: o traço do vídeo da frente acende em ouro. */}
+      {/* Indicador em linha de quadra: o traço do vídeo da frente acende em azul-céu. */}
       <div aria-hidden="true" className="wrap mt-5 flex gap-2">
         {EM_QUADRA.videos.map((item, i) => (
-          <span key={item.video} className={`h-[3px] w-8 transition-colors duration-300 ${ativo === i ? "bg-ouro" : "bg-white/20"}`} />
+          <span key={item.video} className={`h-[3px] w-8 transition-colors duration-300 ${ativo === i ? "bg-ceu" : "bg-white/20"}`} />
         ))}
       </div>
     </section>

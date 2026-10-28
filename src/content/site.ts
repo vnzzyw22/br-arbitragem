@@ -1,6 +1,5 @@
 import { QUADRA_MIDIA } from "@/lib/midia";
 // Substituir fotos: trocar o arquivo na pasta indicada mantendo o nome (ver MIDIA.md).
-import equipeTime from "@/assets/equipe/time-sandhit.webp";
 import arbitroSorrindo from "@/assets/equipe/arbitro-sorrindo.jpg";
 import arbitroApito from "@/assets/equipe/arbitro-apito.jpg";
 
@@ -28,11 +27,8 @@ export const EQUIPE = {
   texto:
     "A BR Arbitragem Futevôlei é uma equipe de arbitragem dedicada ao futevôlei, presente em campeonatos, torneios e circuitos.",
   principios: ["Imparcialidade", "Compromisso com as regras", "Respeito a atletas e organizadores"],
-  fotoGrande: {
-    src: equipeTime,
-    alt: "Cinco integrantes da equipe de braços cruzados na areia, de uniforme preto, diante de uma tenda da Sandhit.",
-  },
-  fotoPequena: {
+  // Única foto da seção (a do time foi retirada por qualidade; ver MIDIA.md > Pendências).
+  foto: {
     src: arbitroSorrindo,
     alt: "Árbitro da BR Arbitragem sorrindo, de camisa branca com o selo BR e o apito na boca.",
   },

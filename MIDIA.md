@@ -8,8 +8,10 @@
 | Hero mobile | `public/video/hero/mobile.mp4` + `mobile-poster.webp` | 720×1280, 10 s, sem áudio, 1 MB (reel do árbitro) |
 | Em quadra (celular) | `public/video/quadra/jogada.mp4`, `arena.mp4` + pôsteres `.webp` | 600×1080 cada, 7,8 s, ~950 KB: painéis esquerdo e direito do `desktop.mp4`, sem recorte nem ampliação (`ffmpeg -i desktop.mp4 -vf crop=600:1080:0:0` / `crop=600:1080:1320:0`, crf 28, maxrate 900k). Com os reels originais 720×1280 ficariam um pouco mais nítidos |
 | Logo | `src/assets/identidade/logo-br.jpg` | 150×150 (foto de perfil do Instagram) |
-| Quem somos | `src/assets/equipe/time-sandhit.webp`, `arbitro-sorrindo.jpg` | 1080×1080 · 1080×1311 |
-| Compromissos | `src/assets/equipe/arbitro-apito.jpg` | 1080×1350 |
+| Quem somos | `src/assets/equipe/arbitro-sorrindo.jpg` | 1080×1311, exibida com no máximo 440 px de largura |
+| Compromissos | `src/assets/equipe/arbitro-apito.jpg` | 1080×1350, exibida com no máximo 460 px de largura |
+
+Regra de tamanho (28/10): uma foto nunca aparece maior que a sua resolução nativa permite em tela de alta densidade (2×). Com 1080 px, o limite é ~460–540 px de largura na tela; por isso as duas fotos têm `max-w` e `sizes` fixos. Quando chegar arquivo maior, aumentar o limite junto.
 
 **Depois de trocar qualquer arquivo da hero, aumente `VERSAO` em `src/lib/midia.ts`**: o nome continua o mesmo, então sem isso celulares e a CDN podem seguir mostrando a versão antiga.
 
@@ -54,14 +56,14 @@ ffmpeg -ss 2 -i public/video/hero/mobile.mp4 -frames:v 1 -c:v libwebp -quality 8
 | `brarbitragem.ftv.mp4` (720×1280, 12 s) | hero mobile e painel central do tríptico | único com árbitro em foco e espaço para texto; sol aberto; 720p é o limite |
 | `ortizz.fotos.mp4` (720×1280, 23 s) | painel esquerdo do tríptico | ação de futevôlei nítida (Copa Gêmeos) |
 | `queirozcup.mp4` (720×1280, 65 s) | painel direito do tríptico | vista aérea da arena + ação; gradação sépia casada com os outros |
-| foto do time (`683605514`, 1080²) | Quem somos | **compressão e realce visíveis**; mantida por falta de alternativa melhor (ver pendências) |
-| `527634017` (1080×1311) | Quem somos (menor) | árbitro sorrindo, boa luz |
-| `488548770` (1080×1350) | Compromissos | árbitro com apito, boa luz e composição |
+| `527634017` (1080×1311) | Quem somos (única foto da seção) | árbitro sorrindo com o selo BR na camisa, boa luz; levemente macia, por isso limitada a 440 px |
+| `488548770` (1080×1350) | Compromissos | árbitro com apito, boa composição; macia (sem compressão visível), limitada a 460 px |
 
 ### Rejeitados
 
 | Arquivo | Motivo |
 |---|---|
+| foto do time (`683605514`, 1080²) | **retirada em 28/10.** Nitidez artificial com halo, faixas de cor nas camisas escuras e rostos "crocantes"; aparecia com 822 px (ampliada 1,5× em tela 2×). O arquivo saiu do repositório; o original continua em `Downloads` |
 | `brarbitragem.ftv (1).mp4` | compilação cheia de legendas sobrepostas ("Grande Final"…); 720p |
 | `spfcfutevolei.mp4` | montagem com cortes rápidos, muito motion blur e marcas de terceiros em destaque |
 | `656101782` (árbitro com apito, lateral) | macio/borrado já em 1080 px |
@@ -80,7 +82,7 @@ As fotos da seção **Campeonatos** (Arena Sun7, Torneio do Bosque, SPFC Futevô
 |---|---|---|---|
 | Hero desktop | vídeo **horizontal** de árbitros em quadra, câmera estável, espaço livre à esquerda | 16:9, 1920×1080 ou mais, 8–15 s | hoje é um tríptico montado de reels verticais 720p |
 | Hero mobile | vídeo **vertical** do árbitro em ação | 9:16, 1080×1920 | o atual tem 720×1280 |
-| Quem somos | foto da equipe uniformizada, **arquivo original** (não do Instagram) | ≥ 2000 px no lado maior, quadrada ou 4:3 | a atual tem 1080 px, compressão e realce visíveis |
+| Quem somos | foto da equipe uniformizada, **arquivo original** (não do Instagram) | ≥ 2000 px no lado maior, quadrada ou 4:3 | a do time foi retirada (compressão e realce); hoje a seção tem só o retrato do árbitro |
 | Compromissos | retrato do árbitro em ação (apito, sinalização) | 4:5, ≥ 1600×2000 | a atual tem 1080×1350 |
 | Identidade | logo em **vetor (SVG)** ou PNG transparente | ≥ 1000 px | hoje é a foto de perfil 150×150 com fundo branco |
 | Campeonatos (opcional) | fotos originais de cada evento, se quiserem voltar a mostrá-las | ≥ 2000 px | as disponíveis eram de 720–1080 px |

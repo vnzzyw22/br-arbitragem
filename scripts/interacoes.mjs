@@ -1,6 +1,7 @@
 // Teste de comportamento: node scripts/interacoes.mjs [url]
 // Roda contra uma build de produção iniciada com NEXT_PUBLIC_WHATSAPP_NUMBER de teste (número fictício).
 import { chromium } from "playwright-core";
+import { auditarContraste } from "./contraste-texto.mjs";
 
 const url = process.argv[2] ?? "http://localhost:3300/";
 const resultados = [];
@@ -123,9 +124,40 @@ async function nova(opts = {}, esperarLoader = true) {
   ok("reproduzir retoma o vídeo", (await page.evaluate(() => document.getElementById("hero-video").paused)) === false);
 
   // tipografia
-  const fonte = await page.evaluate(() => ({ h1: getComputedStyle(document.querySelector("h1")).fontFamily, corpo: getComputedStyle(document.body).fontFamily, peso: getComputedStyle(document.querySelector("h1")).fontWeight }));
-  ok("títulos e texto usam a grotesca (sem serifa de IA)", /schibsted/i.test(fonte.h1) && /schibsted/i.test(fonte.corpo) && !/cormorant|playfair/i.test(fonte.h1), JSON.stringify(fonte));
-  ok("peso dos títulos é 600 (nem pesado, nem frágil)", fonte.peso === "600");
+  // Regra do cliente: exatamente duas famílias, nenhuma fonte extra e nenhum itálico.
+  const tipo = await page.evaluate(async () => {
+    await document.fonts.ready;
+    const fams = new Set();
+    const italicos = [];
+    for (const el of document.querySelectorAll("body *")) {
+      if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+      const cs = getComputedStyle(el);
+      fams.add(cs.fontFamily.split(",")[0].replace(/["']/g, "").trim());
+      if (cs.fontStyle !== "normal") italicos.push(`${el.tagName}:${el.textContent.trim().slice(0, 20)}`);
+    }
+    const carregadas = [...new Set([...document.fonts].filter((f) => f.status === "loaded").map((f) => f.family.replace(/["']/g, "").replace(/ Fallback$/, "")))];
+    const f = (sel) => getComputedStyle(document.querySelector(sel));
+    return {
+      fams: [...fams],
+      italicos,
+      carregadas,
+      h1: f("h1").fontFamily,
+      h1peso: f("h1").fontWeight,
+      h2: f("#qualidade h2").fontFamily,
+      corpo: f("body").fontFamily,
+      botao: f("#topo a[href='#contato']").fontFamily,
+      campo: f("#campo-nome").fontFamily,
+    };
+  });
+  const duas = (lista) => lista.every((x) => /^(Mona Sans|Schibsted Grotesk)/.test(x));
+  ok("exatamente duas famílias no texto (Mona Sans e Schibsted Grotesk)", tipo.fams.length === 2 && duas(tipo.fams), JSON.stringify(tipo.fams));
+  ok("nenhuma fonte extra carregada", duas(tipo.carregadas), JSON.stringify(tipo.carregadas));
+  ok(
+    "títulos em Mona Sans 500; texto, botões e campos em Schibsted",
+    /Mona Sans/.test(tipo.h1) && /Mona Sans/.test(tipo.h2) && tipo.h1peso === "500" && [tipo.corpo, tipo.botao, tipo.campo].every((x) => /Schibsted/.test(x)),
+    JSON.stringify({ h1: tipo.h1.split(",")[0], peso: tipo.h1peso, botao: tipo.botao.split(",")[0] }),
+  );
+  ok("nenhum itálico na página", tipo.italicos.length === 0, tipo.italicos.slice(0, 4).join(" | "));
 
   // FAQ: teclado
   const botoes = page.locator("#duvidas button[aria-expanded]");
@@ -169,7 +201,7 @@ async function nova(opts = {}, esperarLoader = true) {
 
   await page.fill("#campo-nome", "Carlos Teste");
   await page.fill("#campo-whatsapp", "4199");
-  await page.selectOption("#campo-tipo", "Torneio");
+  await page.locator("#contato label", { hasText: "Torneio" }).click();
   await page.fill("#campo-cidade", "Curitiba, PR");
   await enviar.click();
   ok("WhatsApp incompleto é rejeitado", (await page.locator("#erro-whatsapp").count()) === 1);
@@ -256,7 +288,8 @@ async function nova(opts = {}, esperarLoader = true) {
   );
   ok("alvos de toque ≥ 40px (360px)", alvos.length === 0, JSON.stringify(alvos.slice(0, 6)));
 
-  const quadraMobile = await page.evaluate(() => { const r = document.querySelector("#equipe svg.mt-14").getBoundingClientRect(); return Math.round(r.width); });
+  // a quadra do celular é a segunda (a do desktop fica escondida abaixo de lg)
+  const quadraMobile = await page.evaluate(() => Math.max(...[...document.querySelectorAll("#equipe svg")].map((s) => Math.round(s.getBoundingClientRect().width))));
   ok("quadra em jogo aparece também no mobile", quadraMobile > 250, `(${quadraMobile}px)`);
   const nomes = await page.evaluate(() => [...document.querySelectorAll("#campeonatos h3")].map((h) => h.scrollWidth <= h.clientWidth + 1));
   ok("nomes dos campeonatos cabem em 360px sem estourar", nomes.length === 6 && nomes.every(Boolean));
@@ -367,7 +400,7 @@ async function nova(opts = {}, esperarLoader = true) {
   await page.waitForTimeout(1500);
   const m2 = await page.evaluate(() => ({
     tocando: [...document.querySelectorAll("#quadra video")].map((x) => !x.paused),
-    ativo: [...document.querySelectorAll("#quadra [aria-hidden=true].wrap span")].map((s) => s.className.includes("bg-ouro")),
+    ativo: [...document.querySelectorAll("#quadra [aria-hidden=true].wrap span")].map((s) => s.className.includes("bg-ceu")),
   }));
   ok("Em quadra: ao arrastar, o segundo toca e o indicador acompanha", m2.tocando[0] === false && m2.tocando[1] === true && m2.ativo[1] === true, JSON.stringify(m2));
   await page.click("#quadra button");
@@ -375,6 +408,65 @@ async function nova(opts = {}, esperarLoader = true) {
   const pausado = await page.evaluate(() => [...document.querySelectorAll("#quadra video")].every((x) => x.paused));
   ok("Em quadra: botão pausa os vídeos", pausado);
   ok("Em quadra: sem erros de console", erros.length === 0, erros.slice(0, 2).join(" | "));
+  await ctx.close();
+}
+
+// ---------- paleta praia: contraste real de todo texto contra o fundo da sua seção ----------
+{
+  const { ctx, page } = await nova();
+  const a = await auditarContraste(page);
+  ok(
+    "seções alternam areia, azul profundo e branco",
+    a.fundos.equipe === "rgb(242, 232, 220)" && a.fundos.qualidade === "rgb(16, 43, 68)" && a.fundos.campeonatos === "rgb(255, 255, 255)" && a.fundos.duvidas === "rgb(16, 43, 68)" && a.fundos.contato === "rgb(242, 232, 220)",
+    JSON.stringify(a.fundos),
+  );
+  ok(`contraste ≥ 4,5:1 (3:1 em texto grande) em todo texto fora da hero (desktop, ${a.medidos} elementos)`, a.falhas.length === 0, a.falhas.slice(0, 4).join(" | "));
+
+  // menu: a seção no meio da tela fica marcada
+  await page.evaluate(() => document.getElementById("campeonatos").scrollIntoView({ behavior: "instant", block: "center" }));
+  await page.waitForTimeout(900);
+  const atual = await page.evaluate(() => document.querySelector("header a[aria-current=location]")?.textContent);
+  ok("menu marca a seção atual (aria-current)", atual === "Campeonatos", atual);
+  await page.evaluate(() => scrollTo(0, 0));
+  await page.waitForTimeout(700);
+  const noTopo = await page.evaluate(() => document.querySelectorAll("header a[aria-current]").length);
+  ok("sobre a hero nenhuma seção fica marcada", noTopo === 0, `(${noTopo})`);
+  await ctx.close();
+}
+
+{
+  const { ctx, page } = await nova({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const a = await auditarContraste(page);
+  ok(`contraste ≥ 4,5:1 em todo texto fora da hero (celular, ${a.medidos} elementos)`, a.falhas.length === 0, a.falhas.slice(0, 4).join(" | "));
+  const alvo = await page.evaluate(() => Math.min(...[...document.querySelectorAll("#contato fieldset label")].map((l) => l.getBoundingClientRect().height)));
+  ok("botões de tipo de evento com alvo de toque ≥ 44px", alvo >= 44, `${alvo}px`);
+  await ctx.close();
+}
+
+// ---------- tipo de evento em botões: teclado, foco e validação ----------
+{
+  const { ctx, page } = await nova();
+  await page.evaluate(() => document.querySelector("#contato").scrollIntoView({ behavior: "instant" }));
+  await page.waitForTimeout(500);
+  await page.fill("#campo-nome", "Ana Teste");
+  await page.fill("#campo-whatsapp", "41988887777");
+  await page.fill("#campo-cidade", "Maringá, PR");
+  await page.getByRole("button", { name: "Enviar pelo WhatsApp" }).click();
+  await page.waitForTimeout(300);
+  const st = await page.evaluate(() => ({
+    foco: document.activeElement?.id,
+    erro: document.getElementById("erro-tipo")?.textContent,
+    grupo: document.querySelector("[role=radiogroup]")?.getAttribute("aria-invalid"),
+  }));
+  ok("sem tipo escolhido: erro aparece e o foco vai ao grupo de botões", st.foco === "campo-tipo" && !!st.erro && st.grupo === "true", JSON.stringify(st));
+  await page.keyboard.press("ArrowRight");
+  await page.waitForTimeout(200);
+  const st2 = await page.evaluate(() => {
+    const marcado = document.querySelector("input[name=tipo]:checked");
+    const rotulo = marcado?.closest("label");
+    return { valor: marcado?.value, contorno: rotulo ? getComputedStyle(rotulo).outlineStyle : null, erro: !!document.getElementById("erro-tipo") };
+  });
+  ok("seta do teclado escolhe a próxima opção, com foco visível, e limpa o erro", st2.valor === "Torneio" && st2.contorno !== "none" && st2.erro === false, JSON.stringify(st2));
   await ctx.close();
 }
 

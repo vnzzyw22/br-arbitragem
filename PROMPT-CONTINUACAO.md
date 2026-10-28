@@ -7,7 +7,8 @@ Continue o projeto da landing page da BR Arbitragem Futevôlei. Leia primeiro HA
 (estado, decisões do cliente que NÃO podem ser revertidas, pendências), depois DESIGN.md,
 MIDIA.md e README.md. Em seguida siga o PROMPT-CONTINUACAO.md a partir da "Etapa 1".
 Antes de dar qualquer etapa por pronta: tsc, lint, testes e prova visual (screenshot)
-em desktop e mobile. Ao fim de cada etapa: commit e push na main.
+em desktop e mobile. Ao fim de cada etapa: commit em branch local; push (na main ou em
+branch de prévia) SÓ com autorização do Vinicius.
 ```
 
 ---
@@ -19,14 +20,16 @@ Site de uma equipe de arbitragem de futevôlei, feito para um concurso entre des
 ## Regras de trabalho (valem para toda etapa)
 
 1. **Processo:** direção → implementação → inspeção → crítica → auditoria → correção → validação. "Pronto" nunca é só "compila": é renderizado, visto no navegador em desktop **e** mobile, sem erro de console, e comparado com o [DESIGN.md](DESIGN.md).
-2. **Anti-genérico:** sem serifa de IA (Cormorant/Playfair/Fraunces/Instrument Serif…), sem fonte pesada/condensada nos títulos, sem eyebrow em caixa alta, sem numeração falsa, sem três cards iguais, sem `→` em todo CTA, sem fade-slide-up genérico em tudo, sem glassmorphism fora da hero.
-3. **Conteúdo:** nunca inventar estatística, certificação, depoimento, data, cidade ou relação comercial. O que faltar vira pendência explícita, não texto fictício.
-4. **Mídia:** auditar cada arquivo individualmente (resolução nativa, nitidez, compressão, exposição, composição, tamanho de exibição). **Se não tem qualidade, não publica.** Registrar em [MIDIA.md](MIDIA.md) o que foi mantido, o que foi rejeitado e por quê.
-5. **Movimento:** com função e coerente com o tema (quadra, bola, apito, linha). Sempre respeitar `prefers-reduced-motion`.
-6. **Next 16 ≠ o que você conhece:** ler `node_modules/next/dist/docs/` antes de usar API nova (já pegou: `priority` → `preload`).
-7. **Verificação:** os testes rodam contra uma build de produção separada (ver [README.md](README.md)). Número de WhatsApp usado em teste é **fictício**; nunca commitar número real nem credenciais.
-8. **Não declarar nada testado sem ter rodado.** Se uma ferramenta não existe no ambiente (ex.: Chrome na nuvem), dizer isso; para instalar o navegador: `npx playwright-core install chromium` e trocar `channel: "chrome"` nos scripts.
-9. Ao fechar, perguntar ao usuário: **"o que ficou clichê aqui que eu não vi?"**
+2. **Tipografia e cor (regras de 28/10):** exatamente duas famílias (Mona Sans nos títulos, Schibsted Grotesk no resto), **nenhum itálico**, nenhuma fonte extra; paleta areia clara, branco e azul (ver [DESIGN.md](DESIGN.md)). A suíte confere.
+3. **Anti-genérico:** sem serifa de IA (Cormorant/Playfair/Fraunces/Instrument Serif…), sem fonte pesada/condensada nos títulos, sem eyebrow em caixa alta, sem numeração falsa, sem três cards iguais, sem `→` em todo CTA, sem fade-slide-up genérico em tudo, sem glassmorphism fora da hero.
+4. **Conteúdo:** nunca inventar estatística, certificação, depoimento, data, cidade ou relação comercial. O que faltar vira pendência explícita, não texto fictício.
+5. **Mídia:** auditar cada arquivo individualmente (resolução nativa, nitidez, compressão, exposição, composição, tamanho de exibição). **Se não tem qualidade, não publica.** Registrar em [MIDIA.md](MIDIA.md) o que foi mantido, o que foi rejeitado e por quê.
+6. **Movimento:** com função e coerente com o tema (quadra, bola, apito, linha). Sempre respeitar `prefers-reduced-motion`.
+7. **Next 16 ≠ o que você conhece:** ler `node_modules/next/dist/docs/` antes de usar API nova (já pegou: `priority` → `preload`).
+8. **Verificação:** os testes rodam contra uma build de produção separada (ver [README.md](README.md)). Número de WhatsApp usado em teste é **fictício**; nunca commitar número real nem credenciais.
+9. **Não declarar nada testado sem ter rodado.** Se uma ferramenta não existe no ambiente (ex.: Chrome na nuvem), dizer isso; para instalar o navegador: `npx playwright-core install chromium` e trocar `channel: "chrome"` nos scripts.
+10. **Publicação:** push na `main` publica o site e push em outro branch gera prévia na Vercel; os dois só com autorização.
+11. Ao fechar, perguntar ao usuário: **"o que ficou clichê aqui que eu não vi?"**
 
 ## Etapa 1 — Conferir o que está no ar
 
@@ -57,4 +60,4 @@ Perguntar e, com a resposta, atualizar `src/content/site.ts`: **SPFC Futevôlei*
 
 ## Ao terminar qualquer etapa
 
-`npx tsc --noEmit` · `npm run lint` · suíte de testes · screenshot desktop e mobile · atualizar [HANDOFF.md](HANDOFF.md) (estado e pendências) · `git add -A` · commit descritivo · `git push origin main`. Informar ao usuário, em português e em poucas linhas: o que mudou, o que foi testado de verdade e o que ficou pendente.
+`npx tsc --noEmit` · `npm run lint` · suíte de testes · screenshot desktop e mobile · atualizar [HANDOFF.md](HANDOFF.md) (estado e pendências) · `git add -A` · commit descritivo · **pedir autorização** antes de `git push`. Informar ao usuário, em português e em poucas linhas: o que mudou, o que foi testado de verdade e o que ficou pendente.

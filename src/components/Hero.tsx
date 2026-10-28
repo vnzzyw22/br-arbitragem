@@ -53,7 +53,7 @@ function HeroMidia({ pausado, reduzir }: { pausado: boolean; reduzir: boolean })
   }, [orientacao, pausado]);
 
   return (
-    <div aria-hidden="true" className="absolute inset-0 bg-preto">
+    <div aria-hidden="true" className="absolute inset-0 bg-oceano-profundo">
       <picture>
         <source media={PAISAGEM} srcSet={FONTES.paisagem.poster} />
         <img src={FONTES.retrato.poster} alt="" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
@@ -96,20 +96,21 @@ export function Hero() {
       ref={secao}
       id="topo"
       aria-labelledby="hero-titulo"
-      className="relative isolate flex h-[100svh] min-h-[640px] flex-col justify-end overflow-hidden bg-preto text-white"
+      className="relative isolate flex h-[100svh] min-h-[640px] flex-col justify-end overflow-hidden bg-oceano-profundo text-white"
     >
       <motion.div className="absolute inset-0 -z-10" style={reduzir ? undefined : { y: midiaY, scale: midiaEscala }}>
         <HeroMidia pausado={pausado} reduzir={reduzir} />
       </motion.div>
 
-      {/* Escurecimento só no necessário: base (texto e botões), lateral (título) e topo (menu). */}
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-preto/20" />
+      {/* Véu azul-profundo (o azul da marca), só onde o texto pede: base, lateral do título e topo
+          do menu. Tinge o filme de fim de tarde na praia sem apagá-lo; nada de caixa atrás do texto. */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-oceano-profundo/20" />
       <div
         aria-hidden="true"
         className="absolute inset-0 -z-10"
         style={{
           background:
-            "linear-gradient(to top, rgba(10,10,10,0.86) 0%, rgba(10,10,10,0.5) 34%, rgba(10,10,10,0) 66%), linear-gradient(to right, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0) 58%), linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0) 18%)",
+            "linear-gradient(to top, rgba(11,30,49,0.88) 0%, rgba(11,30,49,0.52) 34%, rgba(11,30,49,0) 66%), linear-gradient(to right, rgba(11,30,49,0.52) 0%, rgba(11,30,49,0) 58%), linear-gradient(to bottom, rgba(11,30,49,0.6) 0%, rgba(11,30,49,0) 18%)",
         }}
       />
 
@@ -118,7 +119,7 @@ export function Hero() {
           type="button"
           onClick={() => setPausado((p) => !p)}
           aria-label={pausado ? "Reproduzir vídeo" : "Pausar vídeo"}
-          className="absolute right-5 top-[5.5rem] z-20 grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-preto/40 text-white backdrop-blur-md transition-colors hover:bg-preto/70 sm:right-8 lg:right-12"
+          className="absolute right-5 top-[5.5rem] z-20 grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-oceano-profundo/40 text-white backdrop-blur-md transition-colors hover:bg-oceano-profundo/70 sm:right-8 lg:right-12"
         >
           <svg aria-hidden="true" viewBox="0 0 16 16" className="h-4 w-4 fill-current">
             {pausado ? <path d="M4 2.5v11l9-5.5z" /> : <path d="M3.5 2h3.2v12H3.5zM9.3 2h3.2v12H9.3z" />}
@@ -128,7 +129,7 @@ export function Hero() {
 
       <motion.div style={reduzir ? undefined : { y: textoY, opacity: textoOpacidade }}>
         <div className="wrap pb-10 pt-32 baixo:pb-6 lg:pb-16">
-          <h1 id="hero-titulo" className="display text-[clamp(2.7rem,11.6vw,4.4rem)] baixo:text-[clamp(2rem,9.4vw,2.6rem)] md:text-[clamp(3.4rem,6.3vw,6.2rem)]">
+          <h1 id="hero-titulo" className="display text-[clamp(2.3rem,9.9vw,3.8rem)] baixo:text-[clamp(1.8rem,8.2vw,2.3rem)] md:text-[clamp(2.8rem,4.6vw,4.6rem)]">
             {HERO.titulo.map((linha, i) => (
               <span key={linha} className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
                 <span className="h-sobe block" style={atraso(0.15 + i * 0.1)}>
@@ -138,12 +139,12 @@ export function Hero() {
             ))}
           </h1>
 
-          <div aria-hidden="true" className="h-estende mt-7 h-[2px] baixo:mt-4 w-20 bg-ouro" style={atraso(0.55)} />
+          <div aria-hidden="true" className="h-estende mt-7 h-[2px] baixo:mt-4 w-20 bg-ceu" style={atraso(0.55)} />
 
           <div className="h-surge mt-7 flex flex-col gap-8 baixo:mt-4 baixo:gap-4 lg:flex-row lg:items-center lg:gap-12" style={atraso(0.8)}>
             <p className="max-w-[34ch] text-lg leading-snug text-white/90 baixo:text-base lg:text-xl">{HERO.texto}</p>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <a href="#contato" className="btn btn-glass-ouro">
+              <a href="#contato" className="btn btn-glass-claro">
                 Solicitar orçamento
               </a>
               {/* Em tela baixa só fica o CTA principal; a equipe vem logo abaixo, na rolagem. */}

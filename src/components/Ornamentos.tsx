@@ -110,25 +110,27 @@ export function QuadraEmJogo({ className = "" }: P) {
   const id = useId();
   return (
     <svg viewBox="0 0 360 180" fill="none" aria-hidden="true" className={className} preserveAspectRatio="xMidYMid meet">
-      {/* areia e fita de demarcação */}
-      <rect x="6" y="6" width="348" height="168" rx="1" fill="rgb(209 166 64 / 0.08)" stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-      <path d="M6 90h348" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 7" vectorEffect="non-scaling-stroke" />
-      {/* rede */}
-      <path d="M180 0v180" stroke="currentColor" strokeWidth="3" vectorEffect="non-scaling-stroke" />
+      {/* areia (a cor medida no vídeo) e fita branca de demarcação */}
+      <rect x="0" y="0" width="360" height="180" rx="4" fill="#e1cfb9" />
+      <rect x="10" y="10" width="340" height="160" fill="none" stroke="#fff" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
+      {/* rede e postes */}
+      <path d="M180 4v172" stroke="#13263a" strokeWidth="3" vectorEffect="non-scaling-stroke" />
+      <circle cx="180" cy="5" r="3.2" fill="#13263a" />
+      <circle cx="180" cy="175" r="3.2" fill="#13263a" />
       {/* ondas de contato com a bola */}
-      <circle className="rali-onda" cx="70" cy="104" r="14" stroke="#f6d11a" strokeWidth="1.5" />
-      <circle className="rali-onda rali-onda-2" cx="290" cy="100" r="14" stroke="#f6d11a" strokeWidth="1.5" />
+      <circle className="rali-onda" cx="70" cy="104" r="14" stroke="#2c5c99" strokeWidth="1.8" />
+      <circle className="rali-onda rali-onda-2" cx="290" cy="100" r="14" stroke="#2c5c99" strokeWidth="1.8" />
       {/* jogadores */}
       <g className="rali-j1">
-        <Jogador cor="#d1a640" lado={1} />
+        <Jogador cor="#2c5c99" lado={1} />
       </g>
       <g className="rali-j2">
-        <Jogador cor="#e9dcc6" lado={-1} />
+        <Jogador cor="#13263a" lado={-1} />
       </g>
       {/* bola: percurso no chão > altura > giro; a sombra fica no chão */}
       <g className="rali-chao">
         <g className="rali-sombra">
-          <ellipse cx="6" cy="9" rx="9" ry="4.2" fill="#000" />
+          <ellipse cx="6" cy="9" rx="9" ry="4.2" fill="#5a4630" />
         </g>
         <g className="rali-altura">
           <g className="rali-giro">

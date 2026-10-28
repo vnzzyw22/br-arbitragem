@@ -1,13 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Schibsted_Grotesk } from "next/font/google";
+import { Mona_Sans, Schibsted_Grotesk } from "next/font/google";
 import { Loader } from "@/components/Loader";
 import "./globals.css";
 
-// Uma família só (grotesca de redação): 600 nos títulos, 400/500 no texto.
-// A única serifa da página é a da própria logo.
+// Exatamente duas famílias (ver DESIGN.md > Tipografia), sem itálico em lugar nenhum:
+// - Schibsted Grotesk: texto, formulário, menu e botões (400 texto, 500 rótulos, 600 botões).
+// - Mona Sans expandida: títulos e destaques (500, largura 108–116%).
 const schibsted = Schibsted_Grotesk({
   subsets: ["latin"],
+  style: "normal",
   variable: "--font-schibsted",
+  display: "swap",
+});
+
+const mona = Mona_Sans({
+  subsets: ["latin"],
+  style: "normal",
+  axes: ["wdth"],
+  variable: "--font-mona",
   display: "swap",
 });
 
@@ -26,7 +36,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: "#0b1e31",
 };
 
 // Marca a sessão antes da pintura para o carregamento não reaparecer a cada visita.
@@ -34,7 +44,7 @@ const marcaSessao = `try{if(sessionStorage.getItem("br-loader"))document.documen
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={schibsted.variable}>
+    <html lang="pt-BR" className={`${schibsted.variable} ${mona.variable}`}>
       <body>
         <script dangerouslySetInnerHTML={{ __html: marcaSessao }} />
         <Loader />

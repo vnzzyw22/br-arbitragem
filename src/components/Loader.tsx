@@ -88,7 +88,7 @@ export function Loader() {
       <div className="flex w-[min(78vw,260px)] flex-col items-center gap-9">
         <Logo size={96} eager />
         <div className="relative h-px w-full bg-white/20">
-          <div className="absolute inset-y-0 left-0 w-full origin-left bg-ouro transition-transform duration-500 ease-out" style={{ transform: `scaleX(${progresso})` }} />
+          <div className="absolute inset-y-0 left-0 w-full origin-left bg-ceu transition-transform duration-500 ease-out" style={{ transform: `scaleX(${progresso})` }} />
           <div className="absolute top-1/2 transition-[left] duration-500 ease-out" style={{ left: `${progresso * 100}%` }}>
             <Bola className="h-5 w-5 -translate-x-1/2 -translate-y-1/2 transition-transform duration-500 ease-out" />
           </div>

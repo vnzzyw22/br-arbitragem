@@ -18,8 +18,16 @@ import { Apito } from "./Ornamentos";
 const vazio: Campos = { nome: "", whatsapp: "", tipo: "", cidade: "", data: "", info: "" };
 
 const campo =
-  "block w-full border-0 border-b-2 border-preto bg-transparent px-0 py-3 text-lg text-preto placeholder:text-preto/65";
-const rotulo = "block text-base font-semibold text-preto";
+  "block w-full border-0 border-b-2 border-tinta bg-transparent px-0 py-3 text-lg text-tinta placeholder:text-tinta/70";
+const rotulo = "block text-base font-medium text-tinta";
+
+// Opção do tipo de evento em botão (um toque no celular, em vez da lista suspensa). O rádio real
+// fica por baixo: setas do teclado, leitor de tela e validação continuam os do navegador.
+const opcao =
+  "relative inline-flex min-h-12 cursor-pointer select-none items-center rounded-full border px-5 text-base font-medium transition-colors " +
+  "border-tinta/30 bg-white/55 text-tinta hover:border-tinta " +
+  "has-[:checked]:border-tinta has-[:checked]:bg-tinta has-[:checked]:text-areia " +
+  "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-azul-acao";
 
 function Mensagem({ id, texto }: { id: string; texto?: string }) {
   if (!texto) return null;
@@ -74,11 +82,11 @@ export function Contato() {
   };
 
   return (
-    <section id="contato" className="on-areia relative overflow-hidden bg-areia py-24 text-preto lg:py-36">
+    <section id="contato" className="claro textura-areia relative overflow-hidden bg-areia py-24 lg:py-36">
       <div className="wrap relative">
-        <Linha cor="bg-preto" />
+        <Linha cor="bg-azul" />
         <div className="mt-14 lg:mt-20 lg:flex lg:items-end lg:justify-between lg:gap-12">
-          <Titulo className="display max-w-[20ch] text-[clamp(2.4rem,10.2vw,3.9rem)] lg:text-[clamp(3rem,5.6vw,6.2rem)]">
+          <Titulo className="display max-w-[20ch] text-[clamp(2rem,8.6vw,3.3rem)] lg:text-[clamp(2.6rem,4.6vw,5rem)]">
             Vamos conversar sobre seu próximo campeonato?
           </Titulo>
           <ApitoApitando />
@@ -89,7 +97,7 @@ export function Contato() {
             <p className="max-w-[34ch] text-xl leading-snug">
               Conte um pouco sobre seu evento e entre em contato com a BR Arbitragem para solicitar uma proposta.
             </p>
-            <p className="mt-8 max-w-[34ch] text-base text-preto/80">
+            <p className="mt-8 max-w-[34ch] text-base text-tinta/80">
               Ao enviar, o WhatsApp abre com a mensagem pronta. A conversa só começa quando você toca em enviar lá.
             </p>
             <p className="mt-8 text-base">
@@ -98,7 +106,7 @@ export function Contato() {
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="-my-3 inline-block py-3 font-semibold underline decoration-2 underline-offset-4"
+                className="-my-3 inline-block py-3 font-medium underline decoration-2 underline-offset-4"
               >
                 {INSTAGRAM_HANDLE}
               </a>
@@ -146,38 +154,37 @@ export function Contato() {
               <Mensagem id="erro-whatsapp" texto={erros.whatsapp} />
             </div>
 
-            <div>
-              <label htmlFor="campo-tipo" className={rotulo}>
+            <fieldset className="sm:col-span-2">
+              <legend id="rotulo-tipo" className={rotulo}>
                 Tipo de evento
-              </label>
-              <select
-                id="campo-tipo"
-                name="tipo"
-                required
-                value={c.tipo}
-                onChange={mudar("tipo")}
+              </legend>
+              <div
+                role="radiogroup"
+                aria-labelledby="rotulo-tipo"
                 aria-invalid={Boolean(erros.tipo)}
                 aria-describedby={erros.tipo ? "erro-tipo" : undefined}
-                className={`${campo} cursor-pointer`}
+                className="mt-4 flex flex-wrap gap-2.5"
               >
-                <option value="">Selecione</option>
-                {TIPOS_EVENTO.map((t) => (
-                  <option key={t} value={t}>
+                {TIPOS_EVENTO.map((t, i) => (
+                  <label key={t} className={`${opcao} ${erros.tipo ? "!border-erro/70" : ""}`}>
+                    <input
+                      id={i === 0 ? "campo-tipo" : undefined}
+                      type="radio"
+                      name="tipo"
+                      value={t}
+                      required
+                      checked={c.tipo === t}
+                      onChange={mudar("tipo")}
+                      className="sr-only"
+                    />
                     {t}
-                  </option>
+                  </label>
                 ))}
-              </select>
+              </div>
               <Mensagem id="erro-tipo" texto={erros.tipo} />
-            </div>
+            </fieldset>
 
             <div>
-              <label htmlFor="campo-data" className={rotulo}>
-                Data prevista <span className="font-normal text-preto/70">(opcional)</span>
-              </label>
-              <input id="campo-data" name="data" type="date" value={c.data} onChange={mudar("data")} className={campo} />
-            </div>
-
-            <div className="sm:col-span-2">
               <label htmlFor="campo-cidade" className={rotulo}>
                 Cidade e estado
               </label>
@@ -197,9 +204,16 @@ export function Contato() {
               <Mensagem id="erro-cidade" texto={erros.cidade} />
             </div>
 
+            <div>
+              <label htmlFor="campo-data" className={rotulo}>
+                Data prevista <span className="font-normal text-tinta/70">(opcional)</span>
+              </label>
+              <input id="campo-data" name="data" type="date" value={c.data} onChange={mudar("data")} className={campo} />
+            </div>
+
             <div className="sm:col-span-2">
               <label htmlFor="campo-info" className={rotulo}>
-                Informações adicionais <span className="font-normal text-preto/70">(opcional)</span>
+                Informações adicionais <span className="font-normal text-tinta/70">(opcional)</span>
               </label>
               <textarea
                 id="campo-info"
@@ -217,7 +231,7 @@ export function Contato() {
               <button
                 type="submit"
                 disabled={!configurado}
-                className="inline-flex min-h-16 w-full items-center justify-center bg-preto px-10 text-xl font-bold text-areia transition-colors hover:bg-grafite active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-preto/40 sm:w-auto"
+                className="inline-flex min-h-16 w-full items-center justify-center rounded-full bg-azul-acao px-10 text-lg font-semibold text-white transition-colors hover:bg-tinta active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-tinta/40 sm:w-auto"
               >
                 Enviar pelo WhatsApp
               </button>

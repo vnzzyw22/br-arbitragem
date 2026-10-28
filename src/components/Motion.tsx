@@ -7,7 +7,7 @@ import { Bola } from "./Ornamentos";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 // A linha de quadra: o traço que abre cada seção.
-export function Linha({ cor = "bg-ouro", className = "" }: { cor?: string; className?: string }) {
+export function Linha({ cor = "bg-azul", className = "" }: { cor?: string; className?: string }) {
   const reduzir = useReducedMotion();
   return (
     <motion.div
@@ -102,7 +102,7 @@ export function ProgressoBola() {
   if (reduzir) return null;
   return (
     <div aria-hidden="true" data-progresso="" className="pointer-events-none fixed inset-x-0 top-[calc(4.75rem+1px)] z-[60] h-[3px]">
-      <motion.div className="h-full origin-left bg-ouro" style={{ scaleX: p }} />
+      <motion.div className="h-full origin-left bg-ceu" style={{ scaleX: p }} />
       <motion.div className="absolute top-[3px]" style={{ left: esquerda }}>
         <motion.div style={{ rotate: giro }}>
           <Bola className="h-[22px] w-[22px] drop-shadow-[0_3px_5px_rgba(0,0,0,0.5)]" />
