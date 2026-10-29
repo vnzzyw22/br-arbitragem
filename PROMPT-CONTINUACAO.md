@@ -11,7 +11,7 @@ em desktop e mobile. Ao fim de cada etapa: commit em branch local; push (na main
 branch de prévia) SÓ com autorização do Vinicius.
 ```
 
-**O refinamento de 28/10 (logo, fundo praia, título da hero, jogada com 4 jogadores e árbitro) está pronto na branch local `refinamento-visual-2026-10-28`**, aguardando autorização para publicar (ver HANDOFF.md). Para revisar ou ajustar, use este:
+**O refinamento de 28/10 (logo, fundo praia, título da hero, jogada com 4 jogadores e árbitro) foi publicado na `main` em 29/10** (ver HANDOFF.md); a branch `refinamento-visual-2026-10-28` fica igual à `main`. Para revisar ou ajustar, use este:
 
 ```
 Continue o projeto da BR Arbitragem Futevôlei na branch refinamento-visual-2026-10-28.

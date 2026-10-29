@@ -4,10 +4,10 @@ Atualizado em 28/10/2026. Estado completo e decisões do cliente: [HANDOFF.md](.
 
 ## Onde está o trabalho
 
-- **Branch:** `refinamento-visual-2026-10-28`, salva no GitHub. **A `main` não foi alterada**: o site no ar (https://br-arbitragem.vercel.app) continua na versão anterior.
+- **Branch:** `refinamento-visual-2026-10-28`, **publicada na `main` em 29/10 às 08:16** (autorizado pelo Vinicius): é a versão no ar em https://br-arbitragem.vercel.app.
 - **Ver no computador:** `git fetch && git checkout refinamento-visual-2026-10-28 && npm install && npm run dev` → http://localhost:3000
 - **Prévia online:** o push da branch pode gerar uma prévia na Vercel (o link aparece na página da branch no GitHub ou no painel da Vercel).
-- **Publicar de verdade:** só com autorização do Vinicius: merge da branch na `main` e push (a Vercel publica sozinha).
+- **Próximas publicações:** sempre só com autorização do Vinicius (push na `main` = site no ar).
 
 ## 1. Elementos de praia — concluído (28/10, 19h)
 
@@ -18,7 +18,7 @@ Atualizado em 28/10/2026. Estado completo e decisões do cliente: [HANDOFF.md](.
 - [x] `tsc`, `lint` e suíte: **90/90** contra a build de produção.
 - [x] DESIGN.md atualizado (coqueiros por pedido do Vinicius; movimento).
 
-## 2. Pronto na branch, falta só aprovar e publicar
+## 2. Publicado em 29/10
 
 | Item | O que mudou | Verificado |
 |---|---|---|
